@@ -58,6 +58,8 @@ plt.legend()
 #  with an R that leads to a fixed point attractor then there is
 #  not much sensitivity to initial conditions.
 
+
+
 fig1 = plt.figure()
 plt.plot(range(0,timesteps),xval_r2_1, label= 'initial x = 0.6')
 plt.plot(range(0,timesteps),xval_r2_2,'--', label= 'initial x = 0.600000001')
@@ -70,5 +72,13 @@ plt.legend()
 # that have the same distance from eachother as above. they stay 
 # close for about 20 iterations where they change drastically.this 
 # emphasizes sensitivity to initial conditions.
+
+# Lets discretize the data to calculate entropy I will use 100 bins to represent the percentage of population
+bins = list(range(0,100))
+# i will map the x vals to a new list with each value multiplies by 100
+vals_to_discretize = list(map(lambda x: x*100, xval_r2_2))
+discretized_data = np.digitize(vals_to_discretize,bins)
+for i in range(0,len(discretized_data)):
+    print(discretized_data[i])
 
 plt.show()
