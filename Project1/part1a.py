@@ -76,9 +76,17 @@ plt.legend()
 # Lets discretize the data to calculate entropy I will use 100 bins to represent the percentage of population
 bins = list(range(0,100))
 # i will map the x vals to a new list with each value multiplies by 100
-vals_to_discretize = list(map(lambda x: x*100, xval_r2_2))
-discretized_data = np.digitize(vals_to_discretize,bins)
-for i in range(0,len(discretized_data)):
-    print(discretized_data[i])
+temp_r1_1 = list(map(lambda x: x*100, xval_r1_1))
+temp_r1_2 = list(map(lambda x: x*100, xval_r1_2))
+temp_r2_1 = list(map(lambda x: x*100, xval_r2_1))
+temp_r2_2 = list(map(lambda x: x*100, xval_r2_2))
+discretized_r1_1 = np.digitize(temp_r1_1,bins)
+discretized_r1_2 = np.digitize(temp_r1_2,bins)
+discretized_r2_1 = np.digitize(temp_r2_1,bins)
+discretized_r2_2 = np.digitize(temp_r2_2,bins)
+f = open("r11-r12-r21-r22.txt","w")
+for i in range(0,len(temp_r1_1)):
+    f.write(str(discretized_r1_1[i])+ " " + str(discretized_r1_2[i])+ " " + str(discretized_r2_1[i])+ " " + str(discretized_r2_2[i]) + "\n")
+f.close()
 
 plt.show()
