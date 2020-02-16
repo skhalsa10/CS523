@@ -3,15 +3,15 @@
 import sys
 import numpy as np
 import jpype as jp
-
-
 # JIDT Generated Code for Transfer Entropy.
-pythonDemos = input("Please provide the path to the python demos for your jidt installation. For example: '\..\infodynamics-dist-1.5\demos\python'\n")
-# example path for my pc: "C:\\Users\\anasf\\Downloads\\infodynamics-dist-1.5\\demos\\python"
-sys.path.append(pythonDemos)
-import readIntsFile
 
-jarLoc = input("Now provide the jar location of where your jidt infodynamics is:\n")
+# No need for this since I am not reading from a file. I am directly passing in arrays from Part3.py
+# pythonDemos = input("Please provide the path to the python demos for your jidt installation. For example: '\\..\\infodynamics-dist-1.5\\demos\python'\n")
+# # example path for my pc: "C:\\Users\\anasf\\Downloads\\infodynamics-dist-1.5\\demos\\python"
+# sys.path.append(pythonDemos)
+# import readIntsFile
+
+jarLoc = input("Provide the jar location of where your jidt infodynamics is:\n")
 
 # example jar loc path for my pc: "C:\\Users\\anasf\\Downloads\\infodynamics-dist-1.5\\infodynamics.jar"
 jarLocation = jarLoc
