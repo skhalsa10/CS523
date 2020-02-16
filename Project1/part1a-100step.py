@@ -1,3 +1,8 @@
+# The purpose of this python script is to build the graphs
+# needed for part1. I bassically duplicate this code exactly
+# in the 10000 step file. this is to build the discretized 
+# data to feed to the JIDT tool. I use more time steps to 
+# better understand the true entropy.
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -60,7 +65,7 @@ plt.legend()
 
 
 
-fig1 = plt.figure()
+fig2 = plt.figure()
 plt.plot(range(0,timesteps),xval_r2_1, label= 'initial x = 0.6')
 plt.plot(range(0,timesteps),xval_r2_2,'--', label= 'initial x = 0.600000001')
 plt.xlabel('Timesteps')
@@ -72,21 +77,5 @@ plt.legend()
 # that have the same distance from eachother as above. they stay 
 # close for about 20 iterations where they change drastically.this 
 # emphasizes sensitivity to initial conditions.
-
-# Lets discretize the data to calculate entropy I will use 100 bins to represent the percentage of population
-bins = list(range(0,100))
-# i will map the x vals to a new list with each value multiplies by 100
-temp_r1_1 = list(map(lambda x: x*100, xval_r1_1))
-temp_r1_2 = list(map(lambda x: x*100, xval_r1_2))
-temp_r2_1 = list(map(lambda x: x*100, xval_r2_1))
-temp_r2_2 = list(map(lambda x: x*100, xval_r2_2))
-discretized_r1_1 = np.digitize(temp_r1_1,bins)
-discretized_r1_2 = np.digitize(temp_r1_2,bins)
-discretized_r2_1 = np.digitize(temp_r2_1,bins)
-discretized_r2_2 = np.digitize(temp_r2_2,bins)
-f = open("r11-r12-r21-r22.txt","w")
-for i in range(0,len(temp_r1_1)):
-    f.write(str(discretized_r1_1[i])+ " " + str(discretized_r1_2[i])+ " " + str(discretized_r2_1[i])+ " " + str(discretized_r2_2[i]) + "\n")
-f.close()
 
 plt.show()
