@@ -1,3 +1,7 @@
+# Part 2: Figure 2 Code that shows the behavior of different populations behaving differently by making
+# a pattern based on different epsilons (coupling strength).
+# Implementation Details: both by Anas Gauba and Siri Khalsa.
+
 import matplotlib.pyplot as plt
 import numpy as np
 
