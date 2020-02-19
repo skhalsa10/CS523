@@ -7,7 +7,7 @@ n = 10000
 N = 1000
 # Compare Mutual Info of subpopulations at epsilon 0.075 vs maybe 3 others. 
 #epselons = [0, 0.075, 0.1, 0.2, 0.25, 0.3, 0.4, 0.6, 0.7, 0.9, 1]
-epselons = [0.075, 0.25, 0.4, 1]
+epselons = [0.075, 0.25, 0.4, 0.6, 1]
 K = 100
 
 # the goal here is to build a matrix with N rows and n column
@@ -59,6 +59,7 @@ def build_xs(xs_i_n, K, N, e):
 
 epsItr = 0
 mutualInfo = np.zeros((N-1,len(epselons)))
+meanMutualInfo = np.zeros(len(epselons))
 
 bins = list(range(0,100)) # we have numbers between 0 and 100 for our data.
 
@@ -89,9 +90,15 @@ for e in epselons:
 
     #print(mutualInfo[:,epsItr])
     #plt.plot(range(0,N-1), mutualInfo[:,epsItr], label='epsilon = ' + str(e))
-
+    meanMutualInfo[epsItr] = np.mean(mutualInfo[:, epsItr])
     epsItr += 1
     
-# figure out plotting after talking to the professor.
-plt.legend()
+# plot bar graph
+epselons = list(map(lambda x: str(x),epselons))
+plt.bar(epselons, list(meanMutualInfo), align='center',width=0.3,alpha=0.5)
+#plt.xticks(epselons)
+plt.xlabel("epsilons (e)")
+plt.ylabel("Mutual Information (MI)")
+plt.title("Comparing MI among subpopulations for e=0.075\n and four other epsilon values")
+#plt.legend()
 plt.show()
