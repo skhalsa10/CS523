@@ -1,3 +1,7 @@
+# Part 3: Figure 4 code that measures the mutual information among subpopulations for e=0.075 with other values
+# of epsilon. 
+# Implemented by Anas Gauba
+
 import matplotlib.pyplot as plt
 import numpy as np
 import JIDTMutualInfo as jidt
@@ -6,8 +10,8 @@ import JIDTMutualInfo as jidt
 n = 10000
 N = 1000
 # Compare Mutual Info of subpopulations at epsilon 0.075 vs maybe 3 others. 
-#epselons = [0, 0.075, 0.1, 0.2, 0.25, 0.3, 0.4, 0.6, 0.7, 0.9, 1]
-epselons = [0.075, 0.25, 0.4, 0.6, 1]
+epselons = [0, 0.075, 0.1, 0.2, 0.25, 0.3, 0.4, 0.6, 0.7, 0.9, 1]
+#epselons = [0, 0.075, 0.25, 0.4, 0.6, 1]
 K = 100
 
 # the goal here is to build a matrix with N rows and n column
@@ -99,6 +103,6 @@ plt.bar(epselons, list(meanMutualInfo), align='center',width=0.3,alpha=0.5)
 #plt.xticks(epselons)
 plt.xlabel("epsilons (e)")
 plt.ylabel("Mutual Information (MI)")
-plt.title("Comparing MI among subpopulations for e=0.075\n and four other epsilon values")
+plt.title("Comparing MI among subpopulations for e=0.075\n and other epsilon values")
 #plt.legend()
 plt.show()

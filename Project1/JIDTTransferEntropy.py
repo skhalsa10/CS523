@@ -1,5 +1,5 @@
 # The code is borrowed from JIDT tool. It handles the case of discrete data to calculate transfer entropy.
-# This code is implemented by JIDT and modified by Anas Gauba.
+# Credits to JIDT for the implementation, some modifications to the code to match our need was done by Anas Gauba.
 import sys
 import numpy as np
 import jpype as jp

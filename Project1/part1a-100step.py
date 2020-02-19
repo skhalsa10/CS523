@@ -3,6 +3,7 @@
 # in the 10000 step file. this is to build the discretized 
 # data to feed to the JIDT tool. I use more time steps to 
 # better understand the true entropy.
+# Implemented by Siri Khalsa.
 import matplotlib.pyplot as plt
 import numpy as np
 

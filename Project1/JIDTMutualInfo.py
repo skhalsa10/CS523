@@ -1,3 +1,5 @@
+# The code is borrowed from JIDT tool. It handles the case of discrete data to calculate mutual information.
+# Credits to JIDT for the implementation, some modifications to the code to match our need was done by Anas Gauba.
 import jpype as jp
 import numpy
 # Code for reading in file from JIDT demos example. I am not gonna pass a file here, instead

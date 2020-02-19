@@ -5,6 +5,7 @@
 # 
 # Two sepperate data files will be output.
 # One up to N and one after N where N is the time that the chaotic graph diverges
+# Implemented by Siri Khalsa.
 import matplotlib.pyplot as plt
 import numpy as np
 
