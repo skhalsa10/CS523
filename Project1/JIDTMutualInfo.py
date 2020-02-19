@@ -7,7 +7,10 @@ import numpy
 # import readIntsFile
 
 # Add JIDT jar library to the path
-jarLocation = "C:\\Users\\anasf\\Downloads\\infodynamics-dist-1.5\\infodynamics.jar"
+jarLoc = input("Provide the jar location of where your jidt infodynamics is:\n")
+
+# example jar loc path for my pc: "C:\\Users\\anasf\\Downloads\\infodynamics-dist-1.5\\infodynamics.jar"
+jarLocation = jarLoc
 # Start the JVM (add the "-Xmx" option with say 1024M if you get crashes due to not enough memory space)
 jp.startJVM(jp.getDefaultJVMPath(), "-ea", "-Djava.class.path=" + jarLocation)
 
