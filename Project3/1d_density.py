@@ -6,6 +6,43 @@
 # condition has a greater density of 1's or 0'sin the case of this application 
 # 1's will be rendered as black and 0's will be rendered as white
 
+import numpy as np
+
+### Example 1d Cellular Automata using a specific rule. 
+
+# Inital condition bit pattern array.
+arr = [0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0]
+
+# array in the next time step.
+nextArr = list(np.zeros(len(arr)))
+
+# Example Dictionary for a specific rule. Wolfram's Rule 110
+rule110 = {
+    "000": 0,
+    "001": 1,
+    "010": 1,
+    "011": 1,
+    "100": 0,
+    "101": 1,
+    "110": 1,
+    "111": 0
+}
+
+# Run for 100 generations/timesteps.
+print(arr)
+for i in range(0,100):
+
+    for j in range(0, len(arr)):
+        # Temp variable to access the array.     
+        bitPattern = str(arr[j-1])+str(arr[j])+str(arr[(j+1) % len(arr)])
+        nextArr[j] = rule110[bitPattern]
+    temp = arr
+    arr = nextArr
+    nextArr = temp    
+    
+    print(arr)
+
+
 from p5 import *
 
 x = 0
@@ -24,7 +61,7 @@ def draw():
     x += 1
     if x>width:
         x=0
-    print(x)
+    #print(x)
 
     
 
