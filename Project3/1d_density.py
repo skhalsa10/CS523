@@ -48,16 +48,19 @@ from p5 import *
 x = 0
 
 def setup():
-    size(480, 120)
+    size(800,800)
+    no_stroke()
+    background(255)
 
 def draw():
-    background(50)
+
     global x
     if  mouse_is_pressed:
         fill(0)
     else:
         fill(255)
-    ellipse((x,50),20,20,mode=RADIUS)
+    # ellipse((x,50),20,20,mode=RADIUS)
+    square((x,50),4)
     x += 1
     if x>width:
         x=0

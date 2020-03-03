@@ -13,34 +13,88 @@
 ### 2? we can input a rule bits that is used to determin the number of cells being analyzed
 ### 3 must give an initial rule mapping or a random one will be generated.
 ### 4. initial condition or  one will be generated.
+import numpy as np
+from p5 import *
+from random import randint
+
 
 class CaOneDDense:
 
     #class variables get defined here  this is like a static class variable in java
-
+    _input_len:int = 201 #must be odd to force there to be a majority density
+    _iter_size:int = 201
     #define CaOneDDenseconstructor
-    def __init__(self, rule_bits=7, rule:{str:int} = {},graphics = False):
+    def __init__(self, rule_bits:int = 7, rules:{int:str} = {},  input = []):
         #instance variables need to be defined here
-        self.graphics = graphics
         self.rule_bits = rule_bits
-
-        #if default generate the rule dictionary
+        self.current_iter = 0
+        #take care of the rules
+        #if default is used or input is not correct length
+        if(len(rules) != (2**self.rule_bits)-1):
+            self.build_rules()
         #elif the dictionary is not the correct types generate default
-        # otherwise we can use the input
-        if(rule=={}):
-            #TODO generate rules mapping
-            pass
-        elif (set(map(type,rule.keys()))!={str}) or (set(map(type,rule.values()))!={int}):
-            print("wrong types")
+        elif (set(map(type,rules.keys()))!={int}) or (set(map(type,rules.values()))!={str}):
             self.build_rules()
         else:
-            print("passed")
+            print("the rules were good!")
+            self.rules = rules
     
-    def build_rules(self)->{str:int}:
-        print("BUILDING RULES ", self.rule_bits)
-        
+        #Take care of the initial condition
+        if len(input)!= CaOneDDense._input_len:
+            self.build_input()
+        #force type to be string
+        elif set(map(type,input)) != {str}:
+            self.build_input()
+        else:
+            self.input = input
+
+    ### This function will generate a random rule mapping###
+    def build_rules(self)->{int:str}:
+        self.rules = {}
+        for i in range(0,(2**self.rule_bits)-1):
+            self.rules[i] = str(randint(0,1))
+
+    ### This function will generate a random initial conditionit status
+    def build_input(self)->[str]:
+        self.input = []
+        for i in range(0,CaOneDDense._input_len):
+            self.input.append(str(randint(0,1)))
+
+    ###This will iterate once through the CA - useful for animating graphics###
+    def iterate_once(self):
+        if(self.current_iter> CaOneDDense._iter_size):
+            print("all iterations complete")
+        print("iterated once")
+        self.current_iter += 1
+        pass
+
+    ### This will iterate the CA for _iter_size ###
+    def iterate_all(self):
+        pass
+ 
+
+def setup():
+    size(CaOneDDense._input_len*4,CaOneDDense._iter_size*4)
+    no_stroke()
 
 
-ca = CaOneDDense(rule={7:6})
 
-print(bin(64))
+def draw():
+
+    # print(CaOneDDense._init_cond_len)
+    for i in range(0,CaOneDDense._input_len):
+        if ca.input[i]=='0':
+            fill(0)
+        else:
+            fill(255)
+        square((i*4,ca.current_iter*4),4)
+
+    ca.iterate_once()
+    if ca.current_iter >= ca._iter_size:
+        no_loop()
+
+
+
+ca = CaOneDDense()
+
+run()
