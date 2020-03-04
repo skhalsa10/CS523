@@ -28,6 +28,7 @@ class CaOneDDense:
         #instance variables need to be defined here
         self.rule_bits = rule_bits
         self.current_iter = 0
+
         #take care of the rules
         #if default is used or input is not correct length
         if(len(rules) != (2**self.rule_bits)-1):
@@ -47,11 +48,13 @@ class CaOneDDense:
             self.build_input()
         else:
             self.input = input
+        
+        self.next_input = self.input.copy()
 
     ### This function will generate a random rule mapping###
     def build_rules(self)->{int:str}:
         self.rules = {}
-        for i in range(0,(2**self.rule_bits)-1):
+        for i in range(0,(2**self.rule_bits)):
             self.rules[i] = str(randint(0,1))
 
     ### This function will generate a random initial conditionit status
@@ -64,13 +67,29 @@ class CaOneDDense:
     def iterate_once(self):
         if(self.current_iter> CaOneDDense._iter_size):
             print("all iterations complete")
-        print("iterated once")
-        self.current_iter += 1
-        pass
+        
+        left_bound = -int(self.rule_bits/2)
+        right_bound = self.rule_bits-int(self.rule_bits/2)
 
-    ### This will iterate the CA for _iter_size ###
+        for i in (range(0,CaOneDDense._input_len)):
+            bit_Pattern = "0b"
+            for j in range(left_bound,right_bound):
+                bit_Pattern += self.input[(i+j)%CaOneDDense._input_len]
+
+            self.next_input[i] = self.rules[int(bit_Pattern,2)]
+
+        temp = self.input
+        self.input = self.next_input
+        self.next_input = temp
+
+        self.current_iter += 1
+
+
+    ### This will iterate the CA for _iter_size  - used when not needing to animate ###
     def iterate_all(self):
-        pass
+        while self.current_iter <= CaOneDDense._iter_size:
+            self.iterate_once()
+        print("iteration completed")
  
 
 def setup():
@@ -96,5 +115,5 @@ def draw():
 
 
 ca = CaOneDDense()
-
-run()
+ca.iterate_all()
+# run()
