@@ -8,8 +8,8 @@
 
 
 import numpy as np
-from p5 import *
 from random import randint
+import ca_inputs
 
 
 class CaOneDDense:
@@ -22,16 +22,16 @@ class CaOneDDense:
         #instance variables need to be defined here
         self.rule_bits = rule_bits
         self.current_iter = 0
+        self.fitness = 0
 
         #take care of the rules
         #if default is used or input is not correct length
-        if(len(rules) != (2**self.rule_bits)-1):
+        if(len(rules) != (2**self.rule_bits)):
             self.build_rules()
         #elif the dictionary is not the correct types generate default
         elif (set(map(type,rules.keys()))!={int}) or (set(map(type,rules.values()))!={str}):
             self.build_rules()
         else:
-            print("the rules were good!")
             self.rules = rules
     
         #Take care of the initial condition
@@ -83,31 +83,35 @@ class CaOneDDense:
     def iterate_all(self):
         while self.current_iter <= CaOneDDense._iter_size:
             self.iterate_once()
-        print("iteration completed")
+        
+    
+    def new_input(self, input):
+        
+        if len(input)!= CaOneDDense._input_len:
+            raise ValueError
+        #force type to be string
+        elif set(map(type,input)) != {str}:
+            raise TypeError
+        else:
+            self.input = input
+    
+    def new_rules(self, rules):
+        if(len(rules) != (2**self.rule_bits)):
+            raise ValueError
+        #elif the dictionary is not the correct types generate default
+        elif (set(map(type,rules.keys()))!={int}) or (set(map(type,rules.values()))!={str}):
+            raise TypeError
+        else:
+            self.rules = rules
+
+    def reset_Iter_Count(self):
+        self.current_iter = 0
+    
+    def add_fitness(self, fitness):
+        self.fitness += fitness
+
+    def reset_fitness(self):
+        self.fitness = 0
  
 
-def setup():
-    size(CaOneDDense._input_len*4,CaOneDDense._iter_size*4)
-    no_stroke()
 
-
-
-def draw():
-
-    # print(CaOneDDense._init_cond_len)
-    for i in range(0,CaOneDDense._input_len):
-        if ca.input[i]=='0':
-            fill(0)
-        else:
-            fill(255)
-        square((i*4,ca.current_iter*4),4)
-
-    ca.iterate_once()
-    if ca.current_iter >= ca._iter_size:
-        no_loop()
-
-
-
-ca = CaOneDDense()
-# ca.iterate_all()
-run()
