@@ -6,13 +6,7 @@
 # condition has a greater density of 1's or 0'sin the case of this application 
 # 1's will be rendered as black and 0's will be rendered as white
 
-###
-### I have made this a class that can be used different ways.
-###
-### 1. we can turn on graphics by using named parameter graphics = True the default is false
-### 2? we can input a rule bits that is used to determin the number of cells being analyzed
-### 3 must give an initial rule mapping or a random one will be generated.
-### 4. initial condition or  one will be generated.
+
 import numpy as np
 from p5 import *
 from random import randint
@@ -115,5 +109,5 @@ def draw():
 
 
 ca = CaOneDDense()
-ca.iterate_all()
-# run()
+# ca.iterate_all()
+run()
