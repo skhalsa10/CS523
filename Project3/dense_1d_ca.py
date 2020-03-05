@@ -16,8 +16,8 @@ from copy import deepcopy
 class CaOneDDense:
 
     #class variables get defined here  this is like a static class variable in java
-    _input_len:int = 201 #must be odd to force there to be a majority density
-    _iter_size:int = 200
+    _input_len = 201 #must be odd to force there to be a majority density
+    _iter_size = 200
     #define CaOneDDenseconstructor
     def __init__(self, rule_bits = 7, rules = {},  input = []):
         #instance variables need to be defined here
