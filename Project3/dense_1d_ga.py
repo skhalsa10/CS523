@@ -128,11 +128,12 @@ class Ga1DCA:
     ### this will take forever the input is huge 
     ### change the range to be smaller if needed
     def run_many_gen(self):
-        for i in range(0,10):
+        for i in range(0,20):
            self.run_one_gen()
         #    if we find a max fitness stop running
-           if(self.all_rules[0]['fitness']==CaOneDDense._input_len):
-               break 
+        #   if(self.all_rules[0]['fitness']==CaOneDDense._input_len):
+        #       break
+    print(all_rules 
 
 
 # this can run. you may want to have python 
