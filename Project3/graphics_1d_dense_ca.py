@@ -23,6 +23,6 @@ def draw():
 
 
 
-ca = CaOneDDense(rules= ca_inputs.testrule, input=ca_inputs.dense_0)
+ca = CaOneDDense(rules= ca_inputs.rule_197, input=ca_inputs.dense_0_75[2])
 # ca.iterate_all()
 run()

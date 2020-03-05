@@ -8,14 +8,15 @@ import copy
 
 class Ga1DCA:
     _pop_size = 100
-    # lets keep track of the rules
     
 
     def  __init__(self):
         # build a population with random rules 
         self.init_pop()
+        # I ended up extrancting the rules from the CA when debugging
+        # this probably was not needed but I will keep  anyways
         self.all_rules = []
-        self.testr = {}
+
 
     ### this will build a population of size Ga1DCA._pop_size 
     ### with a random rules and ca_inputs.dense_0 input
@@ -24,15 +25,17 @@ class Ga1DCA:
         for i in range(0,Ga1DCA._pop_size):
             self.pop.append(CaOneDDense(input=ca_inputs.dense_0))
 
-
+    ### this will run each population against 75 inputs where the majority is '0'
+    ### and 75 inputs with a majority '1' it will average the fitness of each input
+    ### it will select 20 high fitness and then the remaining 80 population
+    ### will be creating using crossover and mutation
     def run_one_gen(self):
         for p in self.pop:
             self.run_all_input(p)
-            # print("total fitness ", p.fitness)
         
         self.build_next_pop()
 
-            
+    ### this will perform iterations on all inputs and fitness calculations  
     def run_all_input(self, ca:CaOneDDense):
         # run all majority 0 input
         for input_0 in ca_inputs.dense_0_75:
@@ -51,35 +54,32 @@ class Ga1DCA:
         den = len(ca_inputs.dense_0_75)+len(ca_inputs.dense_1_75)
         ca.rules['fitness'] = int(ca.rules['fitness']/den)
 
-        # ca.new_input(ca_inputs.dense_0)
-        # ca.reset_Iter_Count()
-        # ca.iterate_all()
-        # self.calculate_fitness(ca,'0')
-        # ca.new_input(ca_inputs.dense_1)
-        # ca.reset_Iter_Count()
-        # ca.iterate_all()
-        # self.calculate_fitness(ca,'1')
-        # ca.average_fitness(2)
 
     def calculate_fitness(self, ca:CaOneDDense, majority:str):
         fitness = ca.input.count(majority)
         # print(fitness)
         ca.add_fitness(fitness)
 
+    ### this may be the most complicated
     def build_next_pop(self):
+        #initialize list containing all rules and fitness
         self.all_rules = []
+        #maybe no longer needed but added during 
+        # debugging and will just keep I thought 
+        # this sorting was broken and needed a temp to test
         temp = []
         # lets first extract the rules from all CAs
         for ca in self.pop:
             temp.append(ca.get_rules_copy())
 
-        # sort all the rules based on fitness
-        # self.all_rules.sort(key = lambda x: x['fitness'], reverse = True)
+        # sort all the rules based on fitness which is now a property of the rules
         self.all_rules = sorted(temp, key=lambda x: x['fitness'], reverse = True)
         
 
         print("the highest fitness is from pop after sort ", self.all_rules[0]['fitness'])
+        print(self.all_rules[0])
         # we will keep the best 20 and fill out the rest with modified rules
+        # we keep the best 20 by starting to replace the rules starting at index 20
         for i in range(20,Ga1DCA._pop_size):
             # create a new rule set using crossover
             new_rule = self.get_crossover_rule(self.all_rules)
@@ -87,19 +87,14 @@ class Ga1DCA:
 
             self.all_rules[i] = new_rule
 
-        # now lets add these rules  into the pop
-        # print(self.all_rules[0])
-        # for r in self.all_rules:
-        #     print("fitness: ", r['fitness'])
-        # print(self.all_rules)
-
+        # update each population with new rule from the genetically modified one above
         for i in range(0,self._pop_size):
             self.pop[i].new_rules(self.all_rules[i])
         
     
         
 
-
+    # this will mutate m rules
     def mutate_rule(self,new_rule, m):
         # have to get rid of one that contains the 'fitness' key
         length = len(new_rule)-1
@@ -114,6 +109,7 @@ class Ga1DCA:
 
         return new_rule
 
+    # merge two parents togethor
     def get_crossover_rule(self, all_rules):
         # get two elites from first 20
         p1_rule = copy.deepcopy(all_rules[randint(0,19)])
@@ -129,12 +125,18 @@ class Ga1DCA:
         return new_rules
 
 
-
+    ### this will take forever the input is huge 
+    ### change the range to be smaller if needed
     def run_many_gen(self):
-        for i in range(0,7):
-           self.run_one_gen() 
+        for i in range(0,10):
+           self.run_one_gen()
+        #    if we find a max fitness stop running
+           if(self.all_rules[0]['fitness']==CaOneDDense._input_len):
+               break 
 
-    
+
+# this can run. you may want to have python 
+# enter interactive mode afterwords so you can collect the rule data
 test = Ga1DCA()
 test.run_many_gen()
 
