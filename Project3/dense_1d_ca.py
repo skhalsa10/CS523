@@ -9,27 +9,26 @@
 
 import numpy as np
 from random import randint
-import ca_inputs
+import ca_inputs 
+from copy import deepcopy
 
 
 class CaOneDDense:
 
     #class variables get defined here  this is like a static class variable in java
     _input_len:int = 201 #must be odd to force there to be a majority density
-    _iter_size:int = 201
+    _iter_size:int = 200
     #define CaOneDDenseconstructor
-    def __init__(self, rule_bits:int = 7, rules:{int:str} = {},  input = []):
+    def __init__(self, rule_bits:int = 7, rules = {},  input = []):
         #instance variables need to be defined here
         self.rule_bits = rule_bits
         self.current_iter = 0
-        self.fitness = 0
+        # I am moving the fitness to be a property of the rules dictionary
+        # self.fitness = 0
 
         #take care of the rules
         #if default is used or input is not correct length
-        if(len(rules) != (2**self.rule_bits)):
-            self.build_rules()
-        #elif the dictionary is not the correct types generate default
-        elif (set(map(type,rules.keys()))!={int}) or (set(map(type,rules.values()))!={str}):
+        if(len(rules) != (2**self.rule_bits)+1):
             self.build_rules()
         else:
             self.rules = rules
@@ -46,8 +45,9 @@ class CaOneDDense:
         self.next_input = self.input.copy()
 
     ### This function will generate a random rule mapping###
-    def build_rules(self)->{int:str}:
+    def build_rules(self):
         self.rules = {}
+        self.rules['fitness'] = 0
         for i in range(0,(2**self.rule_bits)):
             self.rules[i] = str(randint(0,1))
 
@@ -95,23 +95,25 @@ class CaOneDDense:
         else:
             self.input = input
     
+    ### this will load up a new ruleset and reset the fitness in it to 0
     def new_rules(self, rules):
-        if(len(rules) != (2**self.rule_bits)):
+        if(len(rules) != (2**self.rule_bits)+1):
             raise ValueError
-        #elif the dictionary is not the correct types generate default
-        elif (set(map(type,rules.keys()))!={int}) or (set(map(type,rules.values()))!={str}):
-            raise TypeError
         else:
             self.rules = rules
+            self.rules['fitness'] = 0
 
     def reset_Iter_Count(self):
         self.current_iter = 0
     
     def add_fitness(self, fitness):
-        self.fitness += fitness
+        self.rules['fitness'] += fitness
+    
+    def average_fitness(self, den):
+        self.rules['fitness'] = int(self.rules['fitness']/den)
 
-    def reset_fitness(self):
-        self.fitness = 0
+    def get_rules_copy(self):
+        return deepcopy(self.rules)
  
 
 
