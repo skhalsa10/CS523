@@ -31,7 +31,7 @@ class CaOneDDense:
         if(len(rules) != (2**self.rule_bits)+1):
             self.build_rules()
         else:
-            self.rules = rules
+            self.rules = deepcopy(rules)
     
         #Take care of the initial condition
         if len(input)!= CaOneDDense._input_len:
@@ -40,7 +40,7 @@ class CaOneDDense:
         elif set(map(type,input)) != {str}:
             self.build_input()
         else:
-            self.input = input
+            self.input = self.input = deepcopy(input)
         
         self.next_input = self.input.copy()
 
@@ -93,14 +93,14 @@ class CaOneDDense:
         elif set(map(type,input)) != {str}:
             raise TypeError
         else:
-            self.input = input
+            self.input = deepcopy(input)
     
     ### this will load up a new ruleset and reset the fitness in it to 0
     def new_rules(self, rules):
         if(len(rules) != (2**self.rule_bits)+1):
             raise ValueError
         else:
-            self.rules = rules
+            self.rules = deepcopy(rules)
             self.rules['fitness'] = 0
 
     def reset_Iter_Count(self):
@@ -117,3 +117,33 @@ class CaOneDDense:
  
 
 
+# ca = CaOneDDense(rules=ca_inputs.testrule, input=ca_inputs.dense_0)
+# ca.new_input(ca_inputs.dense_0)
+# ca.reset_Iter_Count()
+# ca.iterate_all()
+# fitness = ca.input.count('0')
+# ca.add_fitness(fitness)
+# ca.new_input(ca_inputs.dense_1)
+# ca.reset_Iter_Count()
+# ca.iterate_all()
+# fitness = ca.input.count('1')
+# ca.add_fitness(fitness)
+
+
+# print(ca.rules['fitness'])
+
+# temp = ca.get_rules_copy()
+
+# ca.new_rules(temp)
+# ca.new_input(ca_inputs.dense_0)
+# ca.reset_Iter_Count()
+# ca.iterate_all()
+# fitness = ca.input.count('0')
+# ca.add_fitness(fitness)
+# ca.new_input(ca_inputs.dense_1)
+# ca.reset_Iter_Count()
+# ca.iterate_all()
+# fitness = ca.input.count('1')
+# ca.add_fitness(fitness)
+
+# print(ca.rules['fitness'])

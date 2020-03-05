@@ -35,31 +35,31 @@ class Ga1DCA:
             
     def run_all_input(self, ca:CaOneDDense):
         # run all majority 0 input
-        # for input_0 in ca_inputs.dense_0_75:
+        for input_0 in ca_inputs.dense_0_75:
 
-        #     ca.new_input(input_0)
-        #     ca.reset_Iter_Count()
-        #     ca.iterate_all()
-        #     self.calculate_fitness(ca,'0')
-        
-        # for input_1 in ca_inputs.dense_1_75:
-        #     ca.new_input(input_1)
-        #     ca.reset_Iter_Count()
-        #     ca.iterate_all()
-        #     self.calculate_fitness(ca,'1')
+            ca.new_input(input_0)
+            ca.reset_Iter_Count()
+            ca.iterate_all()
+            self.calculate_fitness(ca,'0')
+        # run all majority 1
+        for input_1 in ca_inputs.dense_1_75:
+            ca.new_input(input_1)
+            ca.reset_Iter_Count()
+            ca.iterate_all()
+            self.calculate_fitness(ca,'1')
         #get an average fitness
-        # den = len(ca_inputs.dense_0_75)+len(ca_inputs.dense_1_75)
-        # ca.fitness = int(ca.fitness/den)
+        den = len(ca_inputs.dense_0_75)+len(ca_inputs.dense_1_75)
+        ca.rules['fitness'] = int(ca.rules['fitness']/den)
 
-        ca.new_input(ca_inputs.dense_0)
-        ca.reset_Iter_Count()
-        ca.iterate_all()
-        self.calculate_fitness(ca,'0')
-        ca.new_input(ca_inputs.dense_1)
-        ca.reset_Iter_Count()
-        ca.iterate_all()
-        self.calculate_fitness(ca,'1')
-        ca.average_fitness(2)
+        # ca.new_input(ca_inputs.dense_0)
+        # ca.reset_Iter_Count()
+        # ca.iterate_all()
+        # self.calculate_fitness(ca,'0')
+        # ca.new_input(ca_inputs.dense_1)
+        # ca.reset_Iter_Count()
+        # ca.iterate_all()
+        # self.calculate_fitness(ca,'1')
+        # ca.average_fitness(2)
 
     def calculate_fitness(self, ca:CaOneDDense, majority:str):
         fitness = ca.input.count(majority)
@@ -77,8 +77,7 @@ class Ga1DCA:
         # self.all_rules.sort(key = lambda x: x['fitness'], reverse = True)
         self.all_rules = sorted(temp, key=lambda x: x['fitness'], reverse = True)
         
-        
-        print(self.all_rules)
+
         print("the highest fitness is from pop after sort ", self.all_rules[0]['fitness'])
         # we will keep the best 20 and fill out the rest with modified rules
         for i in range(20,Ga1DCA._pop_size):
@@ -132,7 +131,7 @@ class Ga1DCA:
 
 
     def run_many_gen(self):
-        for i in range(0,3):
+        for i in range(0,7):
            self.run_one_gen() 
 
     
