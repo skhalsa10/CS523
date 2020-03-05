@@ -16,6 +16,7 @@ class Ga1DCA:
         # I ended up extrancting the rules from the CA when debugging
         # this probably was not needed but I will keep  anyways
         self.all_rules = []
+        self.output_count = 0
 
 
     ### this will build a population of size Ga1DCA._pop_size 
@@ -75,9 +76,11 @@ class Ga1DCA:
         # sort all the rules based on fitness which is now a property of the rules
         self.all_rules = sorted(temp, key=lambda x: x['fitness'], reverse = True)
         
+        # I will print this out so it is actual python code that can be loaded later for review
+        print("print('the highest fitness is from pop after sort ", self.all_rules[0]['fitness'], "')")
+        print("r"+str(self.output_count), "=", self.all_rules)
+        self.output_count +=1
 
-        print("the highest fitness is from pop after sort ", self.all_rules[0]['fitness'])
-        print(self.all_rules[0])
         # we will keep the best 20 and fill out the rest with modified rules
         # we keep the best 20 by starting to replace the rules starting at index 20
         for i in range(20,Ga1DCA._pop_size):
@@ -128,12 +131,11 @@ class Ga1DCA:
     ### this will take forever the input is huge 
     ### change the range to be smaller if needed
     def run_many_gen(self):
-        for i in range(0,20):
+        for i in range(0,10):
            self.run_one_gen()
         #    if we find a max fitness stop running
         #   if(self.all_rules[0]['fitness']==CaOneDDense._input_len):
         #       break
-    print(all_rules 
 
 
 # this can run. you may want to have python 

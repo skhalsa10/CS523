@@ -42,7 +42,7 @@ class CaOneDDense:
         else:
             self.input = self.input = deepcopy(input)
         
-        self.next_input = self.input.copy()
+        self.next_input = deepcopy(self.input)
 
     ### This function will generate a random rule mapping###
     def build_rules(self):
