@@ -19,7 +19,7 @@ class CaOneDDense:
     _input_len:int = 201 #must be odd to force there to be a majority density
     _iter_size:int = 200
     #define CaOneDDenseconstructor
-    def __init__(self, rule_bits:int = 7, rules = {},  input = []):
+    def __init__(self, rule_bits = 7, rules = {},  input = []):
         #instance variables need to be defined here
         self.rule_bits = rule_bits
         self.current_iter = 0
@@ -52,7 +52,7 @@ class CaOneDDense:
             self.rules[i] = str(randint(0,1))
 
     ### This function will generate a random initial conditionit status
-    def build_input(self)->[str]:
+    def build_input(self):
         self.input = []
         for i in range(0,CaOneDDense._input_len):
             self.input.append(str(randint(0,1)))
