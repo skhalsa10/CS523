@@ -17,6 +17,7 @@ class Ga1DCA:
         # this probably was not needed but I will keep  anyways
         self.all_rules = []
         self.output_count = 0
+        self.max_fitness_found = 0
 
 
     ### this will build a population of size Ga1DCA._pop_size 
@@ -39,20 +40,20 @@ class Ga1DCA:
     ### this will perform iterations on all inputs and fitness calculations  
     def run_all_input(self, ca:CaOneDDense):
         # run all majority 0 input
-        for input_0 in ca_inputs.dense_0_75:
+        for input_0 in ca_inputs.dense_0_50:
 
             ca.new_input(input_0)
             ca.reset_Iter_Count()
             ca.iterate_all()
             self.calculate_fitness(ca,'0')
         # run all majority 1
-        for input_1 in ca_inputs.dense_1_75:
+        for input_1 in ca_inputs.dense_1_50:
             ca.new_input(input_1)
             ca.reset_Iter_Count()
             ca.iterate_all()
             self.calculate_fitness(ca,'1')
         #get an average fitness
-        den = len(ca_inputs.dense_0_75)+len(ca_inputs.dense_1_75)
+        den = len(ca_inputs.dense_0_50)+len(ca_inputs.dense_1_50)
         ca.rules['fitness'] = int(ca.rules['fitness']/den)
 
 
@@ -78,6 +79,7 @@ class Ga1DCA:
         
         # I will print this out so it is actual python code that can be loaded later for review
         print("print('the highest fitness is from pop after sort ", self.all_rules[0]['fitness'], "')")
+        self.max_fitness_found = self.all_rules[0]['fitness']
         print("r"+str(self.output_count), "=", self.all_rules)
         self.output_count +=1
 
@@ -131,7 +133,8 @@ class Ga1DCA:
     ### this will take forever the input is huge 
     ### change the range to be smaller if needed
     def run_many_gen(self):
-        for i in range(0,10):
+        # for i in range(0,100):
+        while (self.max_fitness_found < CaOneDDense._input_len):
            self.run_one_gen()
         #    if we find a max fitness stop running
         #   if(self.all_rules[0]['fitness']==CaOneDDense._input_len):

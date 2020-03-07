@@ -50,7 +50,5 @@ for i in range(0,50):
     minority_count_for0 += 2*i
     minority_count_for1 += 2*i
 
-for input in dense_0_50:
-    print(input.count('0')>input.count('1'))
-
+#
 

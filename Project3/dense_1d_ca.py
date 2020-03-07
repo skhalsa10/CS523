@@ -17,7 +17,7 @@ class CaOneDDense:
 
     #class variables get defined here  this is like a static class variable in java
     _input_len = 201 #must be odd to force there to be a majority density
-    _iter_size = 200
+    _iter_size = 250
     #define CaOneDDenseconstructor
     def __init__(self, rule_bits = 7, rules = {},  input = []):
         #instance variables need to be defined here
@@ -29,8 +29,10 @@ class CaOneDDense:
         #take care of the rules
         #if default is used or input is not correct length
         if(len(rules) != (2**self.rule_bits)+1):
+            print("building random rules")
             self.build_rules()
         else:
+            # print("rules have been copied succesfully")
             self.rules = deepcopy(rules)
     
         #Take care of the initial condition
@@ -146,4 +148,27 @@ class CaOneDDense:
 # fitness = ca.input.count('1')
 # ca.add_fitness(fitness)
 
-# print(ca.rules['fitness'])
+# # print(ca.rules['fitness'])
+# testrule = {'fitness': 198, 0: '0', 1: '0', 2: '0', 3: '0', 4: '0', 5: '1', 6: '0', 7: '1', 8: '0', 9: '1', 10: '1', 11: '1', 12: '0', 13: '0', 14: '1', 15: '1', 16: '0', 17: '0', 18: '0', 19: '1', 20: '1', 21: '0', 22: '1', 23: '1', 24: '1', 25: '0', 26: '1', 27: '0', 28: '0', 29: '0', 30: '0', 31: '0', 32: '0', 33: '0', 34: '0', 35: '1', 36: '0', 37: '0', 38: '1', 39: '1', 40: '1', 41: '0', 42: '1', 43: '1', 44: '1', 45: '0', 46: '1', 47: '0', 48: '1', 49: '1', 50: '0', 51: '1', 52: '0', 53: '0', 54: '1', 55: '0', 56: '1', 57: '1', 58: '1', 59: '1', 60: '0', 61: '0', 62: '0', 63: '1', 64: '0', 65: '1', 66: '1', 67: '1', 68: '1', 69: '0', 70: '1', 71: '0', 72: '1', 73: '0', 74: '1', 75: '1', 76: '1', 77: '0', 78: '0', 79: '0', 80: '0', 81: '1', 82: '1', 83: '1', 84: '1', 85: '1', 86: '1', 87: '0', 88: '0', 89: '1', 90: '1', 91: '1', 92: '1', 93: '1', 94: '1', 95: '1', 96: '0', 97: '1', 98: '1', 99: '0', 100: '1', 101: '1', 102: '0', 103: '0', 104: '0', 105: '1', 106: '1', 107: '1', 108: '1', 109: '1', 110: '1', 111: '1', 112: '0', 113: '1', 114: '0', 115: '1', 116: '1', 117: '0', 118: '1', 119: '1', 120: '1', 121: '1', 122: '1', 123: '1', 124: '1', 125: '1', 126: '1', 127: '1'}
+
+# print(len(testrule))
+# ca = CaOneDDense(rules= testrule)
+
+
+
+# # run all majority 0 input
+# for input_0 in ca_inputs.dense_0_50:
+
+#     ca.new_input(input_0)
+#     ca.reset_Iter_Count()
+#     ca.iterate_all()
+#     self.calculate_fitness(ca,'0')
+# # run all majority 1
+# for input_1 in ca_inputs.dense_1_50:
+#     ca.new_input(input_1)
+#     ca.reset_Iter_Count()
+#     ca.iterate_all()
+#     self.calculate_fitness(ca,'1')
+# #get an average fitness
+# den = len(ca_inputs.dense_0_50)+len(ca_inputs.dense_1_50)
+# ca.rules['fitness'] = int(ca.rules['fitness']/den)
