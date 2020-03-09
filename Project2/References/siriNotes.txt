@@ -5,7 +5,7 @@ My guesses on how the following are related to the coronavirus:
 
 •Logistic map (and chaotic population dynamics)
 	- can we use to think about a population that is being infected for example r could equal birth of an infected person - death of that person or recovery of that person?
-	-maybe we should think a different way?
+	-should we think about a virus livintg on the edge of chaos? the logistic map showcases points where we have a stable sections right before chaos. A virus may have the potential to live somewhere inbetween these two extremes.  for example, as it mutaates it is living in the chaotic reagion where it is mutating all over the place trying desperately to find a state that it can be stable. when it does the strain has successfuly found a state that allows it to spread at which point it becomes stable.
 
 •Frozen accidents
 	- The geneitic code idea is thought to be a Frozen accident. and our complex life seems to be built around it.
@@ -15,3 +15,5 @@ My guesses on how the following are related to the coronavirus:
 	- I am still a little confused on this.
 •Epidemic spread
 	-obviously covid-19 is definitely in an epidemic spread
+
+questions I have after reading
