@@ -1,0 +1,17 @@
+My guesses on how the following are related to the coronavirus:
+
+•Top down vs bottom up causality
+	- the thing I can think of is that after the epidemic spread to enough people, people started to change the way they behaved. sports events are being canceled or being played without fans. people are canceling their travel plans. 
+
+•Logistic map (and chaotic population dynamics)
+	- can we use to think about a population that is being infected for example r could equal birth of an infected person - death of that person or recovery of that person?
+	-maybe we should think a different way?
+
+•Frozen accidents
+	- The geneitic code idea is thought to be a Frozen accident. and our complex life seems to be built around it.
+•Measures of complexity
+	- how is this related?
+•Neutral networks
+	- I am still a little confused on this.
+•Epidemic spread
+	-obviously covid-19 is definitely in an epidemic spread
