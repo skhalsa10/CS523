@@ -1,3 +1,8 @@
 from slides:
 https://www.nejm.org/doi/full/10.1056/NEJMp1814447 - read by Siri
-https://www.nejm.org/doi/full/10.1056/NEJMp2002106?query=recirc_mostViewed_railB_article
+https://www.nejm.org/doi/full/10.1056/NEJMp2002106?query=recirc_mostViewed_railB_article - read by siri
+
+from research
+https://www.amazon.com/gp/product/0691158843/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1 - book bought by siri. most of it can be read in the "look inside" on amazon
+https://youtu.be/9PFlQtxv7DI - watched by siri
+
