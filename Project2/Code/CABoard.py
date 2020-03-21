@@ -12,8 +12,9 @@ class CABoard:
     #constructor
     def __init__(self, input = [[]]):
         # input matrix can be given when we are running iterations of CA.
+        # private member var: __inputBoard 
         if (len(input) == CABoard._board_row):
-            self.inputBoard = input
+            self.__inputBoard = input
         else:
             self.buildInput()
     
@@ -26,15 +27,27 @@ class CABoard:
         boardRow = CABoard._board_row
         boardCol = CABoard._board_col
         # 2d board matrix (list comprehension).
-        self.inputBoard = [["" for col in range(0,boardCol)] for row in range(0,boardRow)]
+        self.__inputBoard = [["" for col in range(0,boardCol)] for row in range(0,boardRow)]
 
         for r in range(0,boardRow):
             for c in range(0,boardCol):
-                if r == boardRow/2 and c == boardCol/2:
-                    self.inputBoard[r][c] = "I"
+                if r == boardRow/2-1 and c == boardCol/2-1:
+                    self.__inputBoard[r][c] = "I"
                 else:
-                    self.inputBoard[r][c] = "S"
-            
+                    self.__inputBoard[r][c] = "S"
+  
+    """
+     Gets the 2d board for a current instance.
+    """
+    def getBoard(self):
+        return self.__inputBoard
+    
+    """
+     Sets the 2d board for this instance to the provided board as parameter.
+    """
+    def setBoard(self, board):
+        self.__inputBoard = board
+
     """
      toString() method to print board.
     """
@@ -42,7 +55,7 @@ class CABoard:
         stringBuilder = ""
         for r in range(0,CABoard._board_row):
             for c in range(0,CABoard._board_col):
-                stringBuilder += self.inputBoard[r][c]
+                stringBuilder += self.__inputBoard[r][c]
             stringBuilder += "\n"
         return stringBuilder
 
