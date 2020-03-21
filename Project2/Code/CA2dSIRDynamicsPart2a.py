@@ -12,7 +12,6 @@
 import numpy as np
 import CABoard
 import itertools
-from copy import deepcopy
 
 class CA2dSIRDeterministicDynamics:    
     #constructor.
