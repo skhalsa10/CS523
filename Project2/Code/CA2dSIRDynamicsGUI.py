@@ -17,6 +17,7 @@ y = 0
 def setup():
     size(CABoard._board_row*10,CABoard._board_col*10)
     stroke(0)
+    title("CA 2d SIR Dynamics")
 
 def display():
     global y
@@ -33,6 +34,7 @@ def display():
     
     y += 1
     if (y >= CABoard._board_row):
+        background(0)
         y = 0 
         board = ca.iterateCABoard()
 
