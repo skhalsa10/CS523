@@ -1,0 +1,46 @@
+"""
+ Gui version of 2d CA, part 2a.
+ Implemented by: Anas Gauba
+"""
+from p5 import * 
+from CA2dSIRDynamicsPart2a import CA2dSIRDeterministicDynamics
+from CABoard import *
+
+# global vars.
+boardObj = CABoard()
+ca = CA2dSIRDeterministicDynamics(boardObj)
+y = 0
+
+"""
+ size of gui.
+"""
+def setup():
+    size(CABoard._board_row*10,CABoard._board_col*10)
+    stroke(0)
+
+def display():
+    global y
+    board = boardObj.getBoard()
+
+    for x in range(0,CABoard._board_col):
+        if board[x][y] == "S":
+            fill(0,128,0)
+        elif board[x][y] == "I":
+            fill(255,0,0)
+        else:
+            fill(0,0,255)
+        square((x*10,y*10),10)
+    
+    y += 1
+    if (y >= CABoard._board_row):
+        y = 0 
+        board = ca.iterateCABoard()
+
+"""
+ gets called 60 fps. draws on the canvas.
+"""
+def draw():
+    display()
+
+if __name__ == '__main__':
+    run()

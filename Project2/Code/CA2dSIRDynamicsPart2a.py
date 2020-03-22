@@ -175,8 +175,8 @@ class CA2dSIRDeterministicDynamics:
            For example: (-1,-1) is upper left of the board. 
     """
     def iterateCABoard(self):
-        print("Current board:\n")        
-        print(self.currentBoard)
+        #print("Current board:\n")        
+        #print(self.currentBoard)
         rows = CABoard.CABoard._board_row
         cols = CABoard.CABoard._board_col
         # next board to be (after a iteration).
@@ -203,9 +203,11 @@ class CA2dSIRDeterministicDynamics:
         
         # after one iteration, we now have next board.
         self.nextBoard = self.createNextBoard(next)
-        print("Next board:\n")
-        print(self.nextBoard)
+        #print("Next board:\n")
+        #print(self.nextBoard)
         self.currentBoard.setBoard(self.nextBoard.getBoard())
+        
+        return self.nextBoard.getBoard()
 
 
 
