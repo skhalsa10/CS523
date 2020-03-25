@@ -1,0 +1,11 @@
+1a. Assuming the covid-19 RNA is 30,000 nucleotides long, how many RNA strands of the same length
+are exactly 1 mutation away?
+
+n = 30,000
+k = number of mutations
+we have 4 types of nucleotides but since we are in a state already we can only change to 3 other ones.
+
+The formula for how many possibilities are k mutations away is :
+3^k* n choose k = 3^k*n!/k!(n-k)!
+
+the total amount of possible mutations is the SUM of this from k = 0 to n
