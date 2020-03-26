@@ -9,3 +9,54 @@ The formula for how many possibilities are k mutations away is :
 3^k* n choose k = 3^k*n!/k!(n-k)!
 
 the total amount of possible mutations is the SUM of this from k = 0 to n
+
+1b
+
+Calculate the total number of possible combinations of nucleotides and the number of possible amino
+acids from these 15 nucleotides and 5 amino acids. NOTE: ignore position 1, only consider 2 – 6.
+
+answer is 4^15
+
+Calculate the number of genomes 1, 2, 3, all the way up to 15 mutations away from a length 15 genome.
+Show these in some sort of figure. A log scale may be helpful.
+
+use the application I built
+
+Calculate the minimum number of mutations required for the current spike protein to become
+equivalent to the SARS-2002 spike protein that was much more lethal. Assume that Bedford’s blog is
+correct, and on average 1 of the 30,000 nucleotides mutates per transmission, and that is on average
+once per 7 days. Ignore neutral networks for a moment, and predict how likely the virus is to generate
+any one of the 5 mutations required to revert back to the SARS spike protein. Comment on how one
+would calculate the likelihood that all of those mutations would happen at once, and how long that
+might take.
+
+first the minimum  will just be the minimum to get from LFQQN to YLNYT
+
+using the weel I know the following:
+
+    L->Y = 2 mutations
+    F->L = 1 mutation
+    Q->N = 2 mutations
+    Q->Y = 2 mutations
+    N->T = 1 mutation
+
+    total minimum = 8
+
+
+for this part of the question: 
+
+Assume that Bedford’s blog is correct, and on average 1 of the 30,000 nucleotides mutates per transmission,
+and that is on average once per 7 days. Ignore neutral networks for a moment, and predict how likely 
+the virus is to generate any one of the 5 mutations required to revert back to the SARS spike protein. 
+Comment on how one would calculate the likelihood that all of those mutations would happen at once, and 
+how long that might take.
+
+first based on above this should be 8 mutations not 5. should ask this as a question confirm.
+
+second the chance for ay one of these to happen if any of the 30000 nucleotides are equally likely to mutate
+would by 8/30000
+
+now if the world alligned perfectly  8 mutations in a row happened and they were the exact mutations to make the original SARS
+than the probability of that would be (8/30000)^8 and it would take on average 7 days per mutation. 
+
+it would take 8 weeks.
