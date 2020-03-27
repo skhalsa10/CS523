@@ -8,7 +8,7 @@ from CABoard import *
 
 # global vars.
 boardObj = CABoard()
-ca = CA2dSIRDeterministicDynamics(boardObj)
+ca = CA2dSIRDeterministicDynamics(boardObj, ruleTypeIsDeterministic= False)
 y = 0
 
 """

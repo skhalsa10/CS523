@@ -19,12 +19,12 @@ class CA2dSIRDeterministicDynamics:
         # define any instance variables.
         self.rule_bits = rule_bits
         self.currentBoard = board
+        self.isDeterministic = ruleTypeIsDeterministic
         # # create another board for next iteration.
         # self.nextBoard = self.createNextBoard(self.currentBoard.getBoard())
 
         # use determisitc rule.
-        if (ruleTypeIsDeterministic):
-            self.permuteToBuildInitialRules()
+        self.permuteToBuildInitialRules()
 
     """
      Checks whether we are in bounds or not.
@@ -39,8 +39,50 @@ class CA2dSIRDeterministicDynamics:
         
         return True
 
+
     """
-     Private method that deterministic rule mapping. 
+     Private method that uses non-deterministic rules for 
+     transitioning between S, I, R states using this probability
+     function, no rule map is needed for non-deterministic scenario
+     as this method will be called during the iteration process.
+    """
+    def __probabilityFunc(self, mapKey):
+        centerOfKeyStr = mapKey[int(self.rule_bits/2)]
+
+        if (centerOfKeyStr == "S"):
+            # calculate number of I's in neighborhood,
+            # if number of infected is >= 4 in neighborhood then you 
+            # become infected.
+            # calculate the probability based on the numbers of neighbors
+            # infected.
+            numerator = mapKey.count("I")
+            denominator = self.rule_bits - 1
+            if (self.__prob(numerator,denominator)):
+                self.rule[mapKey] = "I"
+            else: 
+                self.rule[mapKey] = "S"
+
+        elif (centerOfKeyStr == "I"):
+            # fixed probability, 25%. 
+            if (self.__prob(1, 4)):
+                self.rule[mapKey] = "R"
+            else: 
+                self.rule[mapKey] = "I"
+        else:
+            self.rule[mapKey] = "R"
+    
+    """
+     
+    """
+    def __prob(self, numerator, denominator):
+        print("Goin in prob function to calculate percent probability")
+        randNum = np.random.randint(1,denominator+1)
+        if (randNum <= numerator):
+            return True
+        return False
+
+    """
+     Private method that uses deterministic rule mapping. 
      Based on the center character from 9 letter long KeyStr, do the mapping:
         if it is R, always map the value to R.
         if it is I, only goes to R if all neighbors are I. Otherwise, map to stay I.
@@ -75,7 +117,10 @@ class CA2dSIRDeterministicDynamics:
         regularmMapEntriesToBe = itertools.product(dynamics, repeat=self.rule_bits)
 
         for mapKey in list(regularmMapEntriesToBe):
-            self.__populateRuleMap("".join(mapKey))
+            if (not self.isDeterministic):
+                self.__probabilityFunc("".join(mapKey))
+            else:
+                self.__populateRuleMap("".join(mapKey))
 
 
     """
@@ -103,10 +148,16 @@ class CA2dSIRDeterministicDynamics:
             bottomRightCellKey = perm[0] + perm[1] + "X" + perm[2] + perm[3] + "XXXX"
 
             # add mapping for these in the map.
-            self.__populateRuleMap(topLeftCellKey)
-            self.__populateRuleMap(bottomLeftCellKey)
-            self.__populateRuleMap(topRightCellKey)
-            self.__populateRuleMap(bottomRightCellKey)
+            if (not self.isDeterministic):
+                self.__probabilityFunc(topLeftCellKey)
+                self.__probabilityFunc(bottomLeftCellKey)
+                self.__probabilityFunc(topRightCellKey)
+                self.__probabilityFunc(bottomRightCellKey)
+            else:
+                self.__populateRuleMap(topLeftCellKey)
+                self.__populateRuleMap(bottomLeftCellKey)
+                self.__populateRuleMap(topRightCellKey)
+                self.__populateRuleMap(bottomRightCellKey)
 
 
     """
@@ -130,10 +181,16 @@ class CA2dSIRDeterministicDynamics:
             bottomEdge = perm[0] + perm[1] + "X" + perm[2] + perm[3] + "X" + perm[4] + perm[5] + "X"
 
             # add mapping for these in the dictionary. 
-            self.__populateRuleMap(leftEdge)
-            self.__populateRuleMap(topEdge)
-            self.__populateRuleMap(rightEdge)
-            self.__populateRuleMap(bottomEdge)
+            if (not self.isDeterministic):
+                self.__probabilityFunc(leftEdge)
+                self.__probabilityFunc(topEdge)
+                self.__probabilityFunc(rightEdge)
+                self.__probabilityFunc(bottomEdge)
+            else:
+                self.__populateRuleMap(leftEdge)
+                self.__populateRuleMap(topEdge)
+                self.__populateRuleMap(rightEdge)
+                self.__populateRuleMap(bottomEdge)
 
 
     """
@@ -154,8 +211,6 @@ class CA2dSIRDeterministicDynamics:
         self.__normalRuleEntries(dynamics)
         self.__cornerRuleEntries(dynamics)
         self.__edgesRuleEntries(dynamics)
-
-
 
     """
      Creates instance of the board based on the currentBoard. 
