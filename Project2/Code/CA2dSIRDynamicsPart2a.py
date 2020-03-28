@@ -50,11 +50,9 @@ class CA2dSIRDeterministicDynamics:
         centerOfKeyStr = mapKey[int(self.rule_bits/2)]
 
         if (centerOfKeyStr == "S"):
-            # calculate number of I's in neighborhood,
-            # if number of infected is >= 4 in neighborhood then you 
-            # become infected.
             # calculate the probability based on the numbers of neighbors
-            # infected.
+            # infected, the more infected, the higher the probability is for
+            # this cell to become infected.
             numerator = mapKey.count("I")
             denominator = self.rule_bits - 1
             if (self.__prob(numerator,denominator)):
@@ -72,7 +70,9 @@ class CA2dSIRDeterministicDynamics:
             self.rule[mapKey] = "R"
     
     """
-     
+     Private method to return True/False based on the uniform distribution
+     of how likely an event is likely to occur based on the fraction
+     P = numerator/denominator.
     """
     def __prob(self, numerator, denominator):
         print("Goin in prob function to calculate percent probability")
