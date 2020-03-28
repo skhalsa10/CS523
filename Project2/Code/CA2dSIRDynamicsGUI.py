@@ -28,6 +28,10 @@ def display():
             fill(0,128,0)
         elif board[x][y] == "I":
             fill(255,0,0)
+        elif board[x][y] == "I'":
+            fill(255,165,0)
+        elif board[x][y] == "R'":
+            fill(0,0,0)
         else:
             fill(0,0,255)
         square((x*10,y*10),10)
