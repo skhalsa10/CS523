@@ -18,9 +18,18 @@ class GeneticAlgorithm2DCA:
         # build initial CA population with random inital boards which 
         # include both disease variants, I and I'.
         self.popCA = []
-        randomBoard = CABoard(isBoardRandom=True)
 
-        for _ in range(0,GeneticAlgorithm2DCA._popSize):
+        for i in range(0,GeneticAlgorithm2DCA._popSize):
+            randomBoard = CABoard(isBoardRandom=True)
             self.popCA.append(CA2dSIRDeterministicDynamics(randomBoard))
+            print(self.popCA[i].currentBoard)
     
+    
+    def calculateFitness(self):
+        return
+    
+    def mutate(self):
+        return
 
+
+test = GeneticAlgorithm2DCA()
