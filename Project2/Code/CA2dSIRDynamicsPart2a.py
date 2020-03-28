@@ -43,8 +43,9 @@ class CA2dSIRDeterministicDynamics:
     """
      Private method that uses non-deterministic rules for 
      transitioning between S, I, R states using this probability
-     function, no rule map is needed for non-deterministic scenario
-     as this method will be called during the iteration process.
+     function. This is for 1st variant of the disease where the 
+     probability P(S->I) is based on the numbers of infected neighbors
+     and P(I->R) is fixed to be 25%.
     """
     def __probabilityFunc(self, mapKey):
         centerOfKeyStr = mapKey[int(self.rule_bits/2)]
@@ -70,7 +71,7 @@ class CA2dSIRDeterministicDynamics:
             self.rule[mapKey] = "R"
     
     """
-     Private method to return True/False based on the uniform distribution
+     Private helper method to return True/False based on the uniform distribution
      of how likely an event is likely to occur based on the fraction
      P = numerator/denominator.
     """
