@@ -7,8 +7,8 @@ from CA2dSIRDynamicsPart2a import CA2dSIRDeterministicDynamics
 from CABoard import *
 
 # global vars.
-boardObj = CABoard()
-ca = CA2dSIRDeterministicDynamics(boardObj, ruleTypeIsDeterministic= False)
+boardObj = CABoard(isBoardRandom=True)
+ca = CA2dSIRDeterministicDynamics(boardObj, diseaseVariants=2, ruleTypeIsDeterministic=False)
 y = 0
 
 """
@@ -28,9 +28,9 @@ def display():
             fill(0,128,0)
         elif board[x][y] == "I":
             fill(255,0,0)
-        elif board[x][y] == "I'":
+        elif board[x][y] == "i":
             fill(255,165,0)
-        elif board[x][y] == "R'":
+        elif board[x][y] == "r":
             fill(0,0,0)
         else:
             fill(0,0,255)
@@ -38,7 +38,7 @@ def display():
     
     y += 1
     if (y >= CABoard._board_row):
-        background(0)
+        #background(0)
         y = 0 
         board = ca.iterateCABoard()
 

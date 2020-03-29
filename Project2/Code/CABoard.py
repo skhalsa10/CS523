@@ -46,6 +46,7 @@ class CABoard:
      another variant of disease (I') as well it includes first variant (I).
      Returns an initial board configuration with all cells in Susceptible (S) state
      except for two random positions in the board with both disease variants (I and I').
+     NOTE: I' is represented as i because its easy to encode in a string.
     """
     def randomBoard(self):
         boardRow = CABoard._board_row
@@ -70,7 +71,7 @@ class CABoard:
                     self.__inputBoard[r][c] = "I"
                 # include i'
                 elif (r == iPrime[0] and c == iPrime[1]):
-                    self.__inputBoard[r][c] = "I'"
+                    self.__inputBoard[r][c] = "i"
                 else:
                     self.__inputBoard[r][c] = "S"
 
