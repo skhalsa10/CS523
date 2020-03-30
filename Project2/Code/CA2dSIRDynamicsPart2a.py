@@ -306,6 +306,105 @@ class CA2dSIRDeterministicDynamics:
         return CABoard.CABoard(board)
     
     """
+    Private helper method for adding logic in iterate method to handle cases for using 2 variants of
+    the disease.
+    """
+    def __UseBothRuleVariants(self, ruleKeyStr, centerOfKeyStr):
+        # handle the case for both I and I' in the neighborhood of current cell, if they're then we randomly pick one probFunc.
+        if ("I" in ruleKeyStr and "i" in ruleKeyStr):
+            r = np.random.randint(0,2)
+            # go to first variant map.
+            if (r == 0):
+                # since the ruleKeyStr is mixture of both I and i, the ruleFor1stVariant map will never have this key
+                # so, we need to first make sure that the centerCell is not i (otherwise, its obvious to use 2nd variant for this).
+                if (not(centerOfKeyStr == "i")):
+                    # added this check so, if we encounter same key, it doesn't add key again by calling probFunc().
+                    if (not(ruleKeyStr in self.ruleFor1stVariant)):
+                        self.__probabilityFunc(ruleKeyStr)
+                    percent = self.ruleFor1stVariant[ruleKeyStr]
+                    # if probability satisfies and we can transition using 1st variant. Otherwise, we need to try transitioning from
+                    # second variant by following the same procedure as done for 1st variant. If we also cannot transition
+                    # from second variant, then we know we can return the same centerCell back. Also, first delete the entry from first map so
+                    # we dont have same entries in both maps.
+                    if (self.__prob(percent)):
+                        return self.transitionCellState(centerOfKeyStr, variant=1)
+                    else:
+                        del self.ruleFor1stVariant[ruleKeyStr]
+                        if (not(ruleKeyStr in self.ruleFor2ndVariant)):
+                            self.__initialProbForSecondVariant(ruleKeyStr)
+                        percent = self.ruleFor2ndVariant[ruleKeyStr]
+                        if (self.__prob(percent)):
+                            return self.transitionCellState(centerOfKeyStr, variant=2)
+                        else:
+                            return centerOfKeyStr
+                else:
+                    # the centerCell is i, so, we have to use 2nd variant map. If we cannot transition, we return the same centerCell.
+                    if (not(ruleKeyStr in self.ruleFor2ndVariant)):
+                        self.__initialProbForSecondVariant(ruleKeyStr)
+                    percent = self.ruleFor2ndVariant[ruleKeyStr]
+                    if (self.__prob(percent)):
+                        return self.transitionCellState(centerOfKeyStr,variant=2)
+                    else:
+                        return centerOfKeyStr
+            # go to second variant map.
+            elif (r == 1):
+                # same steps as r = 0 but in reverse order.
+                if (not(centerOfKeyStr == "I")):
+                    if (not(ruleKeyStr in self.ruleFor2ndVariant)):
+                        self.__initialProbForSecondVariant(ruleKeyStr)
+                    percent = self.ruleFor2ndVariant[ruleKeyStr]
+                    if (self.__prob(percent)):
+                        return self.transitionCellState(centerOfKeyStr, variant=2)
+                    else:
+                        del self.ruleFor2ndVariant[ruleKeyStr]
+                        if (not(ruleKeyStr in self.ruleFor1stVariant)):
+                            self.__probabilityFunc(ruleKeyStr)
+                        percent = self.ruleFor1stVariant[ruleKeyStr]
+                        if (self.__prob(percent)):
+                            return self.transitionCellState(centerOfKeyStr, variant=1)
+                        else:
+                            return centerOfKeyStr
+                else:
+                    if (not(ruleKeyStr in self.ruleFor1stVariant)):
+                        self.__probabilityFunc(ruleKeyStr)
+                    percent = self.ruleFor1stVariant[ruleKeyStr]
+                    if (self.__prob(percent)):
+                        return self.transitionCellState(centerOfKeyStr,variant=1)
+                    else:
+                        return centerOfKeyStr
+
+        # handle the case where only I is in neighborhood and not I' (goto first variant map)
+        elif("I" in ruleKeyStr and not("i" in ruleKeyStr)):
+            if (not(ruleKeyStr in self.ruleFor1stVariant)):
+                self.__probabilityFunc(ruleKeyStr)
+            percent = self.ruleFor1stVariant[ruleKeyStr]
+            # check the probability to transition. If % is 0 then we dont change the state, we keep the same centerCell.
+            if (self.__prob(percent)):
+                return self.transitionCellState(centerOfKeyStr, variant=1)
+            else:
+                return centerOfKeyStr
+            # else:
+            #     print("This 1st variant non-deterministic ruleKey doesn't exist yet while using both variants and only I is in neighborhood: " + ruleKeyStr)
+
+        # handle the case where only I' is in neighborhood and not I (goto second variant map)
+        elif("i" in ruleKeyStr and not("I" in ruleKeyStr)):
+            if (not(ruleKeyStr in self.ruleFor2ndVariant)):
+                self.__initialProbForSecondVariant(ruleKeyStr)
+            percent = self.ruleFor2ndVariant[ruleKeyStr]
+            # check the probability to transition. If % is 0 then we dont change the state, we keep the same centerCell.
+            if (self.__prob(percent)):
+                return self.transitionCellState(centerOfKeyStr, variant=2)
+            else:
+                return centerOfKeyStr                                
+            # else:
+            #     print("This 2nd variant non-deterministic ruleKey doesn't exist yet while using both variants and only I' is in neighborhood: " + ruleKeyStr)
+
+        # else there are no I and I' in the neighborhood, the centerCell is either surrounded by all SSS.., or the cells have recovered
+        # (R or r for both variants)
+        else:
+            return centerOfKeyStr
+
+    """
      Iterating each cell of the board. Building keyStr for each cell
      representing all eight neighbors plus cell itself (center of the keyStr).
      The keyStr representing neighbors are in this order: left, center, right. For example: the cell at (0,0) has neighbors:
@@ -317,8 +416,6 @@ class CA2dSIRDeterministicDynamics:
            For example: (-1,-1) is upper left of the board. 
     """
     def iterateCABoard(self):
-        #print("Current board:\n")        
-        #print(self.currentBoard)
         rows = CABoard.CABoard._board_row
         cols = CABoard.CABoard._board_col
         # next board to be (after a iteration).
@@ -336,89 +433,11 @@ class CA2dSIRDeterministicDynamics:
                         else:
                             # the current cell in the board is on the edge.
                             ruleKeyStr += "X"
-                
                 # check to see which rule we are using, deteministic(uses only 1st variant) or non-deterministic (can use either both or 1st variant).
                 if (not self.isDeterministic):
                     centerOfKeyStr = ruleKeyStr[int(self.rule_bits/2)]
                     if (self.variants == 2):
-                        #print("using both variants non-deterministic")
-                        # handle the case for both I and I' in the neighborhood of current cell, if they're then we randomly pick one probFunc.
-                        if ("I" in ruleKeyStr and "i" in ruleKeyStr):
-                            r = np.random.randint(0,2)
-                            # go to first variant map.
-                            if (r == 0):
-                                # get the probabilityPercent from first variant if there.
-                                if (ruleKeyStr in self.ruleFor1stVariant):
-                                    percent = self.ruleFor1stVariant[ruleKeyStr]
-                                    # check based on the probability if we can transition from first variant. Otherwise,
-                                    # go to the second disease variant map to see if we can transition cell state from that map,
-                                    # if we cannot do it from there, then we keep the same cell.
-                                    if (self.__prob(percent)):
-                                        next[r][c] = self.transitionCellState(centerOfKeyStr, variant=1)
-                                    else:
-                                        if (ruleKeyStr in self.ruleFor2ndVariant):
-                                            percent = self.ruleFor2ndVariant[ruleKeyStr]
-                                            if (self.__prob(percent)):
-                                                next[r][c] = self.transitionCellState(centerOfKeyStr, variant=2)
-                                            else:
-                                                next[r][c] = centerOfKeyStr
-                                        else:
-                                            print("This 1st variant non-deterministic ruleKey doesn't exist yet while using both variants: " + ruleKeyStr)
-
-                                else:
-                                    print("This 1st variant non-deterministic ruleKey doesn't exist yet while using both variants: " + ruleKeyStr)
-                            # go to second variant map.
-                            elif (r == 1):
-                                # get the probabilityPercent from second variant if there.
-                                if (ruleKeyStr in self.ruleFor2ndVariant):
-                                    percent = self.ruleFor2ndVariant[ruleKeyStr]
-                                    # check based on the probability if we can transition from second variant. Otherwise,
-                                    # go to the first disease variant map to see if we can transition cell state from that map,
-                                    # if we cannot do it from there, then we keep the same cell.
-                                    if (self.__prob(percent)):
-                                        next[r][c] = self.transitionCellState(centerOfKeyStr, variant=2)
-                                    else:
-                                        if (ruleKeyStr in self.ruleFor1stVariant):
-                                            percent = self.ruleFor1stVariant[ruleKeyStr]
-                                            if (self.__prob(percent)):
-                                                next[r][c] = self.transitionCellState(centerOfKeyStr, variant=1)
-                                            else:
-                                                next[r][c] = centerOfKeyStr
-                                        else:
-                                            print("This 2nd variant non-deterministic ruleKey doesn't exist yet while using both variants: " + ruleKeyStr)
-
-                                else:
-                                    print("This 2nd variant non-deterministic ruleKey doesn't exist yet while using both variants: " + ruleKeyStr)
-
-                        # handle the case where only I is in neighborhood and not I' (goto first variant map)
-                        elif("I" in ruleKeyStr and not("i" in ruleKeyStr)):
-                            if (ruleKeyStr in self.ruleFor1stVariant):
-                                percent = self.ruleFor1stVariant[ruleKeyStr]
-                                # check the probability to transition. If % is 0 then we dont change the state, we keep the same centerCell.
-                                if (self.__prob(percent)):
-                                    next[r][c] = self.transitionCellState(centerOfKeyStr, variant=1)
-                                else:
-                                    next[r][c] = centerOfKeyStr
-                            else:
-                                print("This 1st variant non-deterministic ruleKey doesn't exist yet while using both variants and only I is in neighborhood: " + ruleKeyStr)
-
-                        # handle the case where only I' is in neighborhood and not I (goto second variant map)
-                        elif("i" in ruleKeyStr and not("I" in ruleKeyStr)):
-                            if (ruleKeyStr in self.ruleFor2ndVariant):
-                                percent = self.ruleFor2ndVariant[ruleKeyStr]
-                                # check the probability to transition. If % is 0 then we dont change the state, we keep the same centerCell.
-                                if (self.__prob(percent)):
-                                    next[r][c] = self.transitionCellState(centerOfKeyStr, variant=2)
-                                else:
-                                    next[r][c] = centerOfKeyStr                                
-                            else:
-                                print("This 2nd variant non-deterministic ruleKey doesn't exist yet while using both variants and only I' is in neighborhood: " + ruleKeyStr)
-
-                        # else there are no I and I' in the neighborhood, the centerCell is either surrounded by all SSS.., or the cells have recovered
-                        # (R or r for both variants)
-                        else:
-                            next[r][c] = centerOfKeyStr
-
+                        next[r][c] = self.__UseBothRuleVariants(ruleKeyStr, centerOfKeyStr)
                     else:
                         # only use 1st variant non-determinsitc rule. 
                         if (ruleKeyStr in self.ruleFor1stVariant):
@@ -429,7 +448,7 @@ class CA2dSIRDeterministicDynamics:
                             else:
                                 next[r][c] = centerOfKeyStr
                         else:
-                            print("This 1st variant non-deterministic ruleKey doesn't exist yet: " + ruleKeyStr)
+                            print("This 1st variant non-deterministic ruleKey doesn't exist yet: " + ruleKeyStr + ". Are you using a randomBoard which uses both 1st and 2nd variant of disease but CA uses only 1st variant?")
                 else:
                     # Use deterministic rules for 1st variant.
                     # Check now whether a key is already in dictionary (it should always
@@ -445,21 +464,19 @@ class CA2dSIRDeterministicDynamics:
         #print(self.nextBoard)
         self.currentBoard.setBoard(self.nextBoard.getBoard())
         
-        return self.nextBoard.getBoard()
-
-
-
+        return self.nextBoard
 
 
 def main():
-    board = CABoard.CABoard()
-    ca = CA2dSIRDeterministicDynamics(board)
-    i = 4
-    # iterate four times
-    while (i > 0):
-        ca.iterateCABoard()
-        i -= 1
-
+    boardObj = CABoard.CABoard(isBoardRandom=True)
+    ca = CA2dSIRDeterministicDynamics(boardObj,diseaseVariants=2,ruleTypeIsDeterministic=False)
+    
+    print(boardObj)
+    # determine one run of CA.
+    while ("I" in boardObj.__str__() or "i" in boardObj.__str__()):
+        boardObj = ca.iterateCABoard()
+        print(boardObj)
+    
 
 if __name__ == '__main__':
     main()       

@@ -40,7 +40,7 @@ def display():
     if (y >= CABoard._board_row):
         #background(0)
         y = 0 
-        board = ca.iterateCABoard()
+        board = ca.iterateCABoard().getBoard()
 
 """
  gets called 60 fps. draws on the canvas.
