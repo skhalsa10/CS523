@@ -41,3 +41,5 @@ while total_completed == 0:
     total_mutations += 1
 
 print("total mutations needed to get sars " + str(total_mutations))
+print("total dead viruses " + str(total_dead))
+print("dead integer overflow " + str(total_overflow))
