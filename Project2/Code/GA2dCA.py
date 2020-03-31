@@ -34,21 +34,48 @@ class GeneticAlgorithm2DCA:
         for i in range(0,GeneticAlgorithm2DCA._popSize):
             randomBoard = CABoard(isBoardRandom=True)
             self.popCA.append(CA2dSIRDeterministicDynamics(randomBoard,diseaseVariants=2,ruleTypeIsDeterministic=False))
-            print(self.popCA[i].currentBoard)
+            #print(self.popCA[i].currentBoard)
     
     def buildNextPop(self):
         return
-
-    def calculateFitness(self):
-        return
     
-    def mutate(self):
+    def crossOverProbabilities(self):
+        return
+
+    def mutateProbability(self, childProbability):
         return
     
     """
-     This iterates when 
+     After a run, count up R and r and see if they are equal, then the better fitness. 
+     R - r (abs value, if the value is closer to zero, the better fitness)
+    """
+    def calculateFitness(self, ca):
+        RCount = ca.currentBoard.__str__().count("R")
+        rCount = ca.currentBoard.__str__().count("r")
+        fitness = abs(RCount - rCount)
+        print(fitness)
+        ca.addFitnessToSecondVariantMap(fitness)    
+
+    """
+     This performs one run for each of the 100 populations of CA.
+     One run/simulation consists of iterating over CA board until there are
+     no infected cells left both variants I and i. 
     """
     def runSimulation(self):
+        for ca in self.popCA:
+            boardObj = ca.currentBoard
+            while ("I" in boardObj.__str__() or "i" in boardObj.__str__()):
+                #print(boardObj)
+                boardObj = ca.iterateCABoard()
+                #print(boardObj)
+            self.calculateFitness(ca)
+
+        self.buildNextPop()
 
 
-test = GeneticAlgorithm2DCA()
+def main():
+    GA = GeneticAlgorithm2DCA()
+    GA.runSimulation()
+
+if __name__ == '__main__':
+    main()

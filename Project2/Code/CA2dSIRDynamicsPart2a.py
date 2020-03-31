@@ -304,7 +304,15 @@ class CA2dSIRDeterministicDynamics:
     """
     def createNextBoard(self, board):
         return CABoard.CABoard(board)
-    
+
+    """
+     After a run, adds the fitness score to 2nd variant map of the CA
+     to see how the second variant probability performs. Helpful in evolving
+     the probabilities of second variant's map.
+    """
+    def addFitnessToSecondVariantMap(self, fitnessScore):
+        self.ruleFor2ndVariant["fitness"] = fitnessScore
+
     """
     Private helper method for adding logic in iterate method to handle cases for using 2 variants of
     the disease.
@@ -471,11 +479,11 @@ def main():
     boardObj = CABoard.CABoard(isBoardRandom=True)
     ca = CA2dSIRDeterministicDynamics(boardObj,diseaseVariants=2,ruleTypeIsDeterministic=False)
     
-    print(boardObj)
+    print(ca.currentBoard)
     # determine one run of CA.
-    while ("I" in boardObj.__str__() or "i" in boardObj.__str__()):
-        boardObj = ca.iterateCABoard()
-        print(boardObj)
+    while ("I" in ca.currentBoard.__str__() or "i" in ca.currentBoard.__str__()):
+        ca.currentBoard = ca.iterateCABoard()
+        print(ca.currentBoard)
     
 
 if __name__ == '__main__':
