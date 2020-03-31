@@ -18,13 +18,13 @@ from fractions import Fraction
 class CA2dSIRDeterministicDynamics:    
     #constructor.
     # 1st variant can either be deterministic or non-deterministic. 2nd disease variant will be non-deterministic.
-    def __init__(self, board, diseaseVariants = 1, rule_bits = 9, ruleTypeIsDeterministic = True):
+    def __init__(self,board,diseaseVariants=1, rule_bits=9, ruleTypeIsDeterministic=True):
         # define any instance variables.
         self.rule_bits = rule_bits
         self.currentBoard = board
         self.isDeterministic = ruleTypeIsDeterministic
         self.variants = diseaseVariants
-
+        
         # probability of S->I' and I'->R' (I' and R' represented in code as i and r)
         self.__sToIPrimeProb = rand.uniform(0,1)
         self.__iPrimeToRPrimeProb = rand.uniform(0,1)
@@ -158,8 +158,10 @@ class CA2dSIRDeterministicDynamics:
         for mapKey in list(regularmMapEntriesToBe):
             if (not self.isDeterministic):
                 if (self.variants == 2):
-                    self.__probabilityFunc("".join(mapKey))
-                    self.__initialProbForSecondVariant("".join(mapKey))
+                    if (dynamics == "SIR"):
+                        self.__probabilityFunc("".join(mapKey))
+                    else:
+                        self.__initialProbForSecondVariant("".join(mapKey))
                 else:
                     self.__probabilityFunc("".join(mapKey))
             else:
@@ -194,15 +196,16 @@ class CA2dSIRDeterministicDynamics:
             # add mapping for these in the map.
             if (not self.isDeterministic):
                 if (self.variants == 2):
-                    self.__initialProbForSecondVariant(topLeftCellKey)
-                    self.__initialProbForSecondVariant(bottomLeftCellKey)
-                    self.__initialProbForSecondVariant(topRightCellKey)
-                    self.__initialProbForSecondVariant(bottomRightCellKey)
-
-                    self.__probabilityFunc(topLeftCellKey)
-                    self.__probabilityFunc(bottomLeftCellKey)
-                    self.__probabilityFunc(topRightCellKey)
-                    self.__probabilityFunc(bottomRightCellKey)
+                    if (dynamics == "Sir"):
+                        self.__initialProbForSecondVariant(topLeftCellKey)
+                        self.__initialProbForSecondVariant(bottomLeftCellKey)
+                        self.__initialProbForSecondVariant(topRightCellKey)
+                        self.__initialProbForSecondVariant(bottomRightCellKey)
+                    else:
+                        self.__probabilityFunc(topLeftCellKey)
+                        self.__probabilityFunc(bottomLeftCellKey)
+                        self.__probabilityFunc(topRightCellKey)
+                        self.__probabilityFunc(bottomRightCellKey)
                 else:
                     self.__probabilityFunc(topLeftCellKey)
                     self.__probabilityFunc(bottomLeftCellKey)
@@ -239,15 +242,16 @@ class CA2dSIRDeterministicDynamics:
             # add mapping for these in the dictionary. 
             if (not self.isDeterministic):
                 if (self.variants == 2):
-                    self.__initialProbForSecondVariant(leftEdge)
-                    self.__initialProbForSecondVariant(topEdge)
-                    self.__initialProbForSecondVariant(rightEdge)
-                    self.__initialProbForSecondVariant(bottomEdge)
-
-                    self.__probabilityFunc(leftEdge)
-                    self.__probabilityFunc(topEdge)
-                    self.__probabilityFunc(rightEdge)
-                    self.__probabilityFunc(bottomEdge)
+                    if (dynamics == "Sir"):
+                        self.__initialProbForSecondVariant(leftEdge)
+                        self.__initialProbForSecondVariant(topEdge)
+                        self.__initialProbForSecondVariant(rightEdge)
+                        self.__initialProbForSecondVariant(bottomEdge)
+                    else:
+                        self.__probabilityFunc(leftEdge)
+                        self.__probabilityFunc(topEdge)
+                        self.__probabilityFunc(rightEdge)
+                        self.__probabilityFunc(bottomEdge)
                 else:
                     self.__probabilityFunc(leftEdge)
                     self.__probabilityFunc(topEdge)
@@ -304,6 +308,36 @@ class CA2dSIRDeterministicDynamics:
     """
     def createNextBoard(self, board):
         return CABoard.CABoard(board)
+    
+    """
+     Cross overs two CA's and create a children-CA with modified 
+     probabilityMap for 2nd variant (ruleFor2ndVariant). After crossing over,
+     slightly mutate newly created child CA's ruleFor2ndVariant map.
+     The child is going to use the same board as in previous generation. 
+    """
+    def crossOver(self, secondParent):
+        length = len(self.ruleFor2ndVariant)-1
+        cutover = rand.randint(0,length-1)
+        childRuleFor2ndVariant = {}
+        
+        # add N key:value pairs for parent 1 (N = cutover).
+        # Note: I dont want parents map to be modified, therefore, I am creating copies 
+        # of dictionary for them.
+        firstHalf = dict(list(self.ruleFor2ndVariant.items())[0:cutover])
+        secondHalf = dict(list(secondParent.getSecondVariantMap().items())[cutover:length])
+
+        childRuleFor2ndVariant = firstHalf.update(secondHalf)
+
+        return childRuleFor2ndVariant
+
+    def mutate(self,newChildCA):
+        return
+
+    def getSecondVariantMap(self):
+        return self.ruleFor2ndVariant
+    
+    def setSecondVariantMap(self, variantMap):
+        self.ruleFor2ndVariant = variantMap
 
     """
      After a run, adds the fitness score to 2nd variant map of the CA
@@ -326,10 +360,18 @@ class CA2dSIRDeterministicDynamics:
                 # since the ruleKeyStr is mixture of both I and i, the ruleFor1stVariant map will never have this key
                 # so, we need to first make sure that the centerCell is not i (otherwise, its obvious to use 2nd variant for this).
                 if (not(centerOfKeyStr == "i")):
+                    # immediately return if the center cell has recovered from any of both diseases, the probability is 
+                    # always zeros if centerCell has recovered, no need to call __prob() function to get T/F.
+                    if (centerOfKeyStr == "r" or centerOfKeyStr == "R"):
+                        return centerOfKeyStr
+
+                    tempStr = ruleKeyStr.replace("i","S")
+                    if ("r" in tempStr):
+                        tempStr = tempStr.replace("r","R")
                     # added this check so, if we encounter same key, it doesn't add key again by calling probFunc().
-                    if (not(ruleKeyStr in self.ruleFor1stVariant)):
-                        self.__probabilityFunc(ruleKeyStr)
-                    percent = self.ruleFor1stVariant[ruleKeyStr]
+                    # if (not(ruleKeyStr in self.ruleFor1stVariant)):
+                    #     self.__probabilityFunc(ruleKeyStr)
+                    percent = self.ruleFor1stVariant[tempStr]
                     # if probability satisfies and we can transition using 1st variant. Otherwise, we need to try transitioning from
                     # second variant by following the same procedure as done for 1st variant. If we also cannot transition
                     # from second variant, then we know we can return the same centerCell back. Also, first delete the entry from first map so
@@ -337,19 +379,32 @@ class CA2dSIRDeterministicDynamics:
                     if (self.__prob(percent)):
                         return self.transitionCellState(centerOfKeyStr, variant=1)
                     else:
-                        del self.ruleFor1stVariant[ruleKeyStr]
-                        if (not(ruleKeyStr in self.ruleFor2ndVariant)):
-                            self.__initialProbForSecondVariant(ruleKeyStr)
-                        percent = self.ruleFor2ndVariant[ruleKeyStr]
+                        #del self.ruleFor1stVariant[ruleKeyStr]
+                        # we already tried transitioning from I to R above, but we couldn't, so, remain I.
+                        if (centerOfKeyStr == "I"):
+                            return centerOfKeyStr
+                        
+                        tempStr = ruleKeyStr.replace("I","S")
+                        if ("R" in tempStr):
+                            tempStr = tempStr.replace("R","r")
+                        
+                        # if (not(ruleKeyStr in self.ruleFor2ndVariant)):
+                        #     self.__initialProbForSecondVariant(ruleKeyStr)
+                        percent = self.ruleFor2ndVariant[tempStr]
                         if (self.__prob(percent)):
                             return self.transitionCellState(centerOfKeyStr, variant=2)
                         else:
                             return centerOfKeyStr
                 else:
                     # the centerCell is i, so, we have to use 2nd variant map. If we cannot transition, we return the same centerCell.
-                    if (not(ruleKeyStr in self.ruleFor2ndVariant)):
-                        self.__initialProbForSecondVariant(ruleKeyStr)
-                    percent = self.ruleFor2ndVariant[ruleKeyStr]
+
+                    # if (not(ruleKeyStr in self.ruleFor2ndVariant)):
+                    #     self.__initialProbForSecondVariant(ruleKeyStr)
+                    tempStr = ruleKeyStr.replace("I","S")
+                    if ("R" in tempStr):
+                        tempStr = tempStr.replace("R","r")
+                    
+                    percent = self.ruleFor2ndVariant[tempStr]
                     if (self.__prob(percent)):
                         return self.transitionCellState(centerOfKeyStr,variant=2)
                     else:
@@ -358,24 +413,40 @@ class CA2dSIRDeterministicDynamics:
             elif (r == 1):
                 # same steps as r = 0 but in reverse order.
                 if (not(centerOfKeyStr == "I")):
-                    if (not(ruleKeyStr in self.ruleFor2ndVariant)):
-                        self.__initialProbForSecondVariant(ruleKeyStr)
-                    percent = self.ruleFor2ndVariant[ruleKeyStr]
+                    if (centerOfKeyStr == "r" or centerOfKeyStr == "R"):
+                        return centerOfKeyStr
+
+                    tempStr = ruleKeyStr.replace("I","S")
+                    if ("R" in tempStr):
+                        tempStr = tempStr.replace("R","r")
+                    # if (not(ruleKeyStr in self.ruleFor2ndVariant)):
+                    #     self.__initialProbForSecondVariant(ruleKeyStr)
+                    percent = self.ruleFor2ndVariant[tempStr]
                     if (self.__prob(percent)):
                         return self.transitionCellState(centerOfKeyStr, variant=2)
                     else:
-                        del self.ruleFor2ndVariant[ruleKeyStr]
-                        if (not(ruleKeyStr in self.ruleFor1stVariant)):
-                            self.__probabilityFunc(ruleKeyStr)
-                        percent = self.ruleFor1stVariant[ruleKeyStr]
+                        #del self.ruleFor2ndVariant[ruleKeyStr]
+                        # if (not(ruleKeyStr in self.ruleFor1stVariant)):
+                        #     self.__probabilityFunc(ruleKeyStr)
+                        if (centerOfKeyStr == "i"):
+                            return centerOfKeyStr
+                        
+                        tempStr = ruleKeyStr.replace("i","S")
+                        if ("r" in tempStr):
+                            tempStr = tempStr.replace("r","R")
+                        percent = self.ruleFor1stVariant[tempStr]
+                        
                         if (self.__prob(percent)):
                             return self.transitionCellState(centerOfKeyStr, variant=1)
                         else:
                             return centerOfKeyStr
                 else:
-                    if (not(ruleKeyStr in self.ruleFor1stVariant)):
-                        self.__probabilityFunc(ruleKeyStr)
-                    percent = self.ruleFor1stVariant[ruleKeyStr]
+                    # if (not(ruleKeyStr in self.ruleFor1stVariant)):
+                    #     self.__probabilityFunc(ruleKeyStr)
+                    tempStr = ruleKeyStr.replace("i","S")
+                    if ("r" in tempStr):
+                        tempStr = tempStr.replace("r","R")
+                    percent = self.ruleFor1stVariant[tempStr]
                     if (self.__prob(percent)):
                         return self.transitionCellState(centerOfKeyStr,variant=1)
                     else:
@@ -383,8 +454,13 @@ class CA2dSIRDeterministicDynamics:
 
         # handle the case where only I is in neighborhood and not I' (goto first variant map)
         elif("I" in ruleKeyStr and not("i" in ruleKeyStr)):
-            if (not(ruleKeyStr in self.ruleFor1stVariant)):
-                self.__probabilityFunc(ruleKeyStr)
+            # if (not(ruleKeyStr in self.ruleFor1stVariant)):
+            #     self.__probabilityFunc(ruleKeyStr)
+            if (centerOfKeyStr == "r" or centerOfKeyStr == "R"):
+                return centerOfKeyStr
+            if ("r" in ruleKeyStr):
+                ruleKeyStr = ruleKeyStr.replace("r", "R")
+
             percent = self.ruleFor1stVariant[ruleKeyStr]
             # check the probability to transition. If % is 0 then we dont change the state, we keep the same centerCell.
             if (self.__prob(percent)):
@@ -396,8 +472,13 @@ class CA2dSIRDeterministicDynamics:
 
         # handle the case where only I' is in neighborhood and not I (goto second variant map)
         elif("i" in ruleKeyStr and not("I" in ruleKeyStr)):
-            if (not(ruleKeyStr in self.ruleFor2ndVariant)):
-                self.__initialProbForSecondVariant(ruleKeyStr)
+            # if (not(ruleKeyStr in self.ruleFor2ndVariant)):
+            #     self.__initialProbForSecondVariant(ruleKeyStr)
+            if (centerOfKeyStr == "r" or centerOfKeyStr == "R"):
+                return centerOfKeyStr
+            if ("R" in ruleKeyStr):
+                ruleKeyStr = ruleKeyStr.replace("R", "r")
+
             percent = self.ruleFor2ndVariant[ruleKeyStr]
             # check the probability to transition. If % is 0 then we dont change the state, we keep the same centerCell.
             if (self.__prob(percent)):
