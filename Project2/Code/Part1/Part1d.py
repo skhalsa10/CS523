@@ -37,7 +37,7 @@ while total_completed == 0:
         if total_dead<overflow_test:
             total_overflow += 1
         to_remove -= 1
-    print(total_dead)
+    # print(total_dead)
     total_mutations += 1
 
 print("total mutations needed to get sars " + str(total_mutations))
