@@ -11,6 +11,7 @@ total_completed = 0
 max_hist = 0
 non_neutral_indices = []
 total_mutations = 0
+total_overflow
 
 population = [Spike() for x in range(100)]
 
@@ -31,9 +32,12 @@ while total_completed == 0:
         index = non_neutral_indices.pop(index_To_Pop)
         # now set population at this index to a new spike
         population[index] = Spike()
+        overflow_test = total_dead
         total_dead += 1
+        if total_dead<overflow_test:
+            total_overflow += 1
         to_remove -= 1
-
+    print(total_dead)
     total_mutations += 1
 
 print("total mutations needed to get sars " + str(total_mutations))
