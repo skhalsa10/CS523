@@ -11,7 +11,7 @@ total_completed = 0
 max_hist = 0
 non_neutral_indices = []
 total_mutations = 0
-total_overflow
+total_overflow = 0
 
 population = [Spike() for x in range(100)]
 
