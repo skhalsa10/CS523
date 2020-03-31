@@ -34,7 +34,6 @@ while total_completed == 0:
         total_dead += 1
         to_remove -= 1
 
-    print(total_mutations)
     total_mutations += 1
 
 print("total mutations needed to get sars " + str(total_mutations))
