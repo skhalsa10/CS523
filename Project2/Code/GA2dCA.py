@@ -2,7 +2,9 @@
  This is a Genetic Algorithm (GA) implementation to evolve the transition
  probabilities for 2d Cellular Automata (CA) which uses SIR dynamics for the
  spread of epidemics called Coronavirus (Covid-19). 
- This GA model tries to evolve 2nd variant of the disease spread and its transition probabilities.
+ This GA model tries to evolve 2nd variant of the disease spread and its transition probabilities
+ by making sure the probability map of 2ndVariant evolves and become equivalent to
+ 1stvariantMap. 
 
  Implemented by: Anas Gauba
 """
