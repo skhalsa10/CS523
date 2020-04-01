@@ -44,5 +44,5 @@ while total_completed == 0:
 SARS.printAminoAcids()
 SARS.printRNA()
 print("total history " + str(SARS.history))
-print("Total mutations of the SARS variant: " len(SARS.history))
+print("Total mutations of the SARS variant: " + len(SARS.history))
 print("Total dead variants: "+ str(total_dead))
