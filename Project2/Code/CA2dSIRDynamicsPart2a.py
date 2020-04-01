@@ -318,26 +318,37 @@ class CA2dSIRDeterministicDynamics:
     def crossOver(self, secondParent):
         length = len(self.ruleFor2ndVariant)-1
         cutover = rand.randint(0,length-1)
-        childRuleFor2ndVariant = {}
         
         # add N key:value pairs for parent 1 (N = cutover).
         # Note: I dont want parents map to be modified, therefore, I am creating copies 
         # of dictionary for them.
-        firstHalf = dict(list(self.ruleFor2ndVariant.items())[0:cutover])
-        secondHalf = dict(list(secondParent.getSecondVariantMap().items())[cutover:length])
+        # newChildMap contains first half rules from parent 1 and second half rules from second parent.
+        newChildMap = dict(list(self.ruleFor2ndVariant.items())[0:cutover])
+        secondHalf = dict(list(secondParent.ruleFor2ndVariant.items())[cutover:length])
 
-        childRuleFor2ndVariant = firstHalf.update(secondHalf)
+        # update the child map to append second half rules from second parent.
+        #print("len of first is: " + str(newChildMap.__len__()))
+        newChildMap.update(secondHalf)
+        #print("len of first after: " + str(newChildMap.__len__()))
 
-        return childRuleFor2ndVariant
+        # now mutate this child map slightly.
+        newChildMap = self.mutate(newChildMap)
 
-    def mutate(self,newChildCA):
-        return
+        return newChildMap
 
-    def getSecondVariantMap(self):
-        return self.ruleFor2ndVariant
-    
-    def setSecondVariantMap(self, variantMap):
-        self.ruleFor2ndVariant = variantMap
+    """
+     Randomly mutates a spot in the newly created childCA 2nd variant map.
+     Mutates the child map's non-zero random value slightly to +2%.
+    """
+    def mutate(self,newChildCAMap):
+        randomKey, randomVal = rand.choice(list(newChildCAMap.items()))
+        
+        # loop till we find non-zero value for a key in the map.
+        while (randomVal == 0):
+            randomKey, randomVal = rand.choice(list(newChildCAMap.items()))
+        
+        newChildCAMap[randomKey] = randomVal + 0.02
+        return newChildCAMap
 
     """
      After a run, adds the fitness score to 2nd variant map of the CA
