@@ -117,6 +117,7 @@ class GeneticAlgorithm2DCA:
             self.runSimulation()
 
             if  (self.popCA[0].ruleFor2ndVariant["fitness"] == 0 and i >= 10):
+                print(self.popCA[0].ruleFor2ndVariant)
                 break
 
 
