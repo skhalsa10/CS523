@@ -117,7 +117,7 @@ class GeneticAlgorithm2DCA:
         while(True):
             self.runSimulation()
 
-            if (self.popCA[0].ruleFor2ndVariant["fitness"] == 0 and i >= 10):
+            if (self.popCA[0].ruleFor2ndVariant["fitness"] <= 5 and i >= 10):
                 f = open("evolvedMap.txt", "w")
                 f.write("ruleFor2ndVariant = ")
                 f.write(str(self.popCA[0].ruleFor2ndVariant))

@@ -8,8 +8,8 @@ import numpy as np
 
 class CABoard:
     # class static variables for 2d board specs.
-    _board_row = 200
-    _board_col = 200
+    _board_row = 50
+    _board_col = 50
 
     #constructor
     def __init__(self, input = [[]], isBoardRandom = False):
