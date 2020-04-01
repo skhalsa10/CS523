@@ -113,12 +113,19 @@ class GeneticAlgorithm2DCA:
      positives.
     """
     def runUntilBestSolution(self):
-        for i in range(0,20):
+        i = 0
+        while(True):
             self.runSimulation()
 
-            if  (self.popCA[0].ruleFor2ndVariant["fitness"] == 0 and i >= 10):
-                print(self.popCA[0].ruleFor2ndVariant)
+            if (self.popCA[0].ruleFor2ndVariant["fitness"] == 0 and i >= 10):
+                f = open("evolvedMap.txt", "w")
+                f.write("ruleFor2ndVariant = ")
+                f.write(str(self.popCA[0].ruleFor2ndVariant))
+                f.close()
+
                 break
+            
+            i += 1
 
 
 def main():
