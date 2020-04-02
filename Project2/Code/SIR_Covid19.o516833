@@ -1,0 +1,1421 @@
+Wheeler Portable Batch System Prologue
+Job Id: 516833.wheeler-sn.alliance.unm.edu
+Username: skhalsa
+Job 516833.wheeler-sn.alliance.unm.edu running on nodes:
+wheeler299 
+
+prologue running on host: wheeler299
+s to i prime probability is: 0.17974280796477515
+i prime to r prime probability is: 0.26582638290565275
+s to i prime probability is: 0.38215247771727423
+i prime to r prime probability is: 0.45565796705697925
+s to i prime probability is: 0.5905997703486675
+i prime to r prime probability is: 0.4000451824596447
+s to i prime probability is: 0.30526808487543766
+i prime to r prime probability is: 0.7081438773331065
+s to i prime probability is: 0.05465912757542446
+i prime to r prime probability is: 0.038900950597351436
+s to i prime probability is: 0.7712187308370092
+i prime to r prime probability is: 0.04803629007757704
+s to i prime probability is: 0.30569554864989557
+i prime to r prime probability is: 0.5821421407667882
+s to i prime probability is: 0.8884152951886091
+i prime to r prime probability is: 0.5043750951921696
+s to i prime probability is: 0.8971291982828754
+i prime to r prime probability is: 0.28683356688515604
+s to i prime probability is: 0.6912092008890063
+i prime to r prime probability is: 0.6100209704373781
+s to i prime probability is: 0.7514541627588361
+i prime to r prime probability is: 0.30742485918537843
+s to i prime probability is: 0.6530379256049678
+i prime to r prime probability is: 0.6638028583424902
+s to i prime probability is: 0.030471168620238243
+i prime to r prime probability is: 0.6449909314450092
+s to i prime probability is: 0.016397451295560805
+i prime to r prime probability is: 0.9671448018289586
+s to i prime probability is: 0.5019328678639478
+i prime to r prime probability is: 0.9919612338340733
+s to i prime probability is: 0.18675287316058653
+i prime to r prime probability is: 0.7000165164889653
+s to i prime probability is: 0.9498817889980073
+i prime to r prime probability is: 0.3769020883775155
+s to i prime probability is: 0.025608773755530168
+i prime to r prime probability is: 0.9881807880339687
+s to i prime probability is: 0.5494877409663248
+i prime to r prime probability is: 0.8344977898483706
+s to i prime probability is: 0.5127249854584388
+i prime to r prime probability is: 0.2465121941499897
+s to i prime probability is: 0.392621448651439
+i prime to r prime probability is: 0.6464612688426089
+s to i prime probability is: 0.5990436308601179
+i prime to r prime probability is: 0.8142272372515919
+s to i prime probability is: 0.9169836205698046
+i prime to r prime probability is: 0.0046926766295753986
+s to i prime probability is: 0.24800946740539254
+i prime to r prime probability is: 0.028656943692055292
+s to i prime probability is: 0.24569131125594768
+i prime to r prime probability is: 0.1437229257384982
+s to i prime probability is: 0.2860522836690331
+i prime to r prime probability is: 0.4107267989001395
+s to i prime probability is: 0.9276334281683398
+i prime to r prime probability is: 0.4185084782591245
+s to i prime probability is: 0.3203236878963259
+i prime to r prime probability is: 0.1664726180555054
+s to i prime probability is: 0.8846427791424678
+i prime to r prime probability is: 0.9973556641984631
+s to i prime probability is: 0.9745850878745611
+i prime to r prime probability is: 0.19261761988350679
+s to i prime probability is: 0.052776597157580984
+i prime to r prime probability is: 0.09870817841114288
+s to i prime probability is: 0.8479789503287115
+i prime to r prime probability is: 0.5105659689163579
+s to i prime probability is: 0.15400018389084213
+i prime to r prime probability is: 0.2381202707067115
+s to i prime probability is: 0.6390473420600205
+i prime to r prime probability is: 0.9592741145721904
+s to i prime probability is: 0.35073418656684574
+i prime to r prime probability is: 0.3731370181511693
+s to i prime probability is: 0.9525890436265975
+i prime to r prime probability is: 0.6358907627574212
+s to i prime probability is: 0.31777694905496323
+i prime to r prime probability is: 0.7025093231175489
+s to i prime probability is: 0.6063334224585123
+i prime to r prime probability is: 0.44289159615447216
+s to i prime probability is: 0.7218101561106962
+i prime to r prime probability is: 0.860564448507479
+s to i prime probability is: 0.47962836302672696
+i prime to r prime probability is: 0.5263362866995168
+s to i prime probability is: 0.16636578188044038
+i prime to r prime probability is: 0.4194571437093678
+s to i prime probability is: 0.44057746101287776
+i prime to r prime probability is: 0.41449278547222335
+s to i prime probability is: 0.008390076888523557
+i prime to r prime probability is: 0.7406710846817158
+s to i prime probability is: 0.4078241215368522
+i prime to r prime probability is: 0.13841962999568846
+s to i prime probability is: 0.11012214869700288
+i prime to r prime probability is: 0.4862079465006931
+s to i prime probability is: 0.08000415643069314
+i prime to r prime probability is: 0.2094204289216801
+s to i prime probability is: 0.16562051538943723
+i prime to r prime probability is: 0.15906554490385638
+s to i prime probability is: 0.6364277261852364
+i prime to r prime probability is: 0.5139915409841194
+s to i prime probability is: 0.772353390447919
+i prime to r prime probability is: 0.3338846592185033
+s to i prime probability is: 0.29746737064871653
+i prime to r prime probability is: 0.062108447856584315
+s to i prime probability is: 0.22678012746117904
+i prime to r prime probability is: 0.7355644987130977
+s to i prime probability is: 0.2625042924747193
+i prime to r prime probability is: 0.5511780882414118
+s to i prime probability is: 0.46377111881272814
+i prime to r prime probability is: 0.7567960651907409
+s to i prime probability is: 0.33605384155512064
+i prime to r prime probability is: 0.1618084128781454
+s to i prime probability is: 0.31446402902311255
+i prime to r prime probability is: 0.4031550965123091
+s to i prime probability is: 0.6252646721136659
+i prime to r prime probability is: 0.11916221280449224
+s to i prime probability is: 0.4914887408969577
+i prime to r prime probability is: 0.4514235901025837
+s to i prime probability is: 0.85457301303882
+i prime to r prime probability is: 0.09023969213612104
+s to i prime probability is: 0.8769904376969694
+i prime to r prime probability is: 0.6904876824136292
+s to i prime probability is: 0.6240476652780594
+i prime to r prime probability is: 0.6271249394397814
+s to i prime probability is: 0.20433168470077168
+i prime to r prime probability is: 0.7751238487807166
+s to i prime probability is: 0.12877801741414674
+i prime to r prime probability is: 0.8513728698761995
+s to i prime probability is: 0.8634540087264133
+i prime to r prime probability is: 0.5786105143614169
+s to i prime probability is: 0.42264589403574626
+i prime to r prime probability is: 0.41091394016568716
+s to i prime probability is: 0.7345887679879027
+i prime to r prime probability is: 0.6680443093297458
+s to i prime probability is: 0.23361506985919323
+i prime to r prime probability is: 0.03033919116272432
+s to i prime probability is: 0.2111775857229201
+i prime to r prime probability is: 0.9217135173360531
+s to i prime probability is: 0.5145169611807873
+i prime to r prime probability is: 0.16631127379047173
+s to i prime probability is: 0.8091869907828791
+i prime to r prime probability is: 0.21923115564247253
+s to i prime probability is: 0.06613892570388558
+i prime to r prime probability is: 0.3856119708935114
+s to i prime probability is: 0.0008521637167290264
+i prime to r prime probability is: 0.4552417065938227
+s to i prime probability is: 0.48883853369009433
+i prime to r prime probability is: 0.2894873164504592
+s to i prime probability is: 0.6483167795473352
+i prime to r prime probability is: 0.04266554901777053
+s to i prime probability is: 0.6749671220968043
+i prime to r prime probability is: 0.367999164907873
+s to i prime probability is: 0.22282095625817389
+i prime to r prime probability is: 0.42304160007078295
+s to i prime probability is: 0.623696837360063
+i prime to r prime probability is: 0.6976983019131779
+s to i prime probability is: 0.5685260503264457
+i prime to r prime probability is: 0.6164060413178243
+s to i prime probability is: 0.8390809625541196
+i prime to r prime probability is: 0.17038178048462294
+s to i prime probability is: 0.2612791997168632
+i prime to r prime probability is: 0.7222889591500669
+s to i prime probability is: 0.33269398239237424
+i prime to r prime probability is: 0.9302114482062626
+s to i prime probability is: 0.9793935162682387
+i prime to r prime probability is: 0.06526474139223104
+s to i prime probability is: 0.19995848276781003
+i prime to r prime probability is: 0.5582205028239903
+s to i prime probability is: 0.9334815783369388
+i prime to r prime probability is: 0.46441851556814184
+s to i prime probability is: 0.2399231135734471
+i prime to r prime probability is: 0.9011026450907822
+s to i prime probability is: 0.5804870286427167
+i prime to r prime probability is: 0.7344602630956163
+s to i prime probability is: 0.01889770725343065
+i prime to r prime probability is: 0.7550072546016464
+s to i prime probability is: 0.3210308977849827
+i prime to r prime probability is: 0.7834958144697717
+s to i prime probability is: 0.23966486734895132
+i prime to r prime probability is: 0.33690499391668194
+s to i prime probability is: 0.9051047295566017
+i prime to r prime probability is: 0.3938972194041629
+s to i prime probability is: 0.3612957611582739
+i prime to r prime probability is: 0.2120048628475537
+s to i prime probability is: 0.11832364087009417
+i prime to r prime probability is: 0.4622683115826496
+s to i prime probability is: 0.42812707549631646
+i prime to r prime probability is: 0.9677509886604545
+s to i prime probability is: 0.18585452863692697
+i prime to r prime probability is: 0.46957313119824196
+s to i prime probability is: 0.6736364145587226
+i prime to r prime probability is: 0.1779319002406895
+s to i prime probability is: 0.346121077030743
+i prime to r prime probability is: 0.9998553708010016
+s to i prime probability is: 0.22188490849894216
+i prime to r prime probability is: 0.6491436939986808
+s to i prime probability is: 0.49993817935802676
+i prime to r prime probability is: 0.031681154562460234
+s to i prime probability is: 0.5355444954155437
+i prime to r prime probability is: 0.0896059967908549
+s to i prime probability is: 0.3005167069532144
+i prime to r prime probability is: 0.9103455604746961
+s to i prime probability is: 0.9955848456927987
+i prime to r prime probability is: 0.42785612745377233
+Fitness: 2345
+Fitness: 874
+Fitness: 1536
+Fitness: 1827
+Fitness: 2490
+Fitness: 2282
+Fitness: 254
+Fitness: 2365
+Fitness: 2320
+Fitness: 1370
+Fitness: 2497
+Fitness: 2451
+Fitness: 2494
+Fitness: 2492
+Fitness: 2072
+Fitness: 2490
+Fitness: 1964
+Fitness: 2496
+Fitness: 1327
+Fitness: 2051
+Fitness: 2059
+Fitness: 2183
+Fitness: 1881
+Fitness: 492
+Fitness: 422
+Fitness: 279
+Fitness: 2308
+Fitness: 2479
+Fitness: 2476
+Fitness: 1617
+Fitness: 1973
+Fitness: 2020
+Fitness: 384
+Fitness: 2004
+Fitness: 484
+Fitness: 1240
+Fitness: 118
+Fitness: 1185
+Fitness: 1731
+Fitness: 2415
+Fitness: 2001
+Fitness: 1854
+Fitness: 2497
+Fitness: 1138
+Fitness: 2496
+Fitness: 2482
+Fitness: 2494
+Fitness: 1595
+Fitness: 2498
+Fitness: 298
+Fitness: 0
+Fitness: 421
+Fitness: 1215
+Fitness: 518
+Fitness: 1376
+Fitness: 1518
+Fitness: 1645
+Fitness: 2280
+Fitness: 2196
+Fitness: 1349
+Fitness: 2485
+Fitness: 2485
+Fitness: 2430
+Fitness: 1610
+Fitness: 1339
+Fitness: 913
+Fitness: 2497
+Fitness: 2315
+Fitness: 1190
+Fitness: 2494
+Fitness: 2485
+Fitness: 1259
+Fitness: 2038
+Fitness: 2254
+Fitness: 1189
+Fitness: 1938
+Fitness: 1101
+Fitness: 1948
+Fitness: 2487
+Fitness: 883
+Fitness: 1864
+Fitness: 955
+Fitness: 1896
+Fitness: 2255
+Fitness: 2352
+Fitness: 2491
+Fitness: 724
+Fitness: 876
+Fitness: 2114
+Fitness: 1418
+Fitness: 2379
+Fitness: 1132
+Fitness: 2488
+Fitness: 2498
+Fitness: 797
+Fitness: 2397
+Fitness: 2216
+Fitness: 2015
+Fitness: 2495
+Fitness: 1176
+Fittest CA with lowest fitness: 0
+Fitness: 1796
+Fitness: 20
+Fitness: 311
+Fitness: 1060
+Fitness: 1187
+Fitness: 903
+Fitness: 641
+Fitness: 1222
+Fitness: 538
+Fitness: 942
+Fitness: 1750
+Fitness: 460
+Fitness: 693
+Fitness: 940
+Fitness: 205
+Fitness: 969
+Fitness: 45
+Fitness: 2489
+Fitness: 2368
+Fitness: 151
+Fitness: 2497
+Fitness: 2196
+Fitness: 572
+Fitness: 1752
+Fitness: 161
+Fitness: 362
+Fitness: 2225
+Fitness: 389
+Fitness: 471
+Fitness: 1389
+Fitness: 1641
+Fitness: 312
+Fitness: 772
+Fitness: 2372
+Fitness: 2119
+Fitness: 893
+Fitness: 806
+Fitness: 605
+Fitness: 196
+Fitness: 2149
+Fitness: 1645
+Fitness: 2323
+Fitness: 903
+Fitness: 556
+Fitness: 2019
+Fitness: 915
+Fitness: 321
+Fitness: 331
+Fitness: 409
+Fitness: 632
+Fitness: 349
+Fitness: 60
+Fitness: 1655
+Fitness: 24
+Fitness: 511
+Fitness: 1576
+Fitness: 1479
+Fitness: 213
+Fitness: 1480
+Fitness: 633
+Fitness: 125
+Fitness: 1261
+Fitness: 1112
+Fitness: 1085
+Fitness: 1057
+Fitness: 393
+Fitness: 2275
+Fitness: 2310
+Fitness: 1570
+Fitness: 907
+Fitness: 1641
+Fitness: 318
+Fitness: 2492
+Fitness: 423
+Fitness: 2280
+Fitness: 204
+Fitness: 1322
+Fitness: 2497
+Fitness: 1172
+Fitness: 2489
+Fitness: 2414
+Fitness: 858
+Fitness: 753
+Fitness: 1705
+Fitness: 2496
+Fitness: 56
+Fitness: 1199
+Fitness: 1091
+Fitness: 1057
+Fitness: 84
+Fitness: 2069
+Fitness: 975
+Fitness: 424
+Fitness: 1552
+Fitness: 1201
+Fitness: 2410
+Fitness: 510
+Fitness: 686
+Fitness: 1853
+Fitness: 243
+Fittest CA with lowest fitness: 20
+Fitness: 520
+Fitness: 81
+Fitness: 1728
+Fitness: 1073
+Fitness: 1455
+Fitness: 385
+Fitness: 1163
+Fitness: 865
+Fitness: 135
+Fitness: 1432
+Fitness: 1124
+Fitness: 168
+Fitness: 482
+Fitness: 2479
+Fitness: 1497
+Fitness: 1350
+Fitness: 1144
+Fitness: 1404
+Fitness: 698
+Fitness: 2486
+Fitness: 2212
+Fitness: 619
+Fitness: 56
+Fitness: 422
+Fitness: 2487
+Fitness: 2498
+Fitness: 1128
+Fitness: 1530
+Fitness: 287
+Fitness: 1235
+Fitness: 349
+Fitness: 96
+Fitness: 2056
+Fitness: 217
+Fitness: 1461
+Fitness: 2317
+Fitness: 403
+Fitness: 1834
+Fitness: 1051
+Fitness: 565
+Fitness: 1774
+Fitness: 1226
+Fitness: 920
+Fitness: 396
+Fitness: 628
+Fitness: 194
+Fitness: 1840
+Fitness: 1103
+Fitness: 112
+Fitness: 809
+Fitness: 242
+Fitness: 1674
+Fitness: 52
+Fitness: 1744
+Fitness: 1741
+Fitness: 1581
+Fitness: 922
+Fitness: 586
+Fitness: 265
+Fitness: 1568
+Fitness: 1685
+Fitness: 1108
+Fitness: 66
+Fitness: 494
+Fitness: 688
+Fitness: 1779
+Fitness: 373
+Fitness: 519
+Fitness: 714
+Fitness: 1045
+Fitness: 1750
+Fitness: 1271
+Fitness: 1011
+Fitness: 885
+Fitness: 1454
+Fitness: 483
+Fitness: 274
+Fitness: 865
+Fitness: 2396
+Fitness: 151
+Fitness: 981
+Fitness: 108
+Fitness: 1016
+Fitness: 1896
+Fitness: 98
+Fitness: 2498
+Fitness: 303
+Fitness: 345
+Fitness: 1796
+Fitness: 1301
+Fitness: 697
+Fitness: 2171
+Fitness: 578
+Fitness: 149
+Fitness: 1360
+Fitness: 1488
+Fitness: 158
+Fitness: 1091
+Fitness: 50
+Fitness: 2073
+Fittest CA with lowest fitness: 50
+Fitness: 414
+Fitness: 628
+Fitness: 1323
+Fitness: 1787
+Fitness: 1310
+Fitness: 1737
+Fitness: 342
+Fitness: 2137
+Fitness: 1489
+Fitness: 487
+Fitness: 2118
+Fitness: 1331
+Fitness: 545
+Fitness: 722
+Fitness: 214
+Fitness: 1790
+Fitness: 1616
+Fitness: 422
+Fitness: 624
+Fitness: 957
+Fitness: 953
+Fitness: 905
+Fitness: 1222
+Fitness: 758
+Fitness: 373
+Fitness: 339
+Fitness: 1444
+Fitness: 2404
+Fitness: 2481
+Fitness: 1345
+Fitness: 1347
+Fitness: 1857
+Fitness: 679
+Fitness: 755
+Fitness: 1413
+Fitness: 2493
+Fitness: 1054
+Fitness: 2052
+Fitness: 2485
+Fitness: 318
+Fitness: 438
+Fitness: 1271
+Fitness: 634
+Fitness: 528
+Fitness: 802
+Fitness: 253
+Fitness: 755
+Fitness: 1734
+Fitness: 2492
+Fitness: 1299
+Fitness: 1278
+Fitness: 126
+Fitness: 1252
+Fitness: 1077
+Fitness: 2164
+Fitness: 1508
+Fitness: 554
+Fitness: 311
+Fitness: 276
+Fitness: 897
+Fitness: 378
+Fitness: 485
+Fitness: 341
+Fitness: 116
+Fitness: 681
+Fitness: 1947
+Fitness: 783
+Fitness: 136
+Fitness: 2398
+Fitness: 949
+Fitness: 962
+Fitness: 2480
+Fitness: 2274
+Fitness: 719
+Fitness: 1613
+Fitness: 1378
+Fitness: 212
+Fitness: 694
+Fitness: 1669
+Fitness: 736
+Fitness: 700
+Fitness: 529
+Fitness: 1318
+Fitness: 65
+Fitness: 1159
+Fitness: 264
+Fitness: 1066
+Fitness: 477
+Fitness: 764
+Fitness: 587
+Fitness: 370
+Fitness: 697
+Fitness: 2419
+Fitness: 1269
+Fitness: 1318
+Fitness: 343
+Fitness: 1317
+Fitness: 62
+Fitness: 875
+Fitness: 495
+Fittest CA with lowest fitness: 62
+Fitness: 2149
+Fitness: 1754
+Fitness: 209
+Fitness: 714
+Fitness: 479
+Fitness: 761
+Fitness: 292
+Fitness: 1044
+Fitness: 121
+Fitness: 874
+Fitness: 1684
+Fitness: 202
+Fitness: 487
+Fitness: 2273
+Fitness: 460
+Fitness: 315
+Fitness: 344
+Fitness: 65
+Fitness: 167
+Fitness: 2491
+Fitness: 1587
+Fitness: 1023
+Fitness: 1865
+Fitness: 2495
+Fitness: 1991
+Fitness: 1806
+Fitness: 1059
+Fitness: 2208
+Fitness: 341
+Fitness: 97
+Fitness: 882
+Fitness: 225
+Fitness: 2297
+Fitness: 1296
+Fitness: 2275
+Fitness: 295
+Fitness: 1842
+Fitness: 237
+Fitness: 8
+Fitness: 878
+Fitness: 592
+Fitness: 861
+Fitness: 795
+Fitness: 2356
+Fitness: 549
+Fitness: 796
+Fitness: 105
+Fitness: 111
+Fitness: 799
+Fitness: 841
+Fitness: 2496
+Fitness: 244
+Fitness: 2495
+Fitness: 2488
+Fitness: 2496
+Fitness: 54
+Fitness: 441
+Fitness: 1798
+Fitness: 12
+Fitness: 1144
+Fitness: 774
+Fitness: 1292
+Fitness: 129
+Fitness: 223
+Fitness: 12
+Fitness: 725
+Fitness: 990
+Fitness: 2029
+Fitness: 1773
+Fitness: 188
+Fitness: 2181
+Fitness: 1912
+Fitness: 949
+Fitness: 992
+Fitness: 2497
+Fitness: 2497
+Fitness: 1433
+Fitness: 1338
+Fitness: 1295
+Fitness: 591
+Fitness: 2449
+Fitness: 1027
+Fitness: 441
+Fitness: 2473
+Fitness: 1448
+Fitness: 989
+Fitness: 592
+Fitness: 2493
+Fitness: 128
+Fitness: 431
+Fitness: 904
+Fitness: 1396
+Fitness: 239
+Fitness: 1157
+Fitness: 2199
+Fitness: 444
+Fitness: 590
+Fitness: 686
+Fitness: 738
+Fitness: 2488
+Fittest CA with lowest fitness: 8
+Fitness: 486
+Fitness: 162
+Fitness: 912
+Fitness: 324
+Fitness: 1613
+Fitness: 473
+Fitness: 790
+Fitness: 5
+Fitness: 1266
+Fitness: 1472
+Fitness: 2477
+Fitness: 1657
+Fitness: 326
+Fitness: 738
+Fitness: 2491
+Fitness: 1715
+Fitness: 66
+Fitness: 469
+Fitness: 1276
+Fitness: 517
+Fitness: 633
+Fitness: 672
+Fitness: 782
+Fitness: 26
+Fitness: 2029
+Fitness: 1447
+Fitness: 527
+Fitness: 1845
+Fitness: 2494
+Fitness: 1767
+Fitness: 1053
+Fitness: 880
+Fitness: 202
+Fitness: 482
+Fitness: 402
+Fitness: 2142
+Fitness: 2220
+Fitness: 518
+Fitness: 2489
+Fitness: 1607
+Fitness: 848
+Fitness: 869
+Fitness: 902
+Fitness: 1162
+Fitness: 1378
+Fitness: 277
+Fitness: 1666
+Fitness: 955
+Fitness: 2296
+Fitness: 1773
+Fitness: 944
+Fitness: 337
+Fitness: 1738
+Fitness: 524
+Fitness: 1171
+Fitness: 2494
+Fitness: 594
+Fitness: 9
+Fitness: 930
+Fitness: 2300
+Fitness: 1643
+Fitness: 482
+Fitness: 313
+Fitness: 2082
+Fitness: 1401
+Fitness: 906
+Fitness: 1545
+Fitness: 201
+Fitness: 2490
+Fitness: 426
+Fitness: 2269
+Fitness: 2491
+Fitness: 2481
+Fitness: 161
+Fitness: 500
+Fitness: 1562
+Fitness: 1777
+Fitness: 2346
+Fitness: 93
+Fitness: 500
+Fitness: 880
+Fitness: 557
+Fitness: 1203
+Fitness: 1198
+Fitness: 2456
+Fitness: 580
+Fitness: 2241
+Fitness: 134
+Fitness: 1520
+Fitness: 425
+Fitness: 299
+Fitness: 1236
+Fitness: 658
+Fitness: 893
+Fitness: 1157
+Fitness: 2020
+Fitness: 326
+Fitness: 654
+Fitness: 923
+Fitness: 78
+Fittest CA with lowest fitness: 5
+Fitness: 1038
+Fitness: 2495
+Fitness: 698
+Fitness: 1019
+Fitness: 2285
+Fitness: 1348
+Fitness: 2033
+Fitness: 818
+Fitness: 906
+Fitness: 165
+Fitness: 2383
+Fitness: 1559
+Fitness: 653
+Fitness: 2402
+Fitness: 1861
+Fitness: 1516
+Fitness: 347
+Fitness: 223
+Fitness: 2494
+Fitness: 665
+Fitness: 768
+Fitness: 1
+Fitness: 1016
+Fitness: 1497
+Fitness: 397
+Fitness: 1562
+Fitness: 400
+Fitness: 246
+Fitness: 87
+Fitness: 1069
+Fitness: 1381
+Fitness: 1483
+Fitness: 1384
+Fitness: 1628
+Fitness: 796
+Fitness: 545
+Fitness: 620
+Fitness: 289
+Fitness: 78
+Fitness: 1690
+Fitness: 30
+Fitness: 1916
+Fitness: 1485
+Fitness: 723
+Fitness: 1312
+Fitness: 571
+Fitness: 445
+Fitness: 2204
+Fitness: 1625
+Fitness: 220
+Fitness: 539
+Fitness: 346
+Fitness: 2224
+Fitness: 563
+Fitness: 90
+Fitness: 1077
+Fitness: 1682
+Fitness: 2083
+Fitness: 1550
+Fitness: 914
+Fitness: 2429
+Fitness: 720
+Fitness: 494
+Fitness: 1073
+Fitness: 943
+Fitness: 19
+Fitness: 2340
+Fitness: 609
+Fitness: 714
+Fitness: 1304
+Fitness: 465
+Fitness: 1101
+Fitness: 1970
+Fitness: 2486
+Fitness: 3
+Fitness: 1086
+Fitness: 273
+Fitness: 1193
+Fitness: 963
+Fitness: 2474
+Fitness: 104
+Fitness: 1829
+Fitness: 457
+Fitness: 161
+Fitness: 833
+Fitness: 1309
+Fitness: 2161
+Fitness: 1331
+Fitness: 1610
+Fitness: 1747
+Fitness: 512
+Fitness: 1384
+Fitness: 1154
+Fitness: 134
+Fitness: 729
+Fitness: 12
+Fitness: 1890
+Fitness: 1003
+Fitness: 315
+Fitness: 225
+Fittest CA with lowest fitness: 1
+Fitness: 410
+Fitness: 1525
+Fitness: 732
+Fitness: 20
+Fitness: 1195
+Fitness: 733
+Fitness: 355
+Fitness: 1019
+Fitness: 1002
+Fitness: 1145
+Fitness: 180
+Fitness: 767
+Fitness: 137
+Fitness: 2490
+Fitness: 1187
+Fitness: 1765
+Fitness: 685
+Fitness: 585
+Fitness: 1291
+Fitness: 530
+Fitness: 279
+Fitness: 733
+Fitness: 551
+Fitness: 534
+Fitness: 135
+Fitness: 1364
+Fitness: 1329
+Fitness: 2315
+Fitness: 644
+Fitness: 2491
+Fitness: 610
+Fitness: 1367
+Fitness: 296
+Fitness: 636
+Fitness: 1232
+Fitness: 344
+Fitness: 533
+Fitness: 810
+Fitness: 180
+Fitness: 1705
+Fitness: 2204
+Fitness: 285
+Fitness: 722
+Fitness: 1064
+Fitness: 304
+Fitness: 464
+Fitness: 40
+Fitness: 196
+Fitness: 1150
+Fitness: 98
+Fitness: 162
+Fitness: 1755
+Fitness: 733
+Fitness: 1155
+Fitness: 262
+Fitness: 1905
+Fitness: 145
+Fitness: 827
+Fitness: 315
+Fitness: 2361
+Fitness: 386
+Fitness: 869
+Fitness: 2492
+Fitness: 579
+Fitness: 1428
+Fitness: 1939
+Fitness: 1725
+Fitness: 630
+Fitness: 301
+Fitness: 2158
+Fitness: 858
+Fitness: 1711
+Fitness: 159
+Fitness: 700
+Fitness: 214
+Fitness: 1220
+Fitness: 1821
+Fitness: 1652
+Fitness: 691
+Fitness: 1084
+Fitness: 1894
+Fitness: 458
+Fitness: 386
+Fitness: 634
+Fitness: 1340
+Fitness: 375
+Fitness: 13
+Fitness: 784
+Fitness: 1491
+Fitness: 1478
+Fitness: 218
+Fitness: 1868
+Fitness: 746
+Fitness: 790
+Fitness: 248
+Fitness: 0
+Fitness: 82
+Fitness: 2496
+Fitness: 1941
+Fitness: 2292
+Fittest CA with lowest fitness: 0
+Fitness: 917
+Fitness: 686
+Fitness: 2490
+Fitness: 1751
+Fitness: 507
+Fitness: 1285
+Fitness: 60
+Fitness: 400
+Fitness: 907
+Fitness: 5
+Fitness: 448
+Fitness: 1620
+Fitness: 1840
+Fitness: 534
+Fitness: 357
+Fitness: 951
+Fitness: 846
+Fitness: 112
+Fitness: 585
+Fitness: 1347
+Fitness: 866
+Fitness: 1383
+Fitness: 2482
+Fitness: 188
+Fitness: 73
+Fitness: 41
+Fitness: 484
+Fitness: 797
+Fitness: 647
+Fitness: 416
+Fitness: 70
+Fitness: 2213
+Fitness: 1087
+Fitness: 2479
+Fitness: 1333
+Fitness: 453
+Fitness: 2252
+Fitness: 1939
+Fitness: 1861
+Fitness: 1014
+Fitness: 2391
+Fitness: 1056
+Fitness: 2219
+Fitness: 127
+Fitness: 1358
+Fitness: 694
+Fitness: 2488
+Fitness: 93
+Fitness: 1570
+Fitness: 2348
+Fitness: 1723
+Fitness: 1721
+Fitness: 868
+Fitness: 1953
+Fitness: 681
+Fitness: 2281
+Fitness: 775
+Fitness: 531
+Fitness: 2491
+Fitness: 1214
+Fitness: 225
+Fitness: 478
+Fitness: 1696
+Fitness: 1911
+Fitness: 1116
+Fitness: 212
+Fitness: 2469
+Fitness: 224
+Fitness: 441
+Fitness: 1904
+Fitness: 1940
+Fitness: 2258
+Fitness: 151
+Fitness: 578
+Fitness: 1773
+Fitness: 485
+Fitness: 1130
+Fitness: 182
+Fitness: 278
+Fitness: 1589
+Fitness: 2192
+Fitness: 473
+Fitness: 102
+Fitness: 818
+Fitness: 1694
+Fitness: 2066
+Fitness: 470
+Fitness: 423
+Fitness: 1712
+Fitness: 2490
+Fitness: 2493
+Fitness: 2083
+Fitness: 1761
+Fitness: 1447
+Fitness: 158
+Fitness: 2170
+Fitness: 1068
+Fitness: 750
+Fitness: 836
+Fitness: 584
+Fittest CA with lowest fitness: 5
+Fitness: 2353
+Fitness: 171
+Fitness: 36
+Fitness: 1540
+Fitness: 728
+Fitness: 2044
+Fitness: 893
+Fitness: 2190
+Fitness: 393
+Fitness: 1794
+Fitness: 331
+Fitness: 750
+Fitness: 649
+Fitness: 1597
+Fitness: 796
+Fitness: 1362
+Fitness: 538
+Fitness: 734
+Fitness: 1067
+Fitness: 0
+Fitness: 1186
+Fitness: 1803
+Fitness: 2497
+Fitness: 1228
+Fitness: 766
+Fitness: 964
+Fitness: 1047
+Fitness: 1886
+Fitness: 2493
+Fitness: 461
+Fitness: 25
+Fitness: 647
+Fitness: 1202
+Fitness: 222
+Fitness: 180
+Fitness: 39
+Fitness: 691
+Fitness: 2160
+Fitness: 304
+Fitness: 970
+Fitness: 245
+Fitness: 2145
+Fitness: 2289
+Fitness: 419
+Fitness: 104
+Fitness: 517
+Fitness: 139
+Fitness: 1078
+Fitness: 656
+Fitness: 58
+Fitness: 2160
+Fitness: 2213
+Fitness: 815
+Fitness: 2139
+Fitness: 776
+Fitness: 2489
+Fitness: 24
+Fitness: 3
+Fitness: 1772
+Fitness: 1718
+Fitness: 977
+Fitness: 1318
+Fitness: 164
+Fitness: 2498
+Fitness: 2494
+Fitness: 386
+Fitness: 1200
+Fitness: 201
+Fitness: 770
+Fitness: 858
+Fitness: 51
+Fitness: 958
+Fitness: 258
+Fitness: 58
+Fitness: 1039
+Fitness: 903
+Fitness: 309
+Fitness: 2037
+Fitness: 663
+Fitness: 2174
+Fitness: 1133
+Fitness: 2492
+Fitness: 944
+Fitness: 255
+Fitness: 1219
+Fitness: 554
+Fitness: 863
+Fitness: 2496
+Fitness: 301
+Fitness: 427
+Fitness: 627
+Fitness: 201
+Fitness: 194
+Fitness: 737
+Fitness: 798
+Fitness: 198
+Fitness: 2207
+Fitness: 855
+Fitness: 168
+Fitness: 1054
+Fittest CA with lowest fitness: 0
+Fitness: 142
+Fitness: 2272
+Fitness: 2497
+Fitness: 2493
+Fitness: 1119
+Fitness: 49
+Fitness: 1071
+Fitness: 1218
+Fitness: 431
+Fitness: 1659
+Fitness: 1016
+Fitness: 1308
+Fitness: 321
+Fitness: 909
+Fitness: 1982
+Fitness: 574
+Fitness: 211
+Fitness: 215
+Fitness: 37
+Fitness: 358
+Fitness: 785
+Fitness: 439
+Fitness: 1417
+Fitness: 1496
+Fitness: 1073
+Fitness: 1963
+Fitness: 261
+Fitness: 1227
+Fitness: 1279
+Fitness: 2495
+Fitness: 843
+Fitness: 278
+Fitness: 1245
+Fitness: 2493
+Fitness: 1858
+Fitness: 7
+Fitness: 1406
+Fitness: 2342
+Fitness: 2228
+Fitness: 242
+Fitness: 439
+Fitness: 1440
+Fitness: 673
+Fitness: 2494
+Fitness: 816
+Fitness: 724
+Fitness: 2000
+Fitness: 507
+Fitness: 1140
+Fitness: 2151
+Fitness: 500
+Fitness: 1772
+Fitness: 141
+Fitness: 1258
+Fitness: 1327
+Fitness: 1885
+Fitness: 23
+Fitness: 2495
+Fitness: 1704
+Fitness: 577
+Fitness: 863
+Fitness: 2489
+Fitness: 320
+Fitness: 2489
+Fitness: 768
+Fitness: 2114
+Fitness: 2274
+Fitness: 2492
+Fitness: 1452
+Fitness: 1229
+Fitness: 1355
+Fitness: 73
+Fitness: 1792
+Fitness: 57
+Fitness: 2493
+Fitness: 133
+Fitness: 831
+Fitness: 2498
+Fitness: 155
+Fitness: 1234
+Fitness: 170
+Fitness: 371
+Fitness: 709
+Fitness: 1910
+Fitness: 291
+Fitness: 383
+Fitness: 1079
+Fitness: 1037
+Fitness: 1913
+Fitness: 2492
+Fitness: 1636
+Fitness: 797
+Fitness: 2250
+Fitness: 680
+Fitness: 517
+Fitness: 2395
+Fitness: 2497
+Fitness: 43
+Fitness: 1478
+Fitness: 2477
+Fittest CA with lowest fitness: 7
+Fitness: 117
+Fitness: 432
+Fitness: 2492
+Fitness: 833
+Fitness: 0
+Fitness: 1189
+Fitness: 393
+Fitness: 2496
+Fitness: 2496
+Fitness: 1056
+Fitness: 2490
+Fitness: 358
+Fitness: 437
+Fitness: 457
+Fitness: 1079
+Fitness: 910
+Fitness: 933
+Fitness: 525
+Fitness: 85
+Fitness: 2194
+Fitness: 92
+Fitness: 218
+Fitness: 845
+Fitness: 806
+Fitness: 2431
+Fitness: 1118
+Fitness: 638
+Fitness: 237
+Fitness: 1324
+Fitness: 861
+Fitness: 1436
+Fitness: 1008
+Fitness: 1591
+Fitness: 1036
+Fitness: 1883
+Fitness: 1235
+Fitness: 282
+Fitness: 622
+Fitness: 98
+Fitness: 771
+Fitness: 991
+Fitness: 1852
+Fitness: 2496
+Fitness: 37
+Fitness: 1207
+Fitness: 736
+Fitness: 54
+Fitness: 390
+Fitness: 2454
+Fitness: 446
+Fitness: 1384
+Fitness: 627
+Fitness: 2224
+Fitness: 688
+Fitness: 657
+Fitness: 1480
+Fitness: 155
+Fitness: 1707
+Fitness: 602
+Fitness: 55
+Fitness: 1932
+Fitness: 252
+Fitness: 2219
+Fitness: 865
+Fitness: 285
+Fitness: 534
+Fitness: 892
+Fitness: 2082
+Fitness: 391
+Fitness: 569
+Fitness: 537
+Fitness: 1298
+Fitness: 86
+Fitness: 1231
+Fitness: 1177
+Fitness: 231
+Fitness: 570
+Fitness: 1032
+Fitness: 6
+Fitness: 2448
+Fitness: 1360
+Fitness: 963
+Fitness: 481
+Fitness: 705
+Fitness: 321
+Fitness: 694
+Fitness: 454
+Fitness: 346
+Fitness: 512
+Fitness: 1419
+Fitness: 1132
+Fitness: 89
+Fitness: 697
+Fitness: 231
+Fitness: 836
+Fitness: 2495
+Fitness: 51
+Fitness: 558
+Fitness: 438
+Fitness: 521
+Fittest CA with lowest fitness: 0
+Wheeler Portable Batch System Epilogue
+wheeler299: grep: terren: No such file or directory

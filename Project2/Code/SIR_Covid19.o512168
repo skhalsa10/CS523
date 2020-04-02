@@ -1,0 +1,11 @@
+Wheeler Portable Batch System Prologue
+Job Id: 512168.wheeler-sn.alliance.unm.edu
+Username: skhalsa
+Job 512168.wheeler-sn.alliance.unm.edu running on nodes:
+wheeler300 
+
+prologue running on host: wheeler300
+/var/lib/torque/mom_priv/jobs/512168.wheeler-sn.alliance.unm.edu.SC: line 14: python3: command not found
+Wheeler Portable Batch System Epilogue
+wheeler300: grep: skhalsa: No such file or directory
+wheeler300: grep: terren: No such file or directory
