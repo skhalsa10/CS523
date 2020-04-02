@@ -10,9 +10,13 @@ pos3 = ['Q', 'Y']
 pos4 = ['N','S','T']
 neutral_genomes = [a+b+c+d+e for a in pos0 for b in pos1 for c in pos2 for d in pos3 for e in pos4]
 
+def shouldDie(genome):
+    return genome.__contains__('*')
+
 
 def isGenomeNeutral(genome):
     return neutral_genomes.__contains__(genome)
 
 def isSARS(genome):
     return genome == SARS_2002
+
