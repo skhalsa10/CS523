@@ -11,7 +11,7 @@ total_completed = 0
 max_hist = 0
 b_indices = []
 total_mutations = 0
-total_overflow = 0
+dead_overflow = 0
 SARS = None
 
 # fill up a population with covid-19 spikes
@@ -30,13 +30,15 @@ while total_completed == 0:
             # if it isnt only keep it around IF the i is in b_indices
             if(not b_indices.__contains__(i)):
                 population[i] = Spike()
+                dead_before = total_dead
                 total_dead += 1
+                if total_dead< dead_before:
+                    dead_overflow += 1
+                    print("DEAD OVERFLOWED: " + str(dead_overflow) )
 
         if(isSARS(population[i].getAminoAcids())):
             SARS = population[i]
             total_completed += 1
-
-        print(population[i].getAminoAcids())
 
 
     total_mutations += 1
@@ -44,5 +46,6 @@ while total_completed == 0:
 SARS.printAminoAcids()
 SARS.printRNA()
 print("total history " + str(SARS.history))
-print("Total mutations of the SARS variant: " + len(SARS.history))
+print("Total mutations of the SARS variant: " + str(len(SARS.history)))
 print("Total dead variants: "+ str(total_dead))
+print("Dead Overflow: "+ str(dead_overflow))
