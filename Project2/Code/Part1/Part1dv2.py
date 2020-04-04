@@ -12,7 +12,7 @@ class SpikeDataCollector:
         self.average_mutations_completed = []
         self.total_completed = 0
         self.max_SARS_mutation = 0
-        self.min_SARS_mutation = 0
+        self.min_SARS_mutation = -1
         self.b_indices = []
         self.total_mutations = 0
         self.dead_overflow = 0
@@ -27,7 +27,7 @@ class SpikeDataCollector:
             self.b_indices.append(random.randint(0,self.pop_size-1))
 
         # keep mutating until a SARS varient has been found
-        while self.total_completed <10:
+        while self.total_completed <4:
             # loop over every population
             for i in range(self.pop_size):
                 self.population[i].mutate()
@@ -43,17 +43,25 @@ class SpikeDataCollector:
                             print("DEAD OVERFLOWED: " + str(self.dead_overflow) )
 
                 if(isSARS(self.population[i].getAminoAcids())):
-                    hist_size = len(self.population[i].history)
+                    hist_size = len(self.population[i].history) -1
                     self.average_mutations_completed.append(hist_size)
                     self.max_SARS_mutation = max(self.max_SARS_mutation, hist_size)
-                    self.min_SARS_mutation = min(self.min_SARS_mutation, hist_size)
+                    if( not self.min_SARS_mutation == -1):
+                        self.min_SARS_mutation = min(self.min_SARS_mutation, hist_size)
+                    else:
+                        self.min_SARS_mutation = hist_size
                     self.total_completed += 1
                     self.population[i] = Spike()
+                    print("found 1")
 
 
             self.total_mutations += 1
 
         print("complete")
+        print("The total dead variants: "+str(self.total_dead))
+        print("Max mutations needed tto get to SARS: "+str(self.max_SARS_mutation))
+        print("Min mutations needed tto get to SARS: "+str(self.min_SARS_mutation))
+        print("The Average mutation needed per sars: " + str(sum(self.average_mutations_completed)/self.total_completed))
 
 
 
