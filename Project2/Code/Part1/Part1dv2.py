@@ -50,7 +50,7 @@ class SpikeDataCollector:
                             self.dead_overflow += 1
                             print("DEAD OVERFLOWED: " + str(self.dead_overflow) )
                 # check to see if we found a sars variant
-                if(isSARS(self.population[i].getAminoAcids())):
+                if(isComplete(self.population[i].getAminoAcids())):
                     # lets place it somewhere in case we need to analyse later
                     self.allSARS = self.population[i]
                     # how many mutations did it take to become sars?
