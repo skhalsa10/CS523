@@ -1,7 +1,7 @@
 from spike import *
 from neutral_network import *
 import random
-import matplotlib.pyplot as plt 
+# import matplotlib.pyplot as plt 
 # import networkx as nx
 import numpy as np
 
@@ -9,8 +9,8 @@ class SpikeDataCollector:
     
 
     def __init__(self, pop_size=100,b = 10):
-        self.pop_size = 100
-        self.b = 10
+        self.pop_size = pop_size
+        self.b = b
         self.total_dead = 0
         self.average_mutations_dead = [] # this will be a list of histories of dead
         self.average_mutations_completed = [] # list of numbers
@@ -27,6 +27,7 @@ class SpikeDataCollector:
     
     def collectData(self):
 
+        # set indices for b that dont die when they leave the neutral network
         for x in range(self.b):
             self.b_indices.append(random.randint(0,self.pop_size-1))
 
@@ -48,12 +49,17 @@ class SpikeDataCollector:
                         if self.total_dead< dead_before:
                             self.dead_overflow += 1
                             print("DEAD OVERFLOWED: " + str(self.dead_overflow) )
-
+                # check to see if we found a sars variant
                 if(isSARS(self.population[i].getAminoAcids())):
+                    # lets place it somewhere in case we need to analyse later
                     self.allSARS = self.population[i]
-                    hist_size = len(self.population[i].history) -1
+                    # how many mutations did it take to become sars?
+                    hist_size = len(self.population[i].history) - 1
+                    # add it to a list to caculate average later
                     self.average_mutations_completed.append(hist_size)
+                    # store the max mutations needed
                     self.max_SARS_mutation = max(self.max_SARS_mutation, hist_size)
+                    # store the minimum
                     if( not self.min_SARS_mutation == -1):
                         self.min_SARS_mutation = min(self.min_SARS_mutation, hist_size)
                     else:
