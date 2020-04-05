@@ -9,10 +9,9 @@ from CA2dSIRDynamicsPart2a import CA2dSIRDeterministicDynamics
 
 i = 0
 
-# TODO: Need to look into resizing of window so the board panel also gets resized
 class CA2dGUI(wx.Frame):
     def __init__(self, parent, title, ca):
-        super(CA2dGUI, self).__init__(parent, title=title, size=(CABoard._board_col*10, CABoard._board_row*10))
+        super(CA2dGUI, self).__init__(parent, title=title, size=(600, 600))
 
         self.ca = ca
         self.initFrame()
@@ -23,6 +22,7 @@ class CA2dGUI(wx.Frame):
         #self.statusbar.SetStatusText('0')
         self.statusbar.SetStatusText('0')
         self.board = CABoardPanel(self, self.ca, self.statusbar)
+        self.board.SetBackgroundColour(wx.Colour(128,128,128))
         self.board.SetFocus()
         # self.board.start()
 
@@ -39,13 +39,16 @@ class CABoardPanel(wx.Panel):
 
     def __init__(self, parent, ca, statusbar):
         #super(CABoardPanel, self).__init__(*args, **kw)
-        super(CABoardPanel, self).__init__(parent)
+        super(CABoardPanel, self).__init__(parent, style=wx.FULL_REPAINT_ON_RESIZE)
         
         # initialize stuff
         self.ca = ca
         self.statusBar = statusbar
         self.timer = wx.Timer(self, CABoardPanel.ID_TIMER)
         self.board = []
+        # needed this because DrawRectangle() only deals with ints, and not doubles.
+        self.widthRemainder = 0
+        self.heightRemainder = 0
         
         # TODO: if time permits, add Start and Pause Buttons to the gui.
         self.isStarted = False
@@ -71,49 +74,46 @@ class CABoardPanel(wx.Panel):
 
 
     def squareWidth(self):
+        self.widthRemainder = self.GetSize().GetWidth() % CABoardPanel.boardWidth
         return self.GetSize().GetWidth() // CABoardPanel.boardWidth
 
     def squareHeight(self):
-
+        self.heightRemainder = self.GetSize().GetHeight() % CABoardPanel.boardHeight
         return self.GetSize().GetHeight() // CABoardPanel.boardHeight
 
     def OnPaint(self, event):
         global i
         dc = wx.PaintDC(self)
-        wx.BufferedDC(dc)
+        
         board = self.ca.currentBoard.getBoard()
 
-        # need to fix the pixel issue so the cells align well with the frame.
-        pixelWidth = self.GetSize().GetWidth()
-        pixelHeight = self.GetSize().GetHeight()
-        if (pixelWidth < pixelHeight):
-            blockSize = self.squareWidth()
-        else:
-            blockSize = self.squareHeight()
+        #print(self.GetSize())
+        blockSizeW = self.squareWidth()
+        blockSizeH = self.squareHeight()
 
         for y in range(0,CABoard._board_col):
             for x in range(0, CABoard._board_row):
                 if (board[x][y] == "S"):
                     dc.SetPen(wx.Pen(wx.LIGHT_GREY, 0))
                     dc.SetBrush(wx.Brush(wx.GREEN))
-                    dc.DrawRectangle(x*blockSize,y*blockSize,blockSize,blockSize)
+                    dc.DrawRectangle(x*blockSizeW+self.widthRemainder/2,y*blockSizeH+self.heightRemainder/2,blockSizeW,blockSizeH)
                 elif board[x][y] == "I":
                     dc.SetPen(wx.Pen(wx.LIGHT_GREY, 0))
                     dc.SetBrush(wx.Brush(wx.RED_BRUSH))
-                    dc.DrawRectangle(x*blockSize,y*blockSize,blockSize,blockSize)
+                    dc.DrawRectangle(x*blockSizeW+self.widthRemainder/2,y*blockSizeH+self.heightRemainder/2,blockSizeW,blockSizeH)
                 elif board[x][y] == "i":
                     dc.SetPen(wx.Pen(wx.LIGHT_GREY, 0))
                     # oragne color
                     dc.SetBrush(wx.Brush("#FF7F00"))
-                    dc.DrawRectangle(x*blockSize,y*blockSize,blockSize,blockSize)  
+                    dc.DrawRectangle(x*blockSizeW+self.widthRemainder/2,y*blockSizeH+self.heightRemainder/2,blockSizeW,blockSizeH)  
                 elif board[x][y] == "r":                    
                     dc.SetPen(wx.Pen(wx.LIGHT_GREY, 0))
                     dc.SetBrush(wx.Brush("black"))
-                    dc.DrawRectangle(x*blockSize,y*blockSize,blockSize,blockSize)
+                    dc.DrawRectangle(x*blockSizeW+self.widthRemainder/2,y*blockSizeH+self.heightRemainder/2,blockSizeW,blockSizeH)
                 else:
                     dc.SetPen(wx.Pen(wx.LIGHT_GREY, 0))
                     dc.SetBrush(wx.Brush("blue"))
-                    dc.DrawRectangle(x*blockSize,y*blockSize,blockSize,blockSize)
+                    dc.DrawRectangle(x*blockSizeW+self.widthRemainder/2,y*blockSizeH+self.heightRemainder/2,blockSizeW,blockSizeH)
         
         # done with this iteration, do it again, update the iteration statusBar.
         board = self.ca.iterateCABoard().getBoard()
