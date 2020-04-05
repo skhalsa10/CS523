@@ -9,7 +9,6 @@ from CA2dSIRDynamicsPart2a import CA2dSIRDeterministicDynamics
 
 i = 0
 
-# TODO: Need to look into resizing of window so the board panel also gets resized
 class CA2dGUI(wx.Frame):
     def __init__(self, parent, title, ca):
         super(CA2dGUI, self).__init__(parent, title=title, size=(600, 600))
@@ -23,6 +22,7 @@ class CA2dGUI(wx.Frame):
         #self.statusbar.SetStatusText('0')
         self.statusbar.SetStatusText('0')
         self.board = CABoardPanel(self, self.ca, self.statusbar)
+        self.board.SetBackgroundColour(wx.Colour(128,128,128))
         self.board.SetFocus()
         # self.board.start()
 
@@ -39,7 +39,7 @@ class CABoardPanel(wx.Panel):
 
     def __init__(self, parent, ca, statusbar):
         #super(CABoardPanel, self).__init__(*args, **kw)
-        super(CABoardPanel, self).__init__(parent)
+        super(CABoardPanel, self).__init__(parent, style=wx.FULL_REPAINT_ON_RESIZE)
         
         # initialize stuff
         self.ca = ca
@@ -85,17 +85,9 @@ class CABoardPanel(wx.Panel):
         global i
         dc = wx.PaintDC(self)
         
-        wx.BufferedDC(dc)
         board = self.ca.currentBoard.getBoard()
 
-        # need to fix the pixel issue so the cells align well with the frame.
-        # pixelWidth = self.GetSize().GetWidth()
-        # pixelHeight = self.GetSize().GetHeight()
-        # if (pixelWidth < pixelHeight):
-        #     blockSize = self.squareWidth()
-        # else:
-        #     blockSize = self.squareHeight()
-        print(self.GetSize())
+        #print(self.GetSize())
         blockSizeW = self.squareWidth()
         blockSizeH = self.squareHeight()
 
