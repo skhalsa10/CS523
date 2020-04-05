@@ -3,7 +3,7 @@ This module class thing can be used as a utility class to confirm that a genome 
 into the defined  neutral network in this file
 """
 SARS_2002 = 'YLNYT'
-pos0 = ['L','Y','F','Q','H',]
+pos0 = ['L','Y','F','Q','H']
 pos1 = ['F', 'L']
 pos2 = ['Q','N','K','H']
 pos3 = ['Q', 'Y','H','N']
