@@ -32,7 +32,7 @@ class SpikeDataCollector:
             self.b_indices.append(random.randint(0,self.pop_size-1))
 
         # keep mutating until a SARS varient has been found
-        while self.total_completed <5:
+        while self.total_completed <1:
             # loop over every population
             for i in range(self.pop_size):
                 self.population[i].mutate()

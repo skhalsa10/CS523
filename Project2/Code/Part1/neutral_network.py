@@ -15,7 +15,7 @@ into the defined  neutral network in this file
 
 # Uncooment this to check for BAT CORONA must comment the sars above
 complete = 'WPRFA'
-pos0 = ['L','S','W']
+pos0 = ['L','S','R','I','G','W']
 pos1 = ['F', 'L', 'S','P']
 pos2 = ['Q','H', 'R']
 pos3 = ['Q','H','L','Y','F']
@@ -33,3 +33,4 @@ def isGenomeNeutral(genome):
 def isComplete(genome):
     return genome == complete
 
+print(isComplete('WPRFA'))
