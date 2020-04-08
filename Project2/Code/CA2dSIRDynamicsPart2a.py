@@ -25,11 +25,12 @@ class CA2dSIRDeterministicDynamics:
         self.isDeterministic = ruleTypeIsDeterministic
         self.variants = diseaseVariants
         
-        # probability of S->I' and I'->R' (I' and R' represented in code as i and r)
-        self.__sToIPrimeProb = rand.uniform(0,1)
-        self.__iPrimeToRPrimeProb = rand.uniform(0,1)
-        print("s to i prime probability is: " + str(self.__sToIPrimeProb))
-        print("i prime to r prime probability is: " + str(self.__iPrimeToRPrimeProb))
+        if (self.variants == 2):
+            # probability of S->I' and I'->R' (I' and R' represented in code as i and r)
+            self.__sToIPrimeProb = rand.uniform(0,1)
+            self.__iPrimeToRPrimeProb = rand.uniform(0,1)
+            print("s to i prime probability is: " + str(self.__sToIPrimeProb))
+            print("i prime to r prime probability is: " + str(self.__iPrimeToRPrimeProb))
         
         # now permute rules.
         self.permuteToBuildInitialRules()
@@ -64,7 +65,7 @@ class CA2dSIRDeterministicDynamics:
      transitioning between S, I, R states using this probability
      function. This is for 1st variant of the disease where the 
      probability P(S->I) is based on the numbers of infected neighbors
-     and P(I->R) is fixed to be 25%.
+     and P(I->R) is fixed to be 10%.
     """
     def __probabilityFunc(self, mapKey):
         centerOfKeyStr = mapKey[int(self.rule_bits/2)]
