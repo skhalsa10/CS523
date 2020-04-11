@@ -1,3 +1,8 @@
+"""
+Written by siri Khalsa
+
+This is a simple script to build a graph needed for part 1b
+"""
 import numpy as np
 import matplotlib.pyplot as plt
 from Part1a import *

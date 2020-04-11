@@ -1,3 +1,15 @@
+"""
+Written by Siri Khalsa
+
+The goal of this is create a population of covid-19 spikes
+every iteration it will randomly mutate.
+if the spike is still in the neutral network after the mutation it stays around
+if it is no longer in the neutral network than the virus will die and a 
+new covid-19 spike will be generated in its place
+
+It will run till a number of SARS or other final virus is found. it will then 
+output the statistics of the run.
+"""
 from spike import *
 from neutral_network import *
 import random
@@ -32,7 +44,7 @@ class SpikeDataCollector:
             self.b_indices.append(random.randint(0,self.pop_size-1))
 
         # keep mutating until a SARS varient has been found
-        while self.total_completed <1:
+        while self.total_completed <10:
             # loop over every population
             for i in range(self.pop_size):
                 self.population[i].mutate()

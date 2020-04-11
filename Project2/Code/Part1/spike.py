@@ -1,3 +1,10 @@
+"""
+The program was written by Siri. 
+It encapsulates a 5 amino acid spike protein.
+It can be initialized to any combination but the default
+is the covid-19 spike given in the project handout.
+"""
+
 from genetic_code import *
 import random
 import copy
@@ -60,6 +67,10 @@ class Spike:
         self.__amino_Acids = self.__amino_Acids[:amino_acids_index]+genetic_code[codon]+self.__amino_Acids[amino_acids_index+1:]
         self.history.append((copy.deepcopy(self.__RNA_Strand),copy.deepcopy(self.__amino_Acids)))
 
+    """
+    this will take 3 nucleotids starting at index i and return a codon.
+    It assumes that there are 3 consecutive codons in a rom starting at i.
+    """
     def buildCodonFromIndex(self, i):
         codon = ""
         codon += copy.deepcopy(self.__RNA_Strand[i])
@@ -67,12 +78,21 @@ class Spike:
         codon += copy.deepcopy(self.__RNA_Strand[i+2])
         return codon
     
+    """
+    print all 15 nucleotides as a string
+    """
     def printRNA(self):
         print("RNA Strand : " + self.__RNA_Strand)
 
+    """
+    Prints the 5 amino acids as a string
+    """
     def printAminoAcids(self):
         print("Amino Acids : " + self.__amino_Acids)
-
+    
+    """
+    Returns the 5 amino acids as a string
+    """
     def getAminoAcids(self):
         return copy.deepcopy(self.__amino_Acids)
 

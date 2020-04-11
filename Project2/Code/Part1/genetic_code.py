@@ -1,4 +1,9 @@
 """
+Written by Siri Khalsa
+Maps out the genetic code with codons to amino acids.
+"""
+
+"""
 This is a list of the possible bases
 """
 bases = ['a','g','c','u']
@@ -9,7 +14,10 @@ This is a list of all possible codons
 codons = [a + b + c for a in bases for b in bases for c in bases ] 
 
 """
-Here is a map of the gentic code from codon -> Amino Acid
+Here is a map of the gentic code from codon -> Amino Acid.
+This is the Wheel from the assignment.
+for example:
+genetic_code['cua'] -> L
 """
 genetic_code = {
     'aaa': 'K',
@@ -80,7 +88,8 @@ genetic_code = {
 
 
 """
-Here we have a map of amino acids to a list of codons that code for them
+Here we have a map of amino acids to a list of codons that code for them.
+For example print(amino_acid_codons['S']) -> ['agc', 'agu', 'uca', 'ucg', 'ucc', 'ucu']
 """
 amino_acid_codons = {
     'P': [],
@@ -109,3 +118,4 @@ amino_acid_codons = {
 for key, value in genetic_code.items():
     amino_acid_codons[value].append(key)
 
+print(amino_acid_codons['S'])
