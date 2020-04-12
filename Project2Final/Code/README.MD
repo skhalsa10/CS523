@@ -7,5 +7,11 @@ Part1 Dependencies:
 	- requires matplotlib library: pip or pip3 install matplotlib
 	- requires random library: pip or pip3 install random
 	- requires the copy library: pip or pip3 install copy 
+To obtain the graph in figure 1. please run script Part1/Part1b.py with python3
+To obtain the data from the simulated runs that determines how likely COVID is to become SARS 
+please run Part1/Part1dv2.py
+
+Part2 Dependencies:
+	-
 
 
