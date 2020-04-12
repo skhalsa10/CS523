@@ -6,7 +6,7 @@
 import wx 
 import secondVariantRuleGA 
 from CABoard import *
-from CA2dSIRDynamicsPart2a import CA2dSIRDeterministicDynamics
+from CA2dSIRDynamics import CA2dSIRDynamics
 
 i = 0
 
@@ -20,14 +20,11 @@ class CA2dGUI(wx.Frame):
     def initFrame(self):
 
         self.statusbar = self.CreateStatusBar()
-        #self.statusbar.SetStatusText('0')
         self.statusbar.SetStatusText('Iteration = 0')
         self.board = CABoardPanel(self, self.ca, self.statusbar)
         self.board.SetBackgroundColour(wx.Colour(128,128,128))
         self.board.SetFocus()
-        # self.board.start()
 
-        #self.SetTitle("CA 2d Dynamics")
         # centres the frame.
         self.Centre()
         
@@ -39,7 +36,6 @@ class CABoardPanel(wx.Panel):
     ID_TIMER = 1
 
     def __init__(self, parent, ca, statusbar):
-        #super(CABoardPanel, self).__init__(*args, **kw)
         super(CABoardPanel, self).__init__(parent, style=wx.FULL_REPAINT_ON_RESIZE)
         
         # initialize stuff
@@ -50,10 +46,6 @@ class CABoardPanel(wx.Panel):
         # needed this because DrawRectangle() only deals with ints, and not doubles.
         self.widthRemainder = 0
         self.heightRemainder = 0
-        
-        # TODO: if time permits, add Start and Pause Buttons to the gui.
-        self.isStarted = False
-        self.isPaused = False
 
         # some event handlers.
         self.Bind(wx.EVT_PAINT, self.OnPaint)
@@ -66,7 +58,6 @@ class CABoardPanel(wx.Panel):
 
     def OnTimer(self, event):
         if event.GetId() == CABoardPanel.ID_TIMER:
-            # figure out a better way to refresh.
             self.Refresh()
             self.Update()
 
@@ -88,7 +79,6 @@ class CABoardPanel(wx.Panel):
         
         board = self.ca.currentBoard.getBoard()
 
-        #print(self.GetSize())
         blockSizeW = self.squareWidth()
         blockSizeH = self.squareHeight()
 
@@ -135,23 +125,20 @@ def main():
 
     if (simulation == str(1)):
         boardObj = CABoard()
-        ca = CA2dSIRDeterministicDynamics(boardObj)
+        ca = CA2dSIRDynamics(boardObj)
 
     elif (simulation == str(2)):
         boardObj = CABoard()
-        ca = CA2dSIRDeterministicDynamics(boardObj,ruleTypeIsDeterministic=False)
+        ca = CA2dSIRDynamics(boardObj,ruleTypeIsDeterministic=False)
 
     elif (simulation == str(3)):
         boardObj = CABoard(isBoardRandom=True)
-        ca = CA2dSIRDeterministicDynamics(boardObj,diseaseVariants=2,ruleTypeIsDeterministic=False)
+        ca = CA2dSIRDynamics(boardObj,diseaseVariants=2,ruleTypeIsDeterministic=False)
 
     elif (simulation == str(4)):
         boardObj = CABoard(isBoardRandom=True)
-        ca = CA2dSIRDeterministicDynamics(boardObj,diseaseVariants=2,ruleTypeIsDeterministic=False)
-        print("Currently hardcoding 50x50 result of GA.")
-        print(ca.ruleFor2ndVariant["SSSSSSSSi"])
-        ca.ruleFor2ndVariant = secondVariantRuleGA.ruleFor2ndVariant
-        print(ca.ruleFor2ndVariant["SSSSSSSSi"])
+        ca = CA2dSIRDynamics(boardObj,diseaseVariants=2,ruleTypeIsDeterministic=False)
+        ca.nonDeterministicRule2ndVar = secondVariantRuleGA.ruleFor2ndVariant
 
     else:
         errMessage = "Invalid user input: {}. Please select values from 1 to 4 again.".format(simulation)

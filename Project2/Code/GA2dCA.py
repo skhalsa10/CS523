@@ -9,18 +9,7 @@
  Implemented by: Anas Gauba
 """
 
-"""
-GA:
-1) Randomly initialize populations p of CA.
-2) Determine fitness of population
-3) Untill convergence repeat:
-      a) Select parents from population
-      b) Crossover and generate new population
-      c) Perform mutation on new population
-      d) Calculate fitness for new population
-"""
-
-from CA2dSIRDynamicsPart2a import CA2dSIRDeterministicDynamics
+from CA2dSIRDynamics import CA2dSIRDynamics
 from CABoard import CABoard
 import random as rand
 
@@ -36,7 +25,7 @@ class GeneticAlgorithm2DCA:
         # each CA has random board and both 1st variant and initially 2nd variant to random probability.
         for i in range(0,GeneticAlgorithm2DCA._popSize):
             randomBoard = CABoard(isBoardRandom=True)
-            self.popCA.append(CA2dSIRDeterministicDynamics(randomBoard,diseaseVariants=2,ruleTypeIsDeterministic=False))
+            self.popCA.append(CA2dSIRDynamics(randomBoard,diseaseVariants=2,ruleTypeIsDeterministic=False))
             #print(self.popCA[i].getSecondVariantMap())
      
     def buildNextPop(self):
@@ -68,11 +57,9 @@ class GeneticAlgorithm2DCA:
             
             childCA = self.popCA[i]
             childCA.ruleFor2ndVariant = childCA2ndVariantMap
-            #print(i)
+            
             nextPopCA.append(childCA)
         
-        #print(nextPopCA[top20Percent].ruleFor2ndVariant)
-        #print(nextPopCA[21].getSecondVariantMap())
         self.popCA = nextPopCA
         
         # for the next run, make the board be random for the whole CA population.
@@ -99,9 +86,8 @@ class GeneticAlgorithm2DCA:
         for ca in self.popCA:
             boardObj = ca.currentBoard
             while ("I" in boardObj.__str__() or "i" in boardObj.__str__()):
-                #print(boardObj)
                 boardObj = ca.iterateCABoard()
-                #print(boardObj)
+                
             self.calculateFitness(ca)
 
         self.buildNextPop()

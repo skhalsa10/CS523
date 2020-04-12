@@ -98,10 +98,3 @@ class CABoard:
                 stringBuilder += self.__inputBoard[r][c]
             stringBuilder += "\n"
         return stringBuilder
-
-# test = CABoard()
-# print(test)
-# anotherMat = test.inputBoard
-# anotherMat[0][1] = "I"
-# test2 = CABoard(anotherMat)
-# print(test2)
