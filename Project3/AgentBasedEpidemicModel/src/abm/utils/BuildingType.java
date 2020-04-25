@@ -7,7 +7,9 @@ package abm.utils;
  *
  * @version 1.0.0
  * @author Anas Gauba
+ *
+ * updated by Siri
  */
-public enum Destination {
-    HOSPITAL, GROCERY_STORE, HOTEL, RESTURANT, AIRPORT
+public enum BuildingType {
+    HOSPITAL, GROCERY_STORE, HOTEL, RESTURANT, AIRPORT, COMMUNITY
 }
