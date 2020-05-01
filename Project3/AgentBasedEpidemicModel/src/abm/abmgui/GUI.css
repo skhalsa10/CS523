@@ -1,0 +1,39 @@
+.root{
+    -fx-background-color: #3c3f41;
+    -fx-border-color: #3c3f41;
+    -fx-border-width: 1px;
+}
+
+.canvasContainer{
+    -fx-background-color: #333333;
+}
+
+.viewGraph-button{
+    -fx-text-fill: #ff9264;
+    -fx-font-size: 25px;
+    -fx-border-color: #5d6264;
+    -fx-background-color: #313335;
+
+}
+
+.viewGraph-button:pressed{
+    -fx-text-fill: #313335;
+    -fx-font-size: 25px;
+    -fx-border-color: #5d6264;
+    -fx-background-color: #ff9264;
+}
+
+.viewSim-button{
+    -fx-text-fill: #ff9264;
+    -fx-font-size: 25px;
+    -fx-border-color: #3c3f41;
+    -fx-background-color: #3c3f41;
+
+}
+
+.viewSim-button:pressed{
+    -fx-text-fill: #313335;
+    -fx-font-size: 25px;
+    -fx-border-color: #5d6264;
+    -fx-background-color: #ff9264;
+}
