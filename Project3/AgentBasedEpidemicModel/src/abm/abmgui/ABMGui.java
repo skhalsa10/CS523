@@ -31,12 +31,12 @@ import java.util.concurrent.PriorityBlockingQueue;
 public class ABMGui extends AnimationTimer implements Runnable, Communicator {
     //GUI CONSTANTS MOVE TO CONSTANTS FILE
     //TODO slicewidth should move to constants file
-    private final int TIME_SLICE_WIDTH = 2;
+
     //TODO convert the hardcoded total people
     // here to reflect either a constant or data from a message
-    private final double NUMBER_OF_PEOPLE = 100.0;
+     = 100.0;
     //TODO move into constants file
-    private final Color RECOVERED = Color.web("#406CA3");
+
 
 
     //JAVAFX Stuff

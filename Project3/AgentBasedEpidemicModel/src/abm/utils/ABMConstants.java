@@ -16,11 +16,16 @@ public class ABMConstants {
     public final static Color CANVAS_BACKGROUND= Color.web("#333333");
     public final static Color SUSCEPTIBLE = Color.web("#5EF884");
     public final static Color INFECTED = Color.web("#954B4A");
+    public final static Color RECOVERED = Color.web("#406CA3");
+
+    //GUI GRAPH CONSTANTS
+    public final static int TIME_SLICE_WIDTH = 2;
 
     // number of communities, and how many people in each community, list of each
     // communities UPPER_LEFT corner.
     public final static int COMMUNITIES = 18;
     public final static int PEOPLE_IN_COMMUNITY = 20;
+    public final static int TOTAL_NUMBER_OF_PEOPLE = COMMUNITIES*PEOPLE_IN_COMMUNITY;
 
     // padding between communities in the gui.
     private final static double PADDING_WIDTH = 10;
