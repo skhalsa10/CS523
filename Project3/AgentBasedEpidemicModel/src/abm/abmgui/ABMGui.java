@@ -29,6 +29,16 @@ import java.util.concurrent.PriorityBlockingQueue;
  * @author Siri Khalsa
  */
 public class ABMGui extends AnimationTimer implements Runnable, Communicator {
+    //GUI CONSTANTS MOVE TO CONSTANTS FILE
+    //TODO slicewidth should move to constants file
+    private final int TIME_SLICE_WIDTH = 2;
+    //TODO convert the hardcoded total people
+    // here to reflect either a constant or data from a message
+    private final double NUMBER_OF_PEOPLE = 100.0;
+    //TODO move into constants file
+    private final Color RECOVERED = Color.web("#406CA3");
+
+
     //JAVAFX Stuff
     private Stage stage;
 
@@ -52,6 +62,7 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
     private Canvas canvas;
     private GraphicsContext gc;
     private StackPane canvasContainer;
+    private int graphUpdateCounter;
 
     //buttons
     private Button viewGraph;
@@ -128,6 +139,7 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
         // initialize non javafx stuff
         currentScreen = Screen.MAIN;
         graphSlices = new ArrayList<>();
+        graphUpdateCounter = 0;
 
         //once stuff is initialized lets place the pieces where they belong
         canvasContainer.getChildren().addAll(canvas);
@@ -174,6 +186,12 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
 
         this.isRunning = true;
         start();
+
+        //DEBUG DATA TODO DELETE
+        graphSlices.add(new GraphTimeData(50,50,0));
+        graphSlices.add(new GraphTimeData(56,44,0));
+        graphSlices.add(new GraphTimeData(60,37,3));
+        graphSlices.add(new GraphTimeData(53,37, 10));
     }
 
     @Override
@@ -204,6 +222,11 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
         //there are 1000 miliseconds in a second. if we divide this by 60 there
         // are 16.666667 ms between frame draws
         if (now - lastUpdate >= 16_667_000) {
+            //first update any data points used for graph 60 will update every sec
+            if(graphUpdateCounter == 60){
+                graphUpdateCounter = 0;
+                graphSlices.add(new GraphTimeData(53,37, 10));
+            }
 
             if(currentScreen == Screen.GRAPH){
                 renderGraphScreen();
@@ -213,14 +236,67 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
             }
             // helped to stabalize the rendor time
             lastUpdate = now;
+            graphUpdateCounter++;
         }
     }
 
     private void renderGraphScreen() {
         stage.setScene(graphScene);
+        //clear the screen
         gcGraph.setFill(ABMConstants.CANVAS_BACKGROUND);
         gcGraph.fillRect(0,0,ABMConstants.MAP_WIDTH,ABMConstants.MAP_HEIGHT);
 
+
+        int timeSlices = graphSlices.size();
+        //now loop through graph slices
+        for(int i = 0;i<timeSlices;i++){
+
+            //get heights
+            double rHeight = getRHeight(graphSlices.get(i));
+            double sHeight = getSHeight(graphSlices.get(i));
+            double iHeight = getIHeight(graphSlices.get(i));
+            //get the current x
+            double x = i*TIME_SLICE_WIDTH;
+
+            //lets start drawing top down
+            //draw the rect for the R
+            gcGraph.setFill(RECOVERED);
+            gcGraph.fillRect(x,0,TIME_SLICE_WIDTH,rHeight);
+
+
+            //draw the rect for S
+            gcGraph.setFill(ABMConstants.SUSCEPTIBLE);
+            gcGraph.fillRect(x,rHeight,TIME_SLICE_WIDTH,sHeight);
+
+            //draw the rect for I
+            gcGraph.setFill(ABMConstants.INFECTED);
+            gcGraph.fillRect(x,rHeight+sHeight,TIME_SLICE_WIDTH,iHeight);
+
+
+        }
+    }
+
+    /**
+     * This returns the height for
+     */
+    private double getRHeight(GraphTimeData slice) {
+        double percentSI = slice.getR()/NUMBER_OF_PEOPLE;
+        return percentSI*graphCanvas.getHeight();
+    }
+    /**
+     * This returns the height for
+     */
+    private double getSHeight(GraphTimeData slice) {
+        double percentSI = slice.getS()/NUMBER_OF_PEOPLE;
+        return percentSI*graphCanvas.getHeight();
+    }
+
+    /**
+     * This function returns the hight for I
+     */
+    private double getIHeight(GraphTimeData slice) {
+        double percentInfected = slice.getI()/NUMBER_OF_PEOPLE;
+        return percentInfected*graphCanvas.getHeight();
     }
 
     private void renderMainScreen() {
