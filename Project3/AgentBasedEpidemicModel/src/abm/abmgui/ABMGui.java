@@ -23,20 +23,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.PriorityBlockingQueue;
 
+import static abm.utils.ABMConstants.*;
+
 /**
  * The GUI class to show the simulation of ABM epidemic spread.
  * @version 1.0.0
  * @author Siri Khalsa
  */
 public class ABMGui extends AnimationTimer implements Runnable, Communicator {
-    //GUI CONSTANTS MOVE TO CONSTANTS FILE
-    //TODO slicewidth should move to constants file
-
-    //TODO convert the hardcoded total people
-    // here to reflect either a constant or data from a message
-     = 100.0;
-    //TODO move into constants file
-
 
 
     //JAVAFX Stuff
@@ -280,14 +274,14 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
      * This returns the height for
      */
     private double getRHeight(GraphTimeData slice) {
-        double percentSI = slice.getR()/NUMBER_OF_PEOPLE;
+        double percentSI = slice.getR()/(double)TOTAL_NUMBER_OF_PEOPLE;
         return percentSI*graphCanvas.getHeight();
     }
     /**
      * This returns the height for
      */
     private double getSHeight(GraphTimeData slice) {
-        double percentSI = slice.getS()/NUMBER_OF_PEOPLE;
+        double percentSI = slice.getS()/(double)TOTAL_NUMBER_OF_PEOPLE;
         return percentSI*graphCanvas.getHeight();
     }
 
@@ -295,7 +289,7 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
      * This function returns the hight for I
      */
     private double getIHeight(GraphTimeData slice) {
-        double percentInfected = slice.getI()/NUMBER_OF_PEOPLE;
+        double percentInfected = slice.getI()/(double)TOTAL_NUMBER_OF_PEOPLE;
         return percentInfected*graphCanvas.getHeight();
     }
 

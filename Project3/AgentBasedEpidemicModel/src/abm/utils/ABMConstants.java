@@ -71,5 +71,5 @@ public class ABMConstants {
             upperLeftY -= COMMUNITY_HEIGHT+PADDING_HEIGHT;
         }
         return upperLeftCorners;
-    };
+    }
 }
