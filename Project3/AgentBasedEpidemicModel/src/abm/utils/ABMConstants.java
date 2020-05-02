@@ -14,5 +14,8 @@ public class ABMConstants {
     public static Color SUSCEPTIBLE = Color.web("#5EF884");
     public static Color INFECTED = Color.web("#954B4A");
 
+    // number of communities, and how many people in each community.
+    public static int COMMUNITIES = 18;
+    public static int PEOPLE_IN_COMMUNITY = 20;
 
 }
