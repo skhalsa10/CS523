@@ -5,6 +5,7 @@ import abm.buildingmanager.BuildingManager;
 import abm.peopleManager.PeopleManager;
 import abm.utils.Communicator;
 import abm.utils.messages.Message;
+import abm.utils.messages.PersonChangedState;
 import abm.utils.messages.Shutdown;
 import abm.utils.messages.UpdatePeopleState;
 import javafx.stage.Stage;
@@ -80,6 +81,9 @@ public class ABMController extends Thread implements Communicator {
         }
         if (m instanceof UpdatePeopleState) {
             this.peopleManager.sendMessage(m);
+        }
+        if (m instanceof PersonChangedState) {
+            this.gui.sendMessage(m);
         }
     }
 }
