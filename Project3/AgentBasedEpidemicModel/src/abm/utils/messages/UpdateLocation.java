@@ -2,6 +2,11 @@ package abm.utils.messages;
 
 import javafx.geometry.Point2D;
 
+/**
+ * This message is for updating person's location.
+ * @version 1.0.0
+ * @author Anas Gauba
+ */
 public class UpdateLocation implements Message {
 
     private int personId;
