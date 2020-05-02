@@ -174,6 +174,9 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
 
         this.isRunning = true;
         start();
+
+        //DEBUG DATA TODO DELETE
+        graphSlices.add(new GraphTimeData(5,5));
     }
 
     @Override
@@ -218,9 +221,12 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
 
     private void renderGraphScreen() {
         stage.setScene(graphScene);
+        //clear the screen
         gcGraph.setFill(ABMConstants.CANVAS_BACKGROUND);
         gcGraph.fillRect(0,0,ABMConstants.MAP_WIDTH,ABMConstants.MAP_HEIGHT);
 
+        //now loop through graph slices
+        for(int i = 0;)
     }
 
     private void renderMainScreen() {
