@@ -13,10 +13,11 @@ public class ABMConstants {
     public final static int WINDOW_HEIGHT = 900;
 
     //Colors
-    public final static Color CANVAS_BACKGROUND= Color.web("#333333");
-    public final static Color SUSCEPTIBLE = Color.web("#5EF884");
-    public final static Color INFECTED = Color.web("#954B4A");
-    public final static Color RECOVERED = Color.web("#406CA3");
+    public final static Color CANVAS_BACKGROUND_COLOR= Color.web("#333333");
+    public final static Color COMMUNITY_COLOR= Color.web("#999999");
+    public final static Color SUSCEPTIBLE_COLOR = Color.web("#5EF884");
+    public final static Color INFECTED_COLOR = Color.web("#954B4A");
+    public final static Color RECOVERED_COLOR = Color.web("#406CA3");
 
     //GUI GRAPH CONSTANTS
     public final static int TIME_SLICE_WIDTH = 2;
