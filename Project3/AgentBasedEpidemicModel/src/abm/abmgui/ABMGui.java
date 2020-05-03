@@ -8,6 +8,7 @@ import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -99,32 +100,32 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
         mainRoot = new VBox();
         mainRoot.setAlignment(Pos.CENTER);
         canvasContainer = new StackPane();
-        canvas = new Canvas(ABMConstants.MAP_WIDTH,ABMConstants.MAP_HEIGHT);
-        canvas.minWidth(ABMConstants.MAP_WIDTH);
-        canvas.minHeight(ABMConstants.MAP_HEIGHT);
-        canvas.maxWidth(ABMConstants.MAP_WIDTH);
-        canvas.maxHeight(ABMConstants.MAP_HEIGHT);
+        canvas = new Canvas(MAP_WIDTH,MAP_HEIGHT);
+        canvas.minWidth(MAP_WIDTH);
+        canvas.minHeight(MAP_HEIGHT);
+        canvas.maxWidth(MAP_WIDTH);
+        canvas.maxHeight(MAP_HEIGHT);
         gc = canvas.getGraphicsContext2D();
 
         bottomPaneMain = new HBox();
 
         //graph screen
         susceptibleText = new Text("Susceptible");
-        susceptibleText.setFill(ABMConstants.SUSCEPTIBLE);
+        susceptibleText.setFill(SUSCEPTIBLE_COLOR);
         susceptibleText.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
         susceptibleText.setTextAlignment(TextAlignment.CENTER);
         infectedText = new Text("Infected");
-        infectedText.setFill(ABMConstants.INFECTED);
+        infectedText.setFill(INFECTED_COLOR);
         infectedText.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
         infectedText.setTextAlignment(TextAlignment.CENTER);
         graphRoot = new VBox();
         graphRoot.setAlignment(Pos.CENTER);
         graphCanvasContainer = new StackPane();
-        graphCanvas = new Canvas(ABMConstants.MAP_WIDTH,ABMConstants.MAP_HEIGHT);
-        graphCanvas.minWidth(ABMConstants.MAP_WIDTH);
-        graphCanvas.minHeight(ABMConstants.MAP_HEIGHT);
-        graphCanvas.maxWidth(ABMConstants.MAP_WIDTH);
-        graphCanvas.maxHeight(ABMConstants.MAP_HEIGHT);
+        graphCanvas = new Canvas(MAP_WIDTH,MAP_HEIGHT);
+        graphCanvas.minWidth(MAP_WIDTH);
+        graphCanvas.minHeight(MAP_HEIGHT);
+        graphCanvas.maxWidth(MAP_WIDTH);
+        graphCanvas.maxHeight(MAP_HEIGHT);
         gcGraph = graphCanvas.getGraphicsContext2D();
         topPaneGraph = new HBox();
 
@@ -237,12 +238,12 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
     private void renderGraphScreen() {
         stage.setScene(graphScene);
         //clear the screen
-        gcGraph.setFill(ABMConstants.CANVAS_BACKGROUND);
+        gcGraph.setFill(CANVAS_BACKGROUND_COLOR);
         gcGraph.fillRect(0,0,ABMConstants.MAP_WIDTH,ABMConstants.MAP_HEIGHT);
 
 
         int timeSlices = graphSlices.size();
-        //now loop through graph slices
+        //now loop through graph slices and render them
         for(int i = 0;i<timeSlices;i++){
 
             //get heights
@@ -254,16 +255,16 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
 
             //lets start drawing top down
             //draw the rect for the R
-            gcGraph.setFill(RECOVERED);
+            gcGraph.setFill(RECOVERED_COLOR);
             gcGraph.fillRect(x,0,TIME_SLICE_WIDTH,rHeight);
 
 
             //draw the rect for S
-            gcGraph.setFill(ABMConstants.SUSCEPTIBLE);
+            gcGraph.setFill(SUSCEPTIBLE_COLOR);
             gcGraph.fillRect(x,rHeight,TIME_SLICE_WIDTH,sHeight);
 
             //draw the rect for I
-            gcGraph.setFill(ABMConstants.INFECTED);
+            gcGraph.setFill(INFECTED_COLOR);
             gcGraph.fillRect(x,rHeight+sHeight,TIME_SLICE_WIDTH,iHeight);
 
 
@@ -295,8 +296,15 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
 
     private void renderMainScreen() {
         stage.setScene(mainScene);
-        gc.setFill(ABMConstants.CANVAS_BACKGROUND);
-        gc.fillRect(0,0,ABMConstants.MAP_WIDTH,ABMConstants.MAP_HEIGHT);
+        gc.setFill(CANVAS_BACKGROUND_COLOR);
+        gc.fillRect(0,0,MAP_WIDTH,MAP_HEIGHT);
+
+        //now lets draw the communities
+        gc.setFill(COMMUNITY_COLOR);
+        for (Point2D corner:COMMUNITIES_UPPERLEFT_CORNERS) {
+            gc.fillRect(corner.getX(),corner.getY(),COMMUNITY_WIDTH,COMMUNITY_HEIGHT);
+
+        }
     }
 
     private synchronized void processMessage(Message m) {
