@@ -303,7 +303,30 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
         gc.setFill(COMMUNITY_COLOR);
         for (Point2D corner:COMMUNITIES_UPPERLEFT_CORNERS) {
             gc.fillRect(corner.getX(),corner.getY(),COMMUNITY_WIDTH,COMMUNITY_HEIGHT);
+        }
 
+        //now lets draw the airport
+        gc.setFill(AIRPORT_COLOR);
+        gc.fillRect(AIRPORT_UPPERLEFT_CORNER.getX(),
+                    AIRPORT_UPPERLEFT_CORNER.getY(),
+                    AIRPORT_WIDTH,AIRPORT_HEIGHT);
+
+        //now lets draw the two Grocery stores
+        gc.setFill(BUILDING_COLOR);
+        gc.fillRect(GROCERY1_UPPERLEFT.getX(),GROCERY1_UPPERLEFT.getY(),BUILDING_WIDTH,BUILDING_HEIGHT);
+        gc.fillRect(GROCERY2_UPPERLEFT.getX(),GROCERY2_UPPERLEFT.getY(),BUILDING_WIDTH,BUILDING_HEIGHT);
+
+        //now lets draw the hospitals
+        gc.fillRect(HOSPITAL1_UPPERLEFT.getX(),HOSPITAL1_UPPERLEFT.getY(),BUILDING_WIDTH,BUILDING_HEIGHT);
+        gc.fillRect(HOSPITAL2_UPPERLEFT.getX(),HOSPITAL2_UPPERLEFT.getY(),BUILDING_WIDTH,BUILDING_HEIGHT);
+
+        //now lets draw the hotel
+        gc.fillRect(HOTEL_UPPERLEFT.getX(),HOTEL_UPPERLEFT.getY(),BUILDING_WIDTH,BUILDING_HEIGHT);
+
+        //now lets draw all the restaurants
+        gc.setFill(RESTAURANT_COLOR);
+        for (Point2D corners: RESTAURANT_UPPERLEFT_CORNERS) {
+            gc.fillRect(corners.getX(),corners.getY(),RESTAURANT_WIDTH,RESTAURANT_HEIGHT);
         }
     }
 

@@ -18,6 +18,9 @@ public class ABMConstants {
     public final static Color SUSCEPTIBLE_COLOR = Color.web("#5EF884");
     public final static Color INFECTED_COLOR = Color.web("#954B4A");
     public final static Color RECOVERED_COLOR = Color.web("#406CA3");
+    public final static Color AIRPORT_COLOR = Color.web("#ffdba9");
+    public final static Color BUILDING_COLOR = Color.web("#ffdbb9");
+    public final static Color RESTAURANT_COLOR = Color.web("#83bbe5");
 
     //GUI GRAPH CONSTANTS
     public final static int TIME_SLICE_WIDTH = 2;
@@ -43,7 +46,67 @@ public class ABMConstants {
     public final static double COMMUNITY_WIDTH = (MAP_WIDTH-PADDING_WIDTH*X_PADDINGS)/X_COMMUNITIES;
     public final static double COMMUNITY_HEIGHT = (MAP_HEIGHT-PADDING_HEIGHT*Y_PADDINGS)/Y_COMMUNITIES;
 
+    //lets calculate the center space
+    private final static double CENTER_WIDTH =  4*COMMUNITY_WIDTH+3*PADDING_WIDTH;
+    private final static double CENTER_HEIGHT =  3*COMMUNITY_HEIGHT+2*PADDING_HEIGHT;
+
+    //airport dimensions and upper left corner
+    public final static double AIRPORT_WIDTH = 2*(COMMUNITY_WIDTH/3);
+    public final static double AIRPORT_HEIGHT = COMMUNITY_HEIGHT/2+ COMMUNITY_HEIGHT+2*PADDING_HEIGHT;
+    public final static Point2D AIRPORT_UPPERLEFT_CORNER = new Point2D(MAP_WIDTH-(2*PADDING_WIDTH)-2*(COMMUNITY_WIDTH/3)-COMMUNITY_WIDTH,COMMUNITY_HEIGHT+2*PADDING_HEIGHT+3*(COMMUNITY_HEIGHT/4));
+
+    //lets calculate the center width without Airport
+    private final static double CENTER_WIDTH_NO_AIRPORT = CENTER_WIDTH-PADDING_WIDTH-AIRPORT_WIDTH;
+
+    //lets calculate the BUILDING sizes
+    public final static double BUILDING_WIDTH = (CENTER_WIDTH_NO_AIRPORT/3) - 2*PADDING_WIDTH;
+    public final static double BUILDING_HEIGHT = COMMUNITY_HEIGHT;
+
+    public final static Point2D GROCERY1_UPPERLEFT = new Point2D(3*PADDING_WIDTH+COMMUNITY_WIDTH,2*PADDING_HEIGHT+COMMUNITY_HEIGHT);
+    public final static Point2D GROCERY2_UPPERLEFT = new Point2D(GROCERY1_UPPERLEFT.getX()+2*BUILDING_WIDTH+2*PADDING_WIDTH,GROCERY1_UPPERLEFT.getY()+2*PADDING_HEIGHT+2*COMMUNITY_HEIGHT);
+    public final static Point2D HOSPITAL1_UPPERLEFT = new Point2D(GROCERY1_UPPERLEFT.getX()+2*BUILDING_WIDTH+2*PADDING_WIDTH,GROCERY1_UPPERLEFT.getY());
+    public final static Point2D HOSPITAL2_UPPERLEFT = new Point2D(GROCERY1_UPPERLEFT.getX()+BUILDING_WIDTH+PADDING_WIDTH, GROCERY1_UPPERLEFT.getY()+COMMUNITY_HEIGHT+PADDING_HEIGHT) ;
+    public final static Point2D HOTEL_UPPERLEFT = new Point2D(GROCERY1_UPPERLEFT.getX(),GROCERY1_UPPERLEFT.getY()+2*PADDING_HEIGHT+2*COMMUNITY_HEIGHT);
+
+    //RESTAURANT buildings
+    public final static double RESTAURANT_WIDTH = BUILDING_WIDTH/3;
+    public final static double RESTAURANT_HEIGHT = BUILDING_HEIGHT/3;
+
     public final static ArrayList<Point2D> COMMUNITIES_UPPERLEFT_CORNERS = getCommunitiesUpperleftCorners();
+    public final static ArrayList<Point2D> RESTAURANT_UPPERLEFT_CORNERS = getRestaurantUpperleftCorners();
+
+    private static ArrayList<Point2D> getRestaurantUpperleftCorners() {
+        ArrayList<Point2D> upperLeftCorners = new ArrayList<>();
+
+        //top
+        double x = GROCERY1_UPPERLEFT.getX()+BUILDING_WIDTH+PADDING_WIDTH;
+        double y = GROCERY1_UPPERLEFT.getY();
+        addUpperLeftRestaurantPoints(x,y,upperLeftCorners);
+
+        //right
+        x = HOSPITAL1_UPPERLEFT.getX();
+        y = HOSPITAL1_UPPERLEFT.getY()+BUILDING_HEIGHT+PADDING_HEIGHT;
+        addUpperLeftRestaurantPoints(x,y,upperLeftCorners);
+
+        //bottom
+        x = HOSPITAL2_UPPERLEFT.getX();
+        y = HOSPITAL2_UPPERLEFT.getY()+BUILDING_HEIGHT+PADDING_HEIGHT;
+        addUpperLeftRestaurantPoints(x,y,upperLeftCorners);
+
+        //left
+        x = GROCERY1_UPPERLEFT.getX();
+        y = GROCERY1_UPPERLEFT.getY()+BUILDING_HEIGHT+PADDING_HEIGHT;
+        addUpperLeftRestaurantPoints(x,y,upperLeftCorners);
+
+        return upperLeftCorners;
+    }
+
+    private static void addUpperLeftRestaurantPoints(double x, double y, ArrayList<Point2D> upperLeftCorners) {
+        upperLeftCorners.add(new Point2D(x, y));
+        upperLeftCorners.add(new Point2D(x+2*RESTAURANT_WIDTH, y));
+        upperLeftCorners.add(new Point2D(x+2*RESTAURANT_WIDTH, y+2*RESTAURANT_HEIGHT));
+        upperLeftCorners.add(new Point2D(x, y+2*RESTAURANT_HEIGHT));
+    }
 
     /**
      * this private helper starts at the upperleft community when compared to the prototype
