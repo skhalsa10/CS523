@@ -6,11 +6,11 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 
 public class ABMConstants {
-    public final static int MAP_WIDTH = 1200;
-    public final static int MAP_HEIGHT = 800;
+    public final static double MAP_WIDTH = 0.625*javafx.stage.Screen.getPrimary().getBounds().getMaxX();
+    public final static double MAP_HEIGHT = 0.741*javafx.stage.Screen.getPrimary().getBounds().getMaxY();
 
-    public final static int WINDOW_WIDTH = 1200;
-    public final static int WINDOW_HEIGHT = 900;
+    public final static double WINDOW_WIDTH = 0.625*javafx.stage.Screen.getPrimary().getBounds().getMaxX();
+    public final static double WINDOW_HEIGHT = 0.8333*javafx.stage.Screen.getPrimary().getBounds().getMaxY();
 
     //Colors
     public final static Color CANVAS_BACKGROUND_COLOR= Color.web("#333333");

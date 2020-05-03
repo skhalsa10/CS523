@@ -73,6 +73,9 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
     private long lastUpdate = 0;//used to update 60 frames per second
 
     public ABMGui(Stage primaryStage, ABMController abmController) {
+
+        messages = new PriorityBlockingQueue<>();
+
         //time to initialize GUI stuff
         this.stage = primaryStage;
         this.stage.setTitle("Agent Based Epidemic Model");
@@ -173,7 +176,6 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
         stage.setMinWidth(ABMConstants.WINDOW_WIDTH);
         stage.setMinHeight(ABMConstants.WINDOW_HEIGHT);
 
-        System.out.println(mainRoot.getWidth());
 
         //display the stage
         stage.setScene(mainScene);
@@ -188,8 +190,11 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
         graphSlices.add(new GraphTimeData(56,44,0));
         graphSlices.add(new GraphTimeData(60,37,3));
         graphSlices.add(new GraphTimeData(53,37, 10));
-        Rectangle2D screenBounds = javafx.stage.Screen.getPrimary().getBounds();
-        System.out.println("screen size is: " + screenBounds);
+        javafx.stage.Screen.getPrimary().getBounds().getMaxX();
+        System.out.println("screen size is: " + javafx.stage.Screen.getPrimary().getBounds().getMaxX());
+        javafx.stage.Screen.getPrimary().getDpi();
+        System.out.println("DPI: "+ javafx.stage.Screen.getPrimary().getDpi());
+
     }
 
     @Override
