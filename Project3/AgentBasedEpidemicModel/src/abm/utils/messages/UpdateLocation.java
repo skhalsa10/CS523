@@ -1,5 +1,6 @@
 package abm.utils.messages;
 
+import abm.utils.State;
 import javafx.geometry.Point2D;
 
 /**
@@ -11,9 +12,11 @@ public class UpdateLocation implements Message {
 
     private int personId;
     private Point2D loc;
+    private State personState;
 
-    public UpdateLocation(int personId, Point2D location) {
+    public UpdateLocation(State personState, int personId, Point2D location) {
         this.personId = personId;
+        this.personState = personState;
         this.loc = new Point2D(location.getX(), location.getY());
     }
 
@@ -23,5 +26,9 @@ public class UpdateLocation implements Message {
 
     public Point2D getLoc() {
         return loc;
+    }
+
+    public State getPersonState() {
+        return personState;
     }
 }
