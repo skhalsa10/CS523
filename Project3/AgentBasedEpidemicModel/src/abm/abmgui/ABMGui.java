@@ -10,19 +10,17 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.PriorityBlockingQueue;
 
 import static abm.utils.ABMConstants.*;
@@ -52,6 +50,7 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
     private GraphicsContext gcGraph;
     private Text susceptibleText;
     private Text infectedText;
+    private Text recoveredText;
 
 
     //animated map
@@ -66,15 +65,20 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
 
     //State related stuff
     private PriorityBlockingQueue<Message> messages;
+    private ConcurrentHashMap<Integer,GUIPersonInfo> peopleMap;
     private boolean isRunning;
     private Screen currentScreen;
     private ArrayList<GraphTimeData> graphSlices;
-
+    private Thread messageThread;
     private long lastUpdate = 0;//used to update 60 frames per second
+    private int totalPeople;
 
     public ABMGui(Stage primaryStage, ABMController abmController) {
 
         messages = new PriorityBlockingQueue<>();
+        peopleMap = new ConcurrentHashMap<>();
+        messageThread = new Thread(this);
+        totalPeople = 0;
 
         //time to initialize GUI stuff
         this.stage = primaryStage;
@@ -114,6 +118,10 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
         bottomPaneMain = new HBox();
 
         //graph screen
+        recoveredText = new Text("Recovered");
+        recoveredText.setFill(RECOVERED_COLOR);
+        recoveredText.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+        recoveredText.setTextAlignment(TextAlignment.CENTER);
         susceptibleText = new Text("Susceptible");
         susceptibleText.setFill(SUSCEPTIBLE_COLOR);
         susceptibleText.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
@@ -155,7 +163,7 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
         //graph screen
         graphCanvasContainer.getChildren().addAll(graphCanvas);
         Pane spacer3 = new Pane();
-        topPaneGraph.getChildren().addAll(viewSim,spacer3,susceptibleText,infectedText);
+        topPaneGraph.getChildren().addAll(viewSim,spacer3,recoveredText,susceptibleText,infectedText);
         topPaneGraph.setHgrow(spacer3,Priority.ALWAYS);
         topPaneGraph.setSpacing(10);
         topPaneGraph.setPadding(new Insets(5));
@@ -182,18 +190,17 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
         stage.show();
         stage.setResizable(false);
 
-        this.isRunning = true;
-        start();
+        isRunning = true;
+        System.out.println("Starting message Thread before");
+        messageThread.start();
+        System.out.println("Starting message Thread after");
+        this.start();
 
         //DEBUG DATA TODO DELETE
         graphSlices.add(new GraphTimeData(50,50,0));
         graphSlices.add(new GraphTimeData(56,44,0));
         graphSlices.add(new GraphTimeData(60,37,3));
         graphSlices.add(new GraphTimeData(53,37, 10));
-        javafx.stage.Screen.getPrimary().getBounds().getMaxX();
-        System.out.println("screen size is: " + javafx.stage.Screen.getPrimary().getBounds().getMaxX());
-        javafx.stage.Screen.getPrimary().getDpi();
-        System.out.println("DPI: "+ javafx.stage.Screen.getPrimary().getDpi());
 
     }
 
@@ -341,8 +348,10 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
     private synchronized void processMessage(Message m) {
         //TODO: Implement this as we add messages.
         if (m instanceof Shutdown) {
-            this.isRunning = false;
-            System.out.println("Building Manager Shutting down.");
+            System.out.println("GUI is Shutting down");
+            isRunning = false;
+            this.stop();
         }
+        else if (m instanceof U)
     }
 }
