@@ -10,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -187,6 +188,8 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
         graphSlices.add(new GraphTimeData(56,44,0));
         graphSlices.add(new GraphTimeData(60,37,3));
         graphSlices.add(new GraphTimeData(53,37, 10));
+        Rectangle2D screenBounds = javafx.stage.Screen.getPrimary().getBounds();
+        System.out.println("screen size is: " + screenBounds);
     }
 
     @Override
