@@ -1,6 +1,6 @@
 package abm.utils.messages;
 
-import abm.utils.State;
+import abm.utils.SIRQState;
 
 /**
  * This message triggers when a person is asked to tell its current state.
@@ -9,16 +9,16 @@ import abm.utils.State;
  */
 public class PersonChangedState implements Message {
 
-    private State state;
+    private SIRQState SIRQState;
     private int personId;
 
-    public PersonChangedState(State newState, int personId) {
-        this.state = newState;
+    public PersonChangedState(SIRQState newSIRQState, int personId) {
+        this.SIRQState = newSIRQState;
         this.personId = personId;
     }
 
-    public State getNewState() {
-        return state;
+    public SIRQState getNewState() {
+        return SIRQState;
     }
 
     public int getPersonId() {

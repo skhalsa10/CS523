@@ -1,6 +1,6 @@
 package abm.utils.messages;
 
-import abm.utils.State;
+import abm.utils.SIRQState;
 import javafx.geometry.Point2D;
 
 /**
@@ -12,12 +12,12 @@ public class NewPerson implements Message {
 
     private int personId;
     private Point2D loc;
-    private State personState;
+    private SIRQState personSIRQState;
 
 
-    public NewPerson(State personState, int personId, Point2D location) {
+    public NewPerson(SIRQState personSIRQState, int personId, Point2D location) {
         this.personId = personId;
-        this.personState = personState;
+        this.personSIRQState = personSIRQState;
         this.loc = new Point2D(location.getX(), location.getY());
     }
 
@@ -29,7 +29,7 @@ public class NewPerson implements Message {
         return loc;
     }
 
-    public State getPersonState() {
-        return personState;
+    public SIRQState getPersonSIRQState() {
+        return personSIRQState;
     }
 }

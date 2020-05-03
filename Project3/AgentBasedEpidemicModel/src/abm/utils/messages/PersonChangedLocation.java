@@ -1,6 +1,5 @@
 package abm.utils.messages;
 
-import abm.utils.State;
 import javafx.geometry.Point2D;
 
 /**
