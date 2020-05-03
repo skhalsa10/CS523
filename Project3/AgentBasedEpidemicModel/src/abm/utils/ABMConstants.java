@@ -30,7 +30,7 @@ public class ABMConstants {
 
     // padding between communities in the gui.
     private final static double PADDING_WIDTH = 10;
-    private final static double PADDING_HEIGHT = 10;
+    private final static double PADDING_HEIGHT = 15;
 
     // determines the number of paddings there are among communities (in x and y direction).
     private final static int X_PADDINGS = 7;
@@ -58,38 +58,32 @@ public class ABMConstants {
 
         System.out.println("beggining to build list");
         // go topLeft -> topRight first.
-        for (int i = 0; i< X_COMMUNITIES;i++) {
+        for (int i = 1; i< X_COMMUNITIES;i++) {
             upperLeftCorners.add(new Point2D(upperLeftX, upperLeftY));
             upperLeftX += COMMUNITY_WIDTH+PADDING_WIDTH;
         }
 
-        //to make sure we dont redo the corner we shift down.
-        upperLeftY += COMMUNITY_HEIGHT+PADDING_HEIGHT;
         // go topRight ->  bottomRight.
         for (int i = 1; i< Y_COMMUNITIES;i++) {
             upperLeftCorners.add(new Point2D(upperLeftX, upperLeftY));
             upperLeftY += COMMUNITY_HEIGHT+PADDING_HEIGHT;
         }
 
-        //to make sure we dont add the bottom right corner twice we shift left
-        // and start i at 1
-        upperLeftX -= COMMUNITY_WIDTH+PADDING_WIDTH;
+
         // go bottomRight -> bottomLeft.
         for (int i = 1; i< X_COMMUNITIES;i++) {
             upperLeftCorners.add(new Point2D(upperLeftX, upperLeftY));
             upperLeftX -= COMMUNITY_WIDTH+PADDING_WIDTH;
         }
 
-        //we dont want to add the top and bottom left corners again
-        //so we shift up and start counter at 2
-        upperLeftY -= COMMUNITY_HEIGHT+PADDING_HEIGHT;
+
         // go bottomLeft -> topLeft.
-        for (int i = 2; i< Y_COMMUNITIES;i++){
+        for (int i = 1; i< Y_COMMUNITIES;i++){
             upperLeftCorners.add(new Point2D(upperLeftX, upperLeftY));
             upperLeftY -= COMMUNITY_HEIGHT+PADDING_HEIGHT;
         }
 
-        System.out.println("complete");
+        System.out.println("complete and length is: "+upperLeftCorners.size());
         return upperLeftCorners;
     }
 }
