@@ -3,10 +3,8 @@ package abm.peopleManager;
 import abm.ABMController;
 import abm.utils.ABMConstants;
 import abm.utils.Communicator;
-import abm.utils.messages.Message;
-import abm.utils.messages.Shutdown;
-import abm.utils.messages.UpdateLocation;
-import abm.utils.messages.UpdatePeopleState;
+import abm.utils.PersonLocationState;
+import abm.utils.messages.*;
 import javafx.geometry.Point2D;
 
 import java.util.ArrayList;
@@ -78,8 +76,8 @@ public class PeopleManager extends Thread implements Communicator {
                 peopleInCommunity.add(person);
                 personId++;
 
-                // give this person's info to the controller so the gui can render.
-                this.abmController.sendMessage(new UpdateLocation(person.getCurrentState(), personId, personLocation));
+                // give this new person's info to the controller so the gui can render.
+                this.abmController.sendMessage(new NewPerson(person.getCurrentSIRQState(), personId, personLocation));
             }
             communities.put(communityId, peopleInCommunity);
         }
@@ -90,8 +88,29 @@ public class PeopleManager extends Thread implements Communicator {
             this.isRunning = false;
             System.out.println("People Manager Shutting down.");
         }
+        // update people's location state.
         if (m instanceof UpdatePeopleState) {
-
+            // go thru every community and every person in it to update their location state.
+            for (Integer communityID : communities.keySet()) {
+                ArrayList<Person> people = communities.get(communityID);
+                for (Person person : people) {
+                    person.update(this.messages);
+//                    if (person.getCurrentLocationState() == PersonLocationState.WAITING_FOR_DESTINATION) {
+//                        // send a message to abmController so it can ask the buildingManager for a building
+//                        // to go to.
+//                        this.abmController.sendMessage(
+//                                new PersonWaitingForDestination(person.getHomeCommunityID(), person.getID()));
+//                    }
+                }
+            }
+        }
+        if (m instanceof DestinationForPerson) {
+            DestinationForPerson dest = (DestinationForPerson) m;
+            Person person = communities.get(dest.getPersonCommunityID()).get(dest.getPersonID());
+            person.setDestBuildingID(dest.getBuildingID());
+            person.setBuildingTypeToGo(dest.getBuildingTypeToGo());
+            person.setBuildingDest(dest.getBuildingDestToGo());
+            person.setLocationState(PersonLocationState.DESTINATION_GIVEN);
         }
     }
 }
