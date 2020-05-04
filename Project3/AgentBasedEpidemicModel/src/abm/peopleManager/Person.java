@@ -38,7 +38,7 @@ public class Person {
     private int quarantineCountDown;
     private BuildingType buildingTypeToGo;
     private Point2D buildingDest;
-    private int destID;
+    private int buildingDestID;
 
     // gives the locationState of a person currently in.
     private PersonLocationState currentLocationState;
@@ -64,7 +64,7 @@ public class Person {
         this.atDestinationCountDown = 0;
         this.buildingTypeToGo = null;
         this.buildingDest = null;
-        this.destID = 0;
+        this.buildingDestID = 0;
 
         // by default, we are not quarantined.
         this.quarantineCountDown = 0;
@@ -76,7 +76,7 @@ public class Person {
 
         // pick a destination inside community so a person can move in their community while they are inside.
         this.currentLocationState = PersonLocationState.AT_COMMUNITY;
-        setWalkInsideBuildingDest();
+        setWalkInsideCommunity();
     }
 
     public int getID() {
@@ -108,11 +108,11 @@ public class Person {
     }
 
     public int getDestBuildingID() {
-        return destID;
+        return buildingDestID;
     }
 
     public void setDestBuildingID(int newDestBuildingID) {
-        this.destID = newDestBuildingID;
+        this.buildingDestID = newDestBuildingID;
     }
 
     public PersonLocationState getCurrentLocationState() {
@@ -142,15 +142,19 @@ public class Person {
             case WALKING:
                 // check whether walking towards a building or towards community?
                 if (this.buildingDest != null) {
-                    // check whether a person has reached closed to dest.
+                    // check whether a person has reached close to dest.
                     if (isCloseToDestination()) {
                         // at the destination, add a random destinationCountDown. The person will randomly be
                         // at the destination for 1-5 seconds.
                         this.currentLocationState = PersonLocationState.AT_DESTINATION;
                         this.atDestinationCountDown = 60 * (rand.nextInt(5) + 1);
 
+                        // now that we have reached the destination, check to see which building we are inside? so we can
+                        // keep walking inside the building while we are there.
+                        checkBuildingToWalkInsideTo();
+
                         messagesQueue.put(new EnterBuilding(
-                                this.destID, this.buildingTypeToGo, this.ID, this.currentSIRQState, this.sicknessScale));
+                                this.buildingDestID, this.buildingTypeToGo, this.ID, this.currentSIRQState, this.sicknessScale));
                     } else {
                         moveTowardsDestination();
                         messagesQueue.put(new PersonChangedLocation(this.ID, this.currentLocation));
@@ -164,6 +168,9 @@ public class Person {
                         //  inside their community for a little longer.
                         this.currentLocationState = PersonLocationState.AT_COMMUNITY;
                         this.atCommunityCountDown = 60 * (rand.nextInt(8) + 1);
+
+                        // now we walk inside the community while we are there.
+                        setWalkInsideCommunity();
                     }
                     else {
                         moveTowardsDestination();
@@ -195,7 +202,7 @@ public class Person {
                         this.distance = currentLocation.distance(homeLocation);
                         this.currentLocationState = PersonLocationState.WALKING;
 
-                        messagesQueue.put(new ExitBuilding(this.destID,this.buildingTypeToGo,this.ID,this.currentSIRQState));
+                        messagesQueue.put(new ExitBuilding(this.buildingDestID,this.buildingTypeToGo,this.ID,this.currentSIRQState));
                     }
                 }
                 break;
@@ -242,16 +249,60 @@ public class Person {
                 currentLocation.getY() > buildingDest.getY() - 1 && currentLocation.getY() < buildingDest.getY() + 1;
     }
 
-    private void setWalkInsideBuildingDest() {
-        // check whether walking inside their community or at some other destination?
-        if (this.currentLocationState == PersonLocationState.AT_COMMUNITY) {
-            Point2D communityCoord = ABMConstants.COMMUNITIES_UPPERLEFT_CORNERS.get(this.homeCommunityID-1);
-            double x = rand.nextDouble() * ABMConstants.COMMUNITY_WIDTH + communityCoord.getX();
-            double y = rand.nextDouble() * ABMConstants.COMMUNITY_HEIGHT + communityCoord.getY();
-            this.walkInside = new Point2D(x, y);
-        }
-        else {
+    private void setWalkInsideCommunity() {
+        Point2D communityLocation = ABMConstants.COMMUNITIES_UPPERLEFT_CORNERS.get(this.homeCommunityID-1);
+        double x = rand.nextDouble() * ABMConstants.COMMUNITY_WIDTH + communityLocation.getX();
+        double y = rand.nextDouble() * ABMConstants.COMMUNITY_HEIGHT + communityLocation.getY();
+        this.walkInside = new Point2D(x, y);
+    }
 
+    private void checkBuildingToWalkInsideTo() {
+        double x;
+        double y;
+
+        switch (this.buildingTypeToGo) {
+            case AIRPORT:
+                // TODO: implement it if we add airport functionality.
+                break;
+            case GROCERY_STORE:
+                // there are only two grocery stores.
+                if (buildingDestID == 1) {
+                    x = rand.nextDouble() * ABMConstants.BUILDING_WIDTH + ABMConstants.GROCERY1_UPPERLEFT.getX();
+                    y = rand.nextDouble() * ABMConstants.BUILDING_HEIGHT + ABMConstants.GROCERY1_UPPERLEFT.getY();
+                    this.walkInside = new Point2D(x, y);
+                }
+                else {
+                    x = rand.nextDouble() * ABMConstants.BUILDING_WIDTH + ABMConstants.GROCERY2_UPPERLEFT.getX();
+                    y = rand.nextDouble() * ABMConstants.BUILDING_HEIGHT + ABMConstants.GROCERY2_UPPERLEFT.getY();
+                    this.walkInside = new Point2D(x, y);
+                }
+                break;
+            case HOSPITAL:
+                // there are only two hospitals.
+                if (buildingDestID == 1) {
+                    x = rand.nextDouble() * ABMConstants.BUILDING_WIDTH + ABMConstants.HOSPITAL1_UPPERLEFT.getX();
+                    y = rand.nextDouble() * ABMConstants.BUILDING_HEIGHT + ABMConstants.HOSPITAL1_UPPERLEFT.getY();
+                    this.walkInside = new Point2D(x, y);
+                }
+                else {
+                    x = rand.nextDouble() * ABMConstants.BUILDING_WIDTH + ABMConstants.HOSPITAL2_UPPERLEFT.getX();
+                    y = rand.nextDouble() * ABMConstants.BUILDING_HEIGHT + ABMConstants.HOSPITAL2_UPPERLEFT.getY();
+                    this.walkInside = new Point2D(x, y);
+                }
+                break;
+            case HOTEL:
+                // there is only one hotel.
+                x = rand.nextDouble() * ABMConstants.BUILDING_WIDTH + ABMConstants.HOTEL_UPPERLEFT.getX();
+                y = rand.nextDouble() * ABMConstants.BUILDING_HEIGHT + ABMConstants.HOTEL_UPPERLEFT.getY();
+                this.walkInside = new Point2D(x, y);
+                break;
+            case RESTURANT:
+                // look for which restaurant the person is going.
+                Point2D restaurantLocation = ABMConstants.RESTAURANT_UPPERLEFT_CORNERS.get(this.buildingDestID-1);
+                x = rand.nextDouble() * ABMConstants.RESTAURANT_WIDTH + restaurantLocation.getX();
+                y = rand.nextDouble() * ABMConstants.RESTAURANT_HEIGHT + restaurantLocation.getY();
+                this.walkInside = new Point2D(x, y);
+                break;
         }
     }
 }
