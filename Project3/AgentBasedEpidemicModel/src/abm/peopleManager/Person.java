@@ -1,5 +1,6 @@
 package abm.peopleManager;
 
+import abm.utils.ABMConstants;
 import abm.utils.BuildingType;
 import abm.utils.PersonLocationState;
 import abm.utils.SIRQState;
@@ -18,8 +19,10 @@ import java.util.concurrent.PriorityBlockingQueue;
 public class Person {
     private int ID;
     private int homeCommunityID;
+    // homeLocation is saved so the person can go back to their home. walkInside is used to walk inside a building.
     private Point2D currentLocation;
     private Point2D homeLocation;
+    private Point2D walkInside;
 
     // determined when destination is given or when the person is walking back to homeLocation.
     private double distance;
@@ -43,8 +46,9 @@ public class Person {
     // how contgious the person is, how strong its symptoms are.
     private double sicknessScale;
 
-    // random number generator for waiting random amount of time, whether at community or at destination.
-    private Random randomTime;
+    // random number generator for waiting random amount of time, whether at community or at destination and generating
+    // random destination for a person to walk inside a building.
+    private Random rand;
 
     public Person(int ID, int homeCommunityID, Point2D currentLocation){
         this.ID = ID;
@@ -67,10 +71,12 @@ public class Person {
 
         // atCommunityCountDown is randomly set to 1-8 seconds. update() gets called 60fps so, we will multiply our
         // counter by 60. A person will wait randomly at the community before moving towards a destination.
-        this.randomTime = new Random();
-        this.atCommunityCountDown = 60 * (randomTime.nextInt(8) + 1);
+        this.rand = new Random();
+        this.atCommunityCountDown = 60 * (rand.nextInt(8) + 1);
 
+        // pick a destination inside community so a person can move in their community while they are inside.
         this.currentLocationState = PersonLocationState.AT_COMMUNITY;
+        setWalkInsideBuildingDest();
     }
 
     public int getID() {
@@ -141,7 +147,7 @@ public class Person {
                         // at the destination, add a random destinationCountDown. The person will randomly be
                         // at the destination for 1-5 seconds.
                         this.currentLocationState = PersonLocationState.AT_DESTINATION;
-                        this.atDestinationCountDown = 60 * (randomTime.nextInt(5) + 1);
+                        this.atDestinationCountDown = 60 * (rand.nextInt(5) + 1);
 
                         messagesQueue.put(new EnterBuilding(
                                 this.destID, this.buildingTypeToGo, this.ID, this.currentSIRQState, this.sicknessScale));
@@ -157,7 +163,7 @@ public class Person {
                         // TODO: Check whether the person has been infected? if it has been infected we quarantine them
                         //  inside their community for a little longer.
                         this.currentLocationState = PersonLocationState.AT_COMMUNITY;
-                        this.atCommunityCountDown = 60 * (randomTime.nextInt(8) + 1);
+                        this.atCommunityCountDown = 60 * (rand.nextInt(8) + 1);
                     }
                     else {
                         moveTowardsDestination();
@@ -215,17 +221,17 @@ public class Person {
         double xInc;
         double yInc;
 
-        if(buildingDest.getX()-currentLocation.getX()>=0) {
-            xInc = .1;
+        if(walkInside.getX()-currentLocation.getX()>=0) {
+            xInc = .2;
         }
         else {
-            xInc = -.1;
+            xInc = -.2;
         }
-        if(buildingDest.getY()-currentLocation.getY()>=0) {
-            yInc = .1;
+        if(walkInside.getY()-currentLocation.getY()>=0) {
+            yInc = .2;
         }
         else {
-            yInc = -.1;
+            yInc = -.2;
         }
 
         currentLocation = currentLocation.add(xInc, yInc);
@@ -234,5 +240,21 @@ public class Person {
     private boolean isCloseToDestination() {
         return currentLocation.getX() < buildingDest.getX() + 1 && currentLocation.getX() > buildingDest.getX() - 1 &&
                 currentLocation.getY() > buildingDest.getY() - 1 && currentLocation.getY() < buildingDest.getY() + 1;
+    }
+
+    private void setWalkInsideBuildingDest() {
+        // check whether walking inside their community or at some other destination?
+        switch (this.currentLocationState) {
+
+        }
+        if (this.currentLocationState == PersonLocationState.AT_COMMUNITY) {
+            Point2D communityCoord = ABMConstants.COMMUNITIES_UPPERLEFT_CORNERS.get(this.homeCommunityID-1);
+            double x = rand.nextDouble() * ABMConstants.COMMUNITY_WIDTH + communityCoord.getX();
+            double y = rand.nextDouble() * ABMConstants.COMMUNITY_HEIGHT + communityCoord.getY();
+            this.walkInside = new Point2D(x, y);
+        }
+        else {
+
+        }
     }
 }

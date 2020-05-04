@@ -119,5 +119,8 @@ public class PeopleManager extends Thread implements Communicator {
             person.setBuildingDest(dest.getBuildingDestToGo());
             person.setLocationState(PersonLocationState.DESTINATION_GIVEN);
         }
+        if (m instanceof PersonChangedLocation) {
+            this.abmController.sendMessage(m);
+        }
     }
 }

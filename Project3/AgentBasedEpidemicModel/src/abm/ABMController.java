@@ -88,6 +88,9 @@ public class ABMController extends Thread implements Communicator {
         if (m instanceof PersonChangedState) {
             this.gui.sendMessage(m);
         }
+        if (m instanceof PersonChangedLocation) {
+            this.gui.sendMessage(m);
+        }
         if (m instanceof NewPerson) {
             this.gui.sendMessage(m);
         }
