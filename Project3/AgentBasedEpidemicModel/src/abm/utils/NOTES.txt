@@ -1,0 +1,13 @@
+This file will be used for notes,assumptions made, and features to implement.
+
+Features to implement in future
+1. implement social distancing
+    a. triggered by GUI after certain number of infected
+    b. will cause peopleManager
+
+ASSUMPTION
+1. we assume there is a correlation between how sick someone is and how contagious they are
+2. we assume that a building changes its contagionlevel based on how many people are inside that are infected
+3. we assume in our sim that that a person can only get quarantined when they are located in their community
+4. a person can not get infected while traveling to  building by another person. person can get infected after leaving a building.
+
