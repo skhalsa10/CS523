@@ -11,5 +11,5 @@ package abm.utils;
  * updated by Siri
  */
 public enum BuildingType {
-    HOSPITAL, GROCERY_STORE, HOTEL, RESTURANT, AIRPORT, COMMUNITY
+    HOSPITAL, GROCERY_STORE, HOTEL, RESTURANT, AIRPORT
 }

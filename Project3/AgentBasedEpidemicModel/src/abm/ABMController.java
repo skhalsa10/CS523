@@ -63,12 +63,11 @@ public class ABMController extends Thread implements Communicator {
                 messages.put(updatePeopleState);
             }
         };
-        // schedules after every second.
-        this.timer.schedule(task, 0, 1000);
+        // schedules after almost 60 fps.
+        this.timer.schedule(task, 0, 17);
     }
 
     private synchronized void processMessage(Message m) {
-        //TODO: Implement this as we add messages.
         if (m instanceof Shutdown) {
             this.peopleManager.sendMessage(m);
             this.buildingManager.sendMessage(m);
@@ -77,6 +76,12 @@ public class ABMController extends Thread implements Communicator {
             System.out.println("ABM Controller Shutting down.");
         }
         if (m instanceof UpdatePeopleState) {
+            this.peopleManager.sendMessage(m);
+        }
+        if (m instanceof PersonWaitingForDestination) {
+            this.buildingManager.sendMessage(m);
+        }
+        if (m instanceof DestinationForPerson) {
             this.peopleManager.sendMessage(m);
         }
         if (m instanceof PersonChangedState) {
