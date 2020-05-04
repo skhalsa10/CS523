@@ -13,14 +13,14 @@ public class EnterBuilding implements Message{
     private BuildingType buildingType;
     private int personId;
     private SIRQState personState;
-    private double contagionLevel;
+    private double symptomScale;
 
-    public EnterBuilding(int buildingId, BuildingType buildingType, int personId, SIRQState personState, double contagionLevel) {
+    public EnterBuilding(int buildingId, BuildingType buildingType, int personId, SIRQState personState, double symptomScale) {
         this.buildingId = buildingId;
         this.buildingType = buildingType;
         this.personId = personId;
         this.personState = personState;
-        this.contagionLevel = contagionLevel;
+        this.symptomScale = symptomScale;
     }
 
     public int getBuildingId() {
@@ -39,7 +39,7 @@ public class EnterBuilding implements Message{
         return personState;
     }
 
-    public double getContagionLevel() {
-        return contagionLevel;
+    public double getSymptomScale() {
+        return symptomScale;
     }
 }

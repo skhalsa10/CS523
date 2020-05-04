@@ -63,7 +63,7 @@ public class BuildingManager extends Thread implements Communicator {
             System.out.println("Building Manager Shutting down.");
         }
         else if(m instanceof PersonWaitingForDestination){
-
+            //TODO pick a random destination that is not a community and send DestinationForPerson
         }
     }
 }
