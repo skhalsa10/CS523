@@ -83,6 +83,7 @@ public class PeopleManager extends Thread implements Communicator {
 
                 if (personId == randomPersonId) {
                     person.setCurrentSIRQState(SIRQState.INFECTED);
+                    person.setSicknessScale(randomBounds.nextDouble());
                 }
                 personId++;
 

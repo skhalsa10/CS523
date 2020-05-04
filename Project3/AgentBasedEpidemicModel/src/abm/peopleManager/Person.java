@@ -13,8 +13,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 /**
  * This Class encapsulates a Person inside of the Agent Based Epidemic Model.
  *
- * The goal of this class is to encapsulate the bahavior of a person.
- * The person owns a
+ * The goal of this class is to encapsulate the behavior of a person.
  */
 public class Person {
     private int ID;
@@ -43,7 +42,7 @@ public class Person {
     // gives the locationState of a person currently in.
     private PersonLocationState currentLocationState;
 
-    // how contgious the person is, how strong its symptoms are.
+    // how contagious the person is, how strong its symptoms are.
     private double sicknessScale;
 
     // random number generator for waiting random amount of time, whether at community or at destination and generating
@@ -66,8 +65,9 @@ public class Person {
         this.buildingDest = null;
         this.buildingDestID = 0;
 
-        // by default, we are not quarantined.
+        // by default, we are not quarantined and a person is not sick.
         this.quarantineCountDown = 0;
+        this.sicknessScale = 0;
 
         // atCommunityCountDown is randomly set to 1-8 seconds. update() gets called 60fps so, we will multiply our
         // counter by 60. A person will wait randomly at the community before moving towards a destination.
@@ -93,6 +93,10 @@ public class Person {
 
     public void setCurrentSIRQState(SIRQState newSIRQState) {
         this.currentSIRQState = newSIRQState;
+    }
+
+    public void setSicknessScale(double sicknessLevel) {
+        this.sicknessScale = sicknessLevel;
     }
 
     public BuildingType getDestBuildingToGo() {
