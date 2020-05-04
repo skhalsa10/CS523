@@ -4,6 +4,7 @@ import abm.ABMController;
 import abm.utils.ABMConstants;
 import abm.utils.Communicator;
 import abm.utils.PersonLocationState;
+import abm.utils.SIRQState;
 import abm.utils.messages.*;
 import javafx.geometry.Point2D;
 
@@ -58,6 +59,11 @@ public class PeopleManager extends Thread implements Communicator {
         int personId = 1;
         Random randomBounds = new Random();
 
+        // we will have a random person in the community who's infected with Covid-19. Random person between 1-X
+        //where X = # of communities * # of people in each community.
+        int randomPersonId = randomBounds.nextInt(ABMConstants.COMMUNITIES*ABMConstants.PEOPLE_IN_COMMUNITY) + 1;
+
+
         for (int communityId = 1; communityId <= ABMConstants.COMMUNITIES; communityId++) {
             ArrayList<Person> peopleInCommunity = new ArrayList<>();
             // bounds for each person based on the communityId number.
@@ -74,6 +80,10 @@ public class PeopleManager extends Thread implements Communicator {
 
                 Person person = new Person(personId, communityId, personLocation);
                 peopleInCommunity.add(person);
+
+                if (personId == randomPersonId) {
+                    person.setCurrentSIRQState(SIRQState.INFECTED);
+                }
                 personId++;
 
                 // give this new person's info to the controller so the gui can render.

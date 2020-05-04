@@ -74,6 +74,10 @@ public class Person {
         return currentSIRQState;
     }
 
+    public void setCurrentSIRQState(SIRQState newSIRQState) {
+        this.currentSIRQState = newSIRQState;
+    }
+
     public BuildingType getDestBuildingToGo() {
         return buildingTypeToGo;
     }
