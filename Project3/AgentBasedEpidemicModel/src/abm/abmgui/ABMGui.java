@@ -396,5 +396,9 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
                 System.out.println("CHECK NEW PERSON MESSAGE IN GUI");
             }
         }
+        else if (m instanceof PersonChangedLocation){
+            PersonChangedLocation m2 = (PersonChangedLocation)m;
+            peopleMap.get(m2.getPersonId()).setLocation(m2.getLoc());
+        }
     }
 }
