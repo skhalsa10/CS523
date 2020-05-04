@@ -105,14 +105,11 @@ public class PeopleManager extends Thread implements Communicator {
                 ArrayList<Person> people = communities.get(communityID);
                 for (Person person : people) {
                     person.update(this.messages);
-//                    if (person.getCurrentLocationState() == PersonLocationState.WAITING_FOR_DESTINATION) {
-//                        // send a message to abmController so it can ask the buildingManager for a building
-//                        // to go to.
-//                        this.abmController.sendMessage(
-//                                new PersonWaitingForDestination(person.getHomeCommunityID(), person.getID()));
-//                    }
                 }
             }
+        }
+        if (m instanceof PersonWaitingForDestination) {
+            this.abmController.sendMessage(m);
         }
         if (m instanceof DestinationForPerson) {
             DestinationForPerson dest = (DestinationForPerson) m;
