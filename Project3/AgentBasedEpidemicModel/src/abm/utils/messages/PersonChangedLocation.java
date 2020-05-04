@@ -7,13 +7,15 @@ import javafx.geometry.Point2D;
  * @version 1.0.0
  * @author Anas Gauba
  */
-public class UpdateLocation implements Message {
+public class PersonChangedLocation implements Message {
 
     private int personId;
     private Point2D loc;
 
-    public UpdateLocation(int personId, Point2D location) {
+
+    public PersonChangedLocation(int personId, Point2D location) {
         this.personId = personId;
+
         this.loc = new Point2D(location.getX(), location.getY());
     }
 
@@ -24,4 +26,5 @@ public class UpdateLocation implements Message {
     public Point2D getLoc() {
         return loc;
     }
+
 }

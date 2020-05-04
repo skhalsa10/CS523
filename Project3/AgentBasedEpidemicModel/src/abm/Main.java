@@ -1,5 +1,6 @@
 package abm;
 
+import abm.utils.ABMConstants;
 import abm.utils.messages.Shutdown;
 import javafx.application.Application;
 import javafx.stage.Stage;

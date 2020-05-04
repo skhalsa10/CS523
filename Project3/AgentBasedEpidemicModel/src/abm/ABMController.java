@@ -4,10 +4,11 @@ import abm.abmgui.ABMGui;
 import abm.buildingmanager.BuildingManager;
 import abm.peopleManager.PeopleManager;
 import abm.utils.Communicator;
-import abm.utils.messages.Message;
-import abm.utils.messages.Shutdown;
+import abm.utils.messages.*;
 import javafx.stage.Stage;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.PriorityBlockingQueue;
 
 /**
@@ -23,6 +24,7 @@ public class ABMController extends Thread implements Communicator {
     private PeopleManager peopleManager;
     private BuildingManager buildingManager;
     private ABMGui gui;
+    private Timer timer;
 
     public ABMController(Stage primaryStage) {
         this.messages = new PriorityBlockingQueue<>();
@@ -30,6 +32,9 @@ public class ABMController extends Thread implements Communicator {
         this.buildingManager = new BuildingManager(this);
         this.gui = new ABMGui(primaryStage, this);
         this.isRunning = true;
+
+        this.timer = new Timer();
+        stateUpdateTimer();
         start();
     }
 
@@ -50,14 +55,40 @@ public class ABMController extends Thread implements Communicator {
         }
     }
 
+    private void stateUpdateTimer() {
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                UpdatePeopleState updatePeopleState = new UpdatePeopleState();
+                messages.put(updatePeopleState);
+            }
+        };
+        // schedules after almost 60 fps.
+        this.timer.schedule(task, 0, 17);
+    }
+
     private synchronized void processMessage(Message m) {
-        //TODO: Implement this as we add messages.
         if (m instanceof Shutdown) {
             this.peopleManager.sendMessage(m);
             this.buildingManager.sendMessage(m);
             this.gui.sendMessage(m);
             this.isRunning = false;
             System.out.println("ABM Controller Shutting down.");
+        }
+        if (m instanceof UpdatePeopleState) {
+            this.peopleManager.sendMessage(m);
+        }
+        if (m instanceof PersonWaitingForDestination) {
+            this.buildingManager.sendMessage(m);
+        }
+        if (m instanceof DestinationForPerson) {
+            this.peopleManager.sendMessage(m);
+        }
+        if (m instanceof PersonChangedState) {
+            this.gui.sendMessage(m);
+        }
+        if (m instanceof NewPerson) {
+            this.gui.sendMessage(m);
         }
     }
 }

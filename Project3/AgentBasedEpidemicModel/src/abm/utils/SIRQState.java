@@ -6,6 +6,6 @@ package abm.utils;
  * @version 1.0.0
  * @author Anas Gauba
  */
-public enum State {
+public enum SIRQState {
     SUSCEPTIBLE, INFECTED, RECOVERED, QUARANTINED
 }

@@ -38,20 +38,20 @@ class Ga1DCA:
     ### this will perform iterations on all inputs and fitness calculations  
     def run_all_input(self, ca:CaOneDDense):
         # run all majority 0 input
-        for input_0 in ca_inputs.dense_0_75:
+        for input_0 in ca_inputs.dense_0_50:
 
             ca.new_input(input_0)
             ca.reset_Iter_Count()
             ca.iterate_all()
             self.calculate_fitness(ca,'0')
         # run all majority 1
-        for input_1 in ca_inputs.dense_1_75:
+        for input_1 in ca_inputs.dense_1_50:
             ca.new_input(input_1)
             ca.reset_Iter_Count()
             ca.iterate_all()
             self.calculate_fitness(ca,'1')
         #get an average fitness
-        den = len(ca_inputs.dense_0_75)+len(ca_inputs.dense_1_75)
+        den = len(ca_inputs.dense_0_50)+len(ca_inputs.dense_1_50)
         ca.rules['fitness'] = int(ca.rules['fitness']/den)
 
 
