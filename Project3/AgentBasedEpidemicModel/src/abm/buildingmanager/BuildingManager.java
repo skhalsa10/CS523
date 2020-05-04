@@ -3,6 +3,7 @@ package abm.buildingmanager;
 import abm.ABMController;
 import abm.utils.Communicator;
 import abm.utils.messages.Message;
+import abm.utils.messages.PersonWaitingForDestination;
 import abm.utils.messages.Shutdown;
 
 import java.util.HashMap;
@@ -28,6 +29,7 @@ public class BuildingManager extends Thread implements Communicator {
         this.messages = new PriorityBlockingQueue<>();
         //TODO: Instantiate child classes here, other relevant stuff.
         this.communities = new HashMap<>();
+
         this.hotels = new HashMap<>();
         this.restaurants = new HashMap<>();
         this.groceryStores = new HashMap<>();
@@ -59,6 +61,9 @@ public class BuildingManager extends Thread implements Communicator {
         if (m instanceof Shutdown) {
             this.isRunning = false;
             System.out.println("Building Manager Shutting down.");
+        }
+        else if(m instanceof PersonWaitingForDestination){
+
         }
     }
 }
