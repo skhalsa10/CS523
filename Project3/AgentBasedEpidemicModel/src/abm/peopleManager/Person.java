@@ -222,16 +222,16 @@ public class Person {
         double yInc;
 
         if(walkInside.getX()-currentLocation.getX()>=0) {
-            xInc = .2;
+            xInc = .1;
         }
         else {
-            xInc = -.2;
+            xInc = -.1;
         }
         if(walkInside.getY()-currentLocation.getY()>=0) {
-            yInc = .2;
+            yInc = .1;
         }
         else {
-            yInc = -.2;
+            yInc = -.1;
         }
 
         currentLocation = currentLocation.add(xInc, yInc);
@@ -244,9 +244,6 @@ public class Person {
 
     private void setWalkInsideBuildingDest() {
         // check whether walking inside their community or at some other destination?
-        switch (this.currentLocationState) {
-
-        }
         if (this.currentLocationState == PersonLocationState.AT_COMMUNITY) {
             Point2D communityCoord = ABMConstants.COMMUNITIES_UPPERLEFT_CORNERS.get(this.homeCommunityID-1);
             double x = rand.nextDouble() * ABMConstants.COMMUNITY_WIDTH + communityCoord.getX();
