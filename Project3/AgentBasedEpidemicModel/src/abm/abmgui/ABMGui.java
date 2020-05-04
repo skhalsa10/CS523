@@ -3,6 +3,7 @@ package abm.abmgui;
 import abm.ABMController;
 import abm.utils.ABMConstants;
 import abm.utils.Communicator;
+import abm.utils.SIRQState;
 import abm.utils.messages.*;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
@@ -24,6 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.PriorityBlockingQueue;
 
 import static abm.utils.ABMConstants.*;
+
 
 /**
  * The GUI class to show the simulation of ABM epidemic spread.
@@ -72,6 +74,9 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
     private Thread messageThread;
     private long lastUpdate = 0;//used to update 60 frames per second
     private int totalPeople;
+    private int totalI;
+    private int totalR;
+    private int totalS;
 
     public ABMGui(Stage primaryStage, ABMController abmController) {
 
@@ -79,6 +84,9 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
         peopleMap = new ConcurrentHashMap<>();
         messageThread = new Thread(this);
         totalPeople = 0;
+        totalI = 0;
+        totalR = 0;
+        totalS = 0;
 
         //time to initialize GUI stuff
         this.stage = primaryStage;
@@ -197,10 +205,7 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
         this.start();
 
         //DEBUG DATA TODO DELETE
-        graphSlices.add(new GraphTimeData(50,50,0));
-        graphSlices.add(new GraphTimeData(56,44,0));
-        graphSlices.add(new GraphTimeData(60,37,3));
-        graphSlices.add(new GraphTimeData(53,37, 10));
+        graphSlices.add(new GraphTimeData(0,0,0));
 
     }
 
@@ -235,7 +240,8 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
             //first update any data points used for graph 60 will update every sec
             if(graphUpdateCounter == 60){
                 graphUpdateCounter = 0;
-                graphSlices.add(new GraphTimeData(53,37, 10));
+                graphSlices.add(new GraphTimeData(totalI,totalS, totalR));
+                //TODO may possibly need to send message to the system if socialdistancing is activated.
             }
 
             if(currentScreen == Screen.GRAPH){
@@ -290,14 +296,14 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
      * This returns the height for
      */
     private double getRHeight(GraphTimeData slice) {
-        double percentSI = slice.getR()/(double)TOTAL_NUMBER_OF_PEOPLE;
+        double percentSI = slice.getR()/(double)totalPeople;
         return percentSI*graphCanvas.getHeight();
     }
     /**
      * This returns the height for
      */
     private double getSHeight(GraphTimeData slice) {
-        double percentSI = slice.getS()/(double)TOTAL_NUMBER_OF_PEOPLE;
+        double percentSI = slice.getS()/(double)totalPeople;
         return percentSI*graphCanvas.getHeight();
     }
 
@@ -305,7 +311,7 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
      * This function returns the hight for I
      */
     private double getIHeight(GraphTimeData slice) {
-        double percentInfected = slice.getI()/(double)TOTAL_NUMBER_OF_PEOPLE;
+        double percentInfected = slice.getI()/(double)totalPeople;
         return percentInfected*graphCanvas.getHeight();
     }
 
@@ -343,6 +349,26 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
         for (Point2D corners: RESTAURANT_UPPERLEFT_CORNERS) {
             gc.fillRect(corners.getX(),corners.getY(),RESTAURANT_WIDTH,RESTAURANT_HEIGHT);
         }
+
+        //now lastly lets render those dang people!
+        for (GUIPersonInfo p : peopleMap.values()) {
+            switch (p.getPersonSIRQState()){
+                case INFECTED:
+                    gc.setFill(INFECTED_COLOR);
+                    break;
+                case RECOVERED:
+                    gc.setFill(RECOVERED_COLOR);
+                    break;
+                case QUARANTINED:
+                    //TODO need to add color
+                    break;
+                case SUSCEPTIBLE:
+                    gc.setFill(SUSCEPTIBLE_COLOR);
+                    break;
+            }
+            //TODO change the width and height to constants
+            gc.fillOval(p.getLocation().getX(),p.getLocation().getY(),5,5);
+        }
     }
 
     private synchronized void processMessage(Message m) {
@@ -352,6 +378,23 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
             isRunning = false;
             this.stop();
         }
-        else if (m instanceof U)
+        else if (m instanceof NewPerson){
+            NewPerson m2 = (NewPerson)m;
+            totalPeople++;
+            peopleMap.put(m2.getPersonId(),new GUIPersonInfo(m2.getPersonSIRQState(),m2.getLoc()));
+            if(m2.getPersonSIRQState() == SIRQState.SUSCEPTIBLE){
+                totalS++;
+            }
+            else if(m2.getPersonSIRQState() == SIRQState.RECOVERED){
+                totalR++;
+            }
+            //TODO I am assuming the QUARANTINE ARE INFECTED. May need to change.
+            else if(m2.getPersonSIRQState() == SIRQState.INFECTED||m2.getPersonSIRQState() == SIRQState.QUARANTINED){
+                totalI++;
+            }
+            else {
+                System.out.println("CHECK NEW PERSON MESSAGE IN GUI");
+            }
+        }
     }
 }

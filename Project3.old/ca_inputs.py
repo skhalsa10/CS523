@@ -47,3 +47,7 @@ for i in range(0,75):
     minority_count_for0 += 2*i
     minority_count_for1 += 2*i
 
+<<<<<<< Updated upstream:Project3.old/ca_inputs.py
+=======
+
+>>>>>>> Stashed changes:Project3/ca_inputs.py
