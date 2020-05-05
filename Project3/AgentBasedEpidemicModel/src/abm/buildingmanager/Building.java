@@ -54,7 +54,7 @@ public class Building {
                 contagionLevel += prob;
             }
             contagionLevel = contagionLevel/infectedPeople.size();
-            BuildingContagionLevel messageToSend = new BuildingContagionLevel(m.getPersonId(),contagionLevel);
+            BuildingContagionLevel messageToSend = new BuildingContagionLevel(m.getPersonId(),contagionLevel,m.getBuildingId());
             return messageToSend;
         }else if(m.getPersonState() == SIRQState.RECOVERED){
             //here we do nothing more just return null
