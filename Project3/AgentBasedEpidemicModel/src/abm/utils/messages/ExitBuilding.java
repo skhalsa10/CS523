@@ -14,6 +14,7 @@ import abm.utils.SIRQState;
 public class ExitBuilding extends Message {
 
     private int buildingId;
+    private int personCommunityId;
     private BuildingType buildingType;
     private int personId;
     private SIRQState personState;
@@ -22,14 +23,19 @@ public class ExitBuilding extends Message {
      *
      * @param buildingId the id of the building that is being exited
      * @param buildingType the type of the building being exited
+     * @param personCommunityId the community this person being exited from building belong to.
      * @param personId the ID of the person
      * @param personState the SIRQ State of the person.
      */
-    public ExitBuilding(int buildingId, BuildingType buildingType,int personId, SIRQState personState){
+    public ExitBuilding(int buildingId,int personCommunityId, BuildingType buildingType,int personId, SIRQState personState){
         this.buildingId = buildingId;
         this.buildingType = buildingType;
         this.personId = personId;
         this.personState = personState;
+    }
+
+    public int getPersonCommunityId() {
+        return personCommunityId;
     }
 
     public int getBuildingId() {
