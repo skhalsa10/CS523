@@ -360,14 +360,13 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
                     gc.setFill(RECOVERED_COLOR);
                     break;
                 case QUARANTINED:
-                    //TODO need to add color
+                    gc.setFill(QUARANTINED_COLOR);
                     break;
                 case SUSCEPTIBLE:
                     gc.setFill(SUSCEPTIBLE_COLOR);
                     break;
             }
-            //TODO change the width and height to constants
-            gc.fillOval(p.getLocation().getX(),p.getLocation().getY(),5,5);
+            gc.fillOval(p.getLocation().getX(),p.getLocation().getY(),PERSON_RENDER_WIDTH,PERSON_RENDER_HEIGHT);
         }
     }
 
@@ -399,6 +398,13 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
         else if (m instanceof PersonChangedLocation){
             PersonChangedLocation m2 = (PersonChangedLocation)m;
             peopleMap.get(m2.getPersonId()).setLocation(m2.getLoc());
+        }
+        else if (m instanceof PersonChangedState){
+            PersonChangedState m2 = (PersonChangedState)m;
+            peopleMap.get(m2.getPersonId()).setPersonSIRQState(m2.getNewState());
+        }
+        else {
+            System.out.println("error processing message " +m+" inside of GUI");
         }
     }
 }
