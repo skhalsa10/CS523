@@ -20,6 +20,19 @@ public class ABMConstants {
     // radius, R of a person for disease spread. Representing as a BOX so we don't have to do trig math for circles.
     public final static double INFECTION_RADIUS_BOX = 2*PERSON_RENDER_WIDTH;
 
+    // how long a person stays in community or other destination. How long it stays in quarantine?
+    // default here is person stays at community for 10-25 seconds.
+    public final static int AT_COMMUNITY_MIN = 10;
+    public final static int AT_COMMUNITY_MAX = 16;
+
+    // default here is person stays at destination for 10-20 seconds.
+    public final static int AT_DESTINATION_MIN = 10;
+    public final static int AT_DESTINATION_MAX = 11;
+
+    // default here is person stays in quarantine for 30-60 seconds.
+    public final static int AT_QUARANTINE_MIN = 30;
+    public final static int AT_QUARANTINE_MAX = 31;
+
     //Colors
     public final static Color CANVAS_BACKGROUND_COLOR= Color.web("#333333");
     public final static Color COMMUNITY_COLOR= Color.web("#999999");

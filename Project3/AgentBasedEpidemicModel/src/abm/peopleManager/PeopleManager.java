@@ -85,7 +85,7 @@ public class PeopleManager extends Thread implements Communicator {
 
                 if (personId == randomPersonId) {
                     person.setCurrentSIRQState(SIRQState.INFECTED);
-                    person.setSicknessScale(randomBounds.nextDouble());
+                    person.setSymptomScale(randomBounds.nextDouble());
                 }
 
                 // give this new person's info to the controller so the gui can render.
@@ -169,8 +169,11 @@ public class PeopleManager extends Thread implements Communicator {
                             System.out.println("INFECTEDDDDDD");
                             // this person caught the virus while being in some building.
                             person.setCurrentSIRQState(SIRQState.INFECTED);
-                            person.setSicknessScale(randomBounds.nextDouble());
+                            person.setSymptomScale(randomBounds.nextDouble());
                             this.abmController.sendMessage(new PersonChangedState(person.getCurrentSIRQState(), person.getID()));
+
+                            // now quarantine this person.
+
                         }
                     }
                     break;

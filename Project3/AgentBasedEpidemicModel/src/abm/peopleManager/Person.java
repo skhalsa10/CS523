@@ -43,8 +43,8 @@ public class Person {
     // gives the locationState of a person currently in.
     private PersonLocationState currentLocationState;
 
-    // how contagious the person is, how strong its symptoms are.
-    private double sicknessScale;
+    // how contagious the person is, how sick the person is, how strong its symptoms are.
+    private double symptomScale;
 
     // random number generator for waiting random amount of time, whether at community or at destination and generating
     // random destination for a person to walk inside a building.
@@ -68,12 +68,12 @@ public class Person {
 
         // by default, we are not quarantined and a person is not sick.
         this.quarantineCountDown = 0;
-        this.sicknessScale = 0;
+        this.symptomScale = 0;
 
         // atCommunityCountDown is randomly set to 10-25 seconds. update() gets called 60fps so, we will multiply our
         // counter by 60. A person will wait randomly at the community before moving towards a destination.
         this.rand = new Random();
-        this.atCommunityCountDown = 60 * (rand.nextInt(16) + 10);
+        this.atCommunityCountDown = 60 * (rand.nextInt(ABMConstants.AT_COMMUNITY_MAX) + ABMConstants.AT_COMMUNITY_MIN);
 
         // pick a destination inside community so a person can move in their community while they are inside.
         this.currentLocationState = PersonLocationState.AT_COMMUNITY;
@@ -100,12 +100,12 @@ public class Person {
         this.currentSIRQState = newSIRQState;
     }
 
-    public double getSicknessLevel() {
-        return sicknessScale;
+    public double getSymptomLevel() {
+        return symptomScale;
     }
 
-    public void setSicknessScale(double sicknessLevel) {
-        this.sicknessScale = sicknessLevel;
+    public void setSymptomScale(double sicknessLevel) {
+        this.symptomScale = sicknessLevel;
     }
 
     public BuildingType getDestBuildingToGo() {
@@ -147,6 +147,7 @@ public class Person {
      *
      * NOTE: this methods gets called 60fps.
      * @param messagesQueue of PeopleManager.
+     * @param neighbors of this person, used for disease spread in this person's community.
      */
     public void update(PriorityBlockingQueue<Message> messagesQueue, ArrayList<Person> neighbors) {
         switch (this.currentLocationState) {
@@ -169,10 +170,10 @@ public class Person {
                                 // check to see if this neighbor is infected?
                                 if (neighbor.getCurrentSIRQState() == SIRQState.INFECTED) {
                                     // check to see the likelihood of this person getting infected from this neighbor?
-                                    if (amIInfected(neighbor.getSicknessLevel())) {
+                                    if (amIInfected(neighbor.getSymptomLevel())) {
                                         // they catch the virus and have become infected.
                                         this.currentSIRQState = SIRQState.INFECTED;
-                                        this.sicknessScale = rand.nextDouble();
+                                        this.symptomScale = rand.nextDouble();
                                         messagesQueue.put(new PersonChangedState(this.currentSIRQState, this.ID));
                                         break;
                                     }
@@ -196,14 +197,14 @@ public class Person {
                         // at the destination, add a random destinationCountDown. The person will randomly be
                         // at the destination for 10-20 seconds.
                         this.currentLocationState = PersonLocationState.AT_DESTINATION;
-                        this.atDestinationCountDown = 60 * (rand.nextInt(11) + 10);
+                        this.atDestinationCountDown = 60 * (rand.nextInt(ABMConstants.AT_DESTINATION_MAX) + ABMConstants.AT_DESTINATION_MIN);
 
                         // now that we have reached the destination, check to see which building we are inside? so we can
                         // keep walking inside the building while we are there.
                         checkBuildingToWalkInsideTo();
 
                         messagesQueue.put(new EnterBuilding(
-                                this.buildingDestID, this.buildingTypeToGo, this.ID, this.currentSIRQState, this.sicknessScale));
+                                this.buildingDestID, this.buildingTypeToGo, this.ID, this.currentSIRQState, this.symptomScale));
                     } else {
                         moveTowardsDestination(buildingDest);
                         messagesQueue.put(new PersonChangedLocation(this.ID, this.currentLocation));
@@ -216,7 +217,7 @@ public class Person {
                         // TODO: Check whether the person has been infected? if it has been infected we quarantine them
                         //  inside their community for a little longer.
                         this.currentLocationState = PersonLocationState.AT_COMMUNITY;
-                        this.atCommunityCountDown = 60 * (rand.nextInt(16) + 10);
+                        this.atCommunityCountDown = 60 * (rand.nextInt(ABMConstants.AT_COMMUNITY_MAX) + ABMConstants.AT_COMMUNITY_MIN);
 
                         // now we walk inside the community while we are there.
                         setWalkInsideCommunity();
