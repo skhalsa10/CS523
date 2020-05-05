@@ -5,6 +5,7 @@ import abm.utils.ABMConstants;
 import abm.utils.Communicator;
 import abm.utils.PersonLocationState;
 import abm.utils.SIRQState;
+import abm.utils.messages.Shutdown;
 import abm.utils.messages.*;
 import javafx.geometry.Point2D;
 
@@ -115,11 +116,18 @@ public class PeopleManager extends Thread implements Communicator {
         }
         if (m instanceof DestinationForPerson) {
             DestinationForPerson dest = (DestinationForPerson) m;
-            Person person = communities.get(dest.getPersonCommunityID()).get(dest.getPersonID());
-            person.setDestBuildingID(dest.getBuildingID());
-            person.setBuildingTypeToGo(dest.getBuildingTypeToGo());
-            person.setBuildingDest(dest.getBuildingDestToGo());
-            person.setLocationState(PersonLocationState.DESTINATION_GIVEN);
+            ArrayList<Person> people = communities.get(dest.getPersonCommunityID());
+            Person person;
+            for (Person p : people) {
+                if (p.getID() == dest.getPersonID()) {
+                    person = p;
+                    person.setDestBuildingID(dest.getBuildingID());
+                    person.setBuildingTypeToGo(dest.getBuildingTypeToGo());
+                    person.setBuildingDest(dest.getBuildingDestToGo());
+                    person.setLocationState(PersonLocationState.DESTINATION_GIVEN);
+                    break;
+                }
+            }
         }
         if (m instanceof PersonChangedLocation) {
             this.abmController.sendMessage(m);

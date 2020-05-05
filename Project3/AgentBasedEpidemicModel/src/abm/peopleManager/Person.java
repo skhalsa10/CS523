@@ -166,7 +166,7 @@ public class Person {
                 }
                 else {
                     // walking towards the home community.
-                    if (isCloseToDestination()) {
+                    if (isCloseToHome()) {
                         // at the community. start atCommunityCountDown randomly.
                         // TODO: Check whether the person has been infected? if it has been infected we quarantine them
                         //  inside their community for a little longer.
@@ -177,7 +177,7 @@ public class Person {
                         setWalkInsideCommunity();
                     }
                     else {
-                        moveTowardsDestination();
+                        moveTowardsHome();
                         messagesQueue.put(new PersonChangedLocation(this.ID, this.currentLocation));
                     }
                 }
@@ -224,6 +224,14 @@ public class Person {
 
     }
 
+
+    private void moveTowardsHome() {
+        currentLocation = currentLocation.add(
+                (homeLocation.getX() - currentLocation.getX()) / distance*2,
+                (homeLocation.getY() - currentLocation.getY())/ distance*2);
+
+    }
+    
     /**
      * This method is for moving inside the community and inside destination. It moves
      * slowly and gradually.
@@ -251,6 +259,11 @@ public class Person {
     private boolean isCloseToDestination() {
         return currentLocation.getX() < buildingDest.getX() + 1 && currentLocation.getX() > buildingDest.getX() - 1 &&
                 currentLocation.getY() > buildingDest.getY() - 1 && currentLocation.getY() < buildingDest.getY() + 1;
+    }
+
+    private boolean isCloseToHome() {
+        return currentLocation.getX() < homeLocation.getX() + 1 && currentLocation.getX() > homeLocation.getX() - 1 &&
+                currentLocation.getY() > homeLocation.getY() - 1 && currentLocation.getY() < homeLocation.getY() + 1;
     }
 
     private void setWalkInsideCommunity() {
