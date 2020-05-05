@@ -53,7 +53,13 @@ public class Building {
             for (Double prob : infectedPeople.values()) {
                 contagionLevel += prob;
             }
-            contagionLevel = contagionLevel/infectedPeople.size();
+            System.out.println("ContagionLevel " + contagionLevel );
+            System.out.println("infectedPeopleSize "+ infectedPeople.size());
+            int size = infectedPeople.size();
+            if(size > 0) {
+                contagionLevel = contagionLevel / size;
+            }
+            System.out.println("new COntagionLevel " + contagionLevel);
             BuildingContagionLevel messageToSend = new BuildingContagionLevel(m.getPersonId(),contagionLevel,m.getBuildingId());
             return messageToSend;
         }else if(m.getPersonState() == SIRQState.RECOVERED){
