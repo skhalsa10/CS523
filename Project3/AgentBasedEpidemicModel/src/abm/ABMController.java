@@ -73,6 +73,7 @@ public class ABMController extends Thread implements Communicator {
             this.buildingManager.sendMessage(m);
             this.gui.sendMessage(m);
             this.isRunning = false;
+            this.timer.cancel();
             System.out.println("ABM Controller Shutting down.");
         }
         if (m instanceof UpdatePeopleState) {
@@ -85,6 +86,9 @@ public class ABMController extends Thread implements Communicator {
             this.peopleManager.sendMessage(m);
         }
         if (m instanceof PersonChangedState) {
+            this.gui.sendMessage(m);
+        }
+        if (m instanceof PersonChangedLocation) {
             this.gui.sendMessage(m);
         }
         if (m instanceof NewPerson) {

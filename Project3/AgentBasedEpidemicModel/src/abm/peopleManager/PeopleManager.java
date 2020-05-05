@@ -4,6 +4,7 @@ import abm.ABMController;
 import abm.utils.ABMConstants;
 import abm.utils.Communicator;
 import abm.utils.PersonLocationState;
+import abm.utils.SIRQState;
 import abm.utils.messages.*;
 import javafx.geometry.Point2D;
 
@@ -58,6 +59,11 @@ public class PeopleManager extends Thread implements Communicator {
         int personId = 1;
         Random randomBounds = new Random();
 
+        // we will have a random person in the community who's infected with Covid-19. Random person between 1-X
+        //where X = # of communities * # of people in each community.
+        int randomPersonId = randomBounds.nextInt(ABMConstants.COMMUNITIES*ABMConstants.PEOPLE_IN_COMMUNITY) + 1;
+
+
         for (int communityId = 1; communityId <= ABMConstants.COMMUNITIES; communityId++) {
             ArrayList<Person> peopleInCommunity = new ArrayList<>();
             // bounds for each person based on the communityId number.
@@ -74,10 +80,16 @@ public class PeopleManager extends Thread implements Communicator {
 
                 Person person = new Person(personId, communityId, personLocation);
                 peopleInCommunity.add(person);
-                personId++;
+
+                if (personId == randomPersonId) {
+                    person.setCurrentSIRQState(SIRQState.INFECTED);
+                    person.setSicknessScale(randomBounds.nextDouble());
+                }
 
                 // give this new person's info to the controller so the gui can render.
                 this.abmController.sendMessage(new NewPerson(person.getCurrentSIRQState(), personId, personLocation));
+                
+                personId++;
             }
             communities.put(communityId, peopleInCommunity);
         }
@@ -95,14 +107,11 @@ public class PeopleManager extends Thread implements Communicator {
                 ArrayList<Person> people = communities.get(communityID);
                 for (Person person : people) {
                     person.update(this.messages);
-//                    if (person.getCurrentLocationState() == PersonLocationState.WAITING_FOR_DESTINATION) {
-//                        // send a message to abmController so it can ask the buildingManager for a building
-//                        // to go to.
-//                        this.abmController.sendMessage(
-//                                new PersonWaitingForDestination(person.getHomeCommunityID(), person.getID()));
-//                    }
                 }
             }
+        }
+        if (m instanceof PersonWaitingForDestination) {
+            this.abmController.sendMessage(m);
         }
         if (m instanceof DestinationForPerson) {
             DestinationForPerson dest = (DestinationForPerson) m;
@@ -111,6 +120,9 @@ public class PeopleManager extends Thread implements Communicator {
             person.setBuildingTypeToGo(dest.getBuildingTypeToGo());
             person.setBuildingDest(dest.getBuildingDestToGo());
             person.setLocationState(PersonLocationState.DESTINATION_GIVEN);
+        }
+        if (m instanceof PersonChangedLocation) {
+            this.abmController.sendMessage(m);
         }
     }
 }

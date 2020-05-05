@@ -10,4 +10,4 @@ ASSUMPTION
 2. we assume that a building changes its contagionlevel based on how many people are inside that are infected
 3. we assume in our sim that that a person can only get quarantined when they are located in their community
 4. a person can not get infected while traveling to  building by another person. person can get infected after leaving a building.
-
+5. When showcasing the graph I do not show quarantine. as far as the graph is concerned these are infected people.

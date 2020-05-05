@@ -5,8 +5,12 @@ package abm.utils.messages;
  * @version 1.0.0
  * @author Anas Gauba
  */
-public interface Message extends Comparable<Message> {
-    long timeStamp = System.nanoTime();
+public abstract class Message implements Comparable<Message> {
+    protected long timeStamp;
+
+    public Message() {
+        timeStamp = System.nanoTime();
+    }
 
     /**
      * Will be used to sort messages in priority blocking queue. The earlier message should be processed first.
@@ -15,15 +19,15 @@ public interface Message extends Comparable<Message> {
      *
      * @return timestamp in nanoseconds
      */
-    default long getTimeStamp(){
+    protected long getTimeStamp(){
         return this.timeStamp;
     }
 
-
     @Override
-    default int compareTo(Message o) {
+    public int compareTo(Message o) {
         long result = this.getTimeStamp() - o.getTimeStamp();
         if (result > 0 ) { return 1; }
         else if (result == 0) { return 0; }
         else { return -1; }
-    }}
+    }
+}
