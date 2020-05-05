@@ -11,3 +11,7 @@ ASSUMPTION
 3. we assume in our sim that that a person can only get quarantined when they are located in their community
 4. a person can not get infected while traveling to  building by another person. person can get infected after leaving a building.
 5. When showcasing the graph I do not show quarantine. as far as the graph is concerned these are infected people.
+6. A person while in quarantine doesn't spread the disease, we assume they are protected from the world and when quarantined, they stay in their
+   community for some amount of time before they recover.
+7. We are quarantine people who are above a symptomScale threadshold so we can see how it affects the curve.
+8. We are assuming there are way more asymptomatic people.
