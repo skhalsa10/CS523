@@ -400,5 +400,12 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
             PersonChangedLocation m2 = (PersonChangedLocation)m;
             peopleMap.get(m2.getPersonId()).setLocation(m2.getLoc());
         }
+        else if (m instanceof PersonChangedState){
+            PersonChangedState m2 = (PersonChangedState)m;
+            peopleMap.get(m2.getPersonId()).setPersonSIRQState(m2.getNewState());
+        }
+        else {
+            System.out.println("error processing message " +m+" inside of GUI");
+        }
     }
 }
