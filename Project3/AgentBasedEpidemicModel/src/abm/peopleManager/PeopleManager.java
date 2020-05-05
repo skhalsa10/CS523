@@ -96,6 +96,16 @@ public class PeopleManager extends Thread implements Communicator {
         }
     }
 
+    private ArrayList<Person> addNeighbors(Person currentPerson, ArrayList<Person> peopleInThisCommunity) {
+        ArrayList<Person> neighbors = new ArrayList<>();
+        for (Person p : peopleInThisCommunity) {
+            if (p != currentPerson) {
+                neighbors.add(p);
+            }
+        }
+        return neighbors;
+    }
+
     private synchronized void processMessage(Message m) {
         if (m instanceof Shutdown) {
             this.isRunning = false;
@@ -107,7 +117,8 @@ public class PeopleManager extends Thread implements Communicator {
             for (Integer communityID : communities.keySet()) {
                 ArrayList<Person> people = communities.get(communityID);
                 for (Person person : people) {
-                    person.update(this.messages);
+                    ArrayList<Person> neighbors = addNeighbors(person, people);
+                    person.update(this.messages, neighbors);
                 }
             }
         }
@@ -130,6 +141,9 @@ public class PeopleManager extends Thread implements Communicator {
             }
         }
         if (m instanceof PersonChangedLocation) {
+            this.abmController.sendMessage(m);
+        }
+        if (m instanceof PersonChangedState) {
             this.abmController.sendMessage(m);
         }
     }

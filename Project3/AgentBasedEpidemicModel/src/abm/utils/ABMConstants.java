@@ -13,8 +13,12 @@ public class ABMConstants {
     public final static double WINDOW_WIDTH = 0.625*javafx.stage.Screen.getPrimary().getBounds().getMaxX();
     public final static double WINDOW_HEIGHT = 0.8333*javafx.stage.Screen.getPrimary().getBounds().getMaxY();
 
+    // circle representing a person.
     public final static double PERSON_RENDER_WIDTH = 0.004166667*MAP_WIDTH;
     public final static double PERSON_RENDER_HEIGHT = PERSON_RENDER_WIDTH;
+
+    // radius, R of a person for disease spread. Representing as a BOX so we don't have to do trig math for circles.
+    public final static double INFECTION_RADIUS_BOX = 2*PERSON_RENDER_WIDTH;
 
     //Colors
     public final static Color CANVAS_BACKGROUND_COLOR= Color.web("#333333");

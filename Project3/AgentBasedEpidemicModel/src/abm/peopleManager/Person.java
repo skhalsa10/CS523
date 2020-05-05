@@ -7,6 +7,7 @@ import abm.utils.SIRQState;
 import abm.utils.messages.*;
 import javafx.geometry.Point2D;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.PriorityBlockingQueue;
 
@@ -87,12 +88,20 @@ public class Person {
         return homeCommunityID;
     }
 
+    public Point2D getCurrentLocation() {
+        return currentLocation;
+    }
+
     public SIRQState getCurrentSIRQState() {
         return currentSIRQState;
     }
 
     public void setCurrentSIRQState(SIRQState newSIRQState) {
         this.currentSIRQState = newSIRQState;
+    }
+
+    public double getSicknessLevel() {
+        return sicknessScale;
     }
 
     public void setSicknessScale(double sicknessLevel) {
@@ -139,7 +148,7 @@ public class Person {
      * NOTE: this methods gets called 60fps.
      * @param messagesQueue of PeopleManager.
      */
-    public void update(PriorityBlockingQueue<Message> messagesQueue) {
+    public void update(PriorityBlockingQueue<Message> messagesQueue, ArrayList<Person> neighbors) {
         switch (this.currentLocationState) {
             case AT_COMMUNITY:
                 // begin decrementing the counter.
@@ -147,6 +156,28 @@ public class Person {
                     this.atCommunityCountDown--;
                     moveInsideBuilding();
                     messagesQueue.put(new PersonChangedLocation(this.ID, currentLocation));
+
+                    // check to see if there is infected person nearby this person as they are walking inside their community?
+                    double radius = ABMConstants.INFECTION_RADIUS_BOX;
+                    Point2D vicinity = new Point2D(radius+this.currentLocation.getX(),radius+this.currentLocation.getY());
+
+                    for (Person neighbor : neighbors) {
+                        // check if neighbor is inside the vicinity of this person?
+                        if (vicinity.getX() > neighbor.getCurrentLocation().getX()
+                                && vicinity.getY() > neighbor.getCurrentLocation().getY()) {
+                            // check to see if this neighbor is infected?
+                            if (neighbor.getCurrentSIRQState() == SIRQState.INFECTED) {
+                                // check to see the likelihood of this person getting infected from this neighbor?
+                                if (amIInfected(neighbor.getSicknessLevel())) {
+                                    // they catch the virus and have become infected.
+                                    this.currentSIRQState = SIRQState.INFECTED;
+                                    this.sicknessScale = rand.nextDouble();
+                                    messagesQueue.put(new PersonChangedState(this.currentSIRQState,this.ID));
+                                    break;
+                                }
+                            }
+                        }
+                    }
                     if (this.atCommunityCountDown <= 0) {
                         this.atCommunityCountDown = 0;
                         // make the person go wait for a destination.
@@ -336,5 +367,58 @@ public class Person {
                 this.walkInside = new Point2D(x, y);
                 break;
         }
+    }
+
+    /**
+     * This method returns T/F based on uniform distribution of how likely a person can get infected.
+     * @param percent in decimal numbers.
+     * @return T/F whether a person can get infected from Covid-19.
+     */
+    public boolean amIInfected(double percent) {
+        var probFrac = calculateFraction(percent).split("/");
+
+        int numerator = Integer.parseInt(probFrac[0]);
+        int denominator = Integer.parseInt(probFrac[1]);
+
+        // rand num b/w 1-denominator.
+        int randNum = rand.nextInt(denominator) + 1;
+
+        return randNum <= numerator;
+    }
+
+    /**
+     * Inspired from https://algorithms.tutorialhorizon.com/convert-decimal-into-irreducible-fraction/.
+     * Converts double to string and split them in two halves (numbers before decimal point and after).
+     * Calculate numerator and denominator and try to find greatest common denominator to represent it as
+     * irreducible fraction.
+     * @param percent in decimal numbers.
+     * @return string encoding fraction (numerator/denominator)
+     */
+    private String calculateFraction(double percent) {
+        String strPercent = "" + percent;
+        String[] splits = strPercent.split("\\.");
+
+        // get the decimal length, how many numbers after .##?
+        int decLength = splits[1].length();
+        int denominator = (int) Math.pow(10, decLength);
+        int numerator = (int) (percent * denominator);
+
+        // calculate gcd.
+        int gcd = getGCD(numerator, denominator);
+
+        return "" + numerator / gcd + "/" + denominator / gcd;
+    }
+
+    /**
+     * Helper method in calculating fraction.
+     * @param numerator reducible numerator.
+     * @param denominator reducible denominator.
+     * @return greatest common denominator.
+     */
+    private int getGCD(int numerator, int denominator) {
+        if (denominator == 0) {
+            return numerator;
+        }
+        return getGCD(denominator, numerator % denominator);
     }
 }
