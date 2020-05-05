@@ -127,6 +127,18 @@ public class Person {
         this.currentLocationState = newLocationState;
     }
 
+    /**
+     * Updates person's location based on the locationState the person is currently in.
+     * When a person is inside their community, it keeps moving inside until a person is ready to go to a dest.
+     * When a person is walking, its either walking towards a destination that was given to the person by buildingManager or
+     * it walks back to their home community.
+     * When a person reaches their destination, they stay there for x amount of time (atDestinationCountDown counter) before
+     * going back to home. In the meantime, person moves inside the destination building.
+     * When a person is in waiting state, it doesn't do anything and simply waits for buildingManager to give destination.
+     *
+     * NOTE: this methods gets called 60fps.
+     * @param messagesQueue of PeopleManager.
+     */
     public void update(PriorityBlockingQueue<Message> messagesQueue) {
         switch (this.currentLocationState) {
             case AT_COMMUNITY:
@@ -259,6 +271,9 @@ public class Person {
                 currentLocation.getY() > dest.getY() - 1 && currentLocation.getY() < dest.getY() + 1;
     }
 
+    /**
+     * Picks a location inside a person's community that a person can walk towards while in their homeCommunity.
+     */
     private void setWalkInsideCommunity() {
         Point2D communityLocation = ABMConstants.COMMUNITIES_UPPERLEFT_CORNERS.get(this.homeCommunityID-1);
         double x = rand.nextDouble() * ABMConstants.COMMUNITY_WIDTH + communityLocation.getX();
@@ -266,6 +281,10 @@ public class Person {
         this.walkInside = new Point2D(x, y);
     }
 
+    /**
+     * Based on the building a person is in, picks a random location inside that building that
+     * a person can walk towards while inside the building.
+     */
     private void checkBuildingToWalkInsideTo() {
         double x;
         double y;
