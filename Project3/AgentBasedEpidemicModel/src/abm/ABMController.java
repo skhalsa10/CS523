@@ -76,27 +76,37 @@ public class ABMController extends Thread implements Communicator {
             this.timer.cancel();
             System.out.println("ABM Controller Shutting down.");
         }
-        if (m instanceof UpdatePeopleState) {
+        else if (m instanceof UpdatePeopleState) {
             this.peopleManager.sendMessage(m);
         }
-        if (m instanceof PersonWaitingForDestination) {
+        else if (m instanceof PersonWaitingForDestination) {
             this.buildingManager.sendMessage(m);
         }
-        if (m instanceof DestinationForPerson) {
+        else if (m instanceof DestinationForPerson) {
             this.peopleManager.sendMessage(m);
         }
-        if (m instanceof PersonChangedState) {
+        else if (m instanceof PersonChangedState) {
             this.gui.sendMessage(m);
         }
-        if (m instanceof PersonChangedLocation) {
+        else if (m instanceof PersonChangedLocation) {
             this.gui.sendMessage(m);
         }
-        if (m instanceof NewPerson) {
+        else if (m instanceof NewPerson) {
             this.gui.sendMessage(m);
         }
-        if (m instanceof BuildingContagionLevel) {
+        else if (m instanceof BuildingContagionLevel) {
             System.out.println("BuildingContaigon coming to aBmController");
             this.peopleManager.sendMessage(m);
         }
+        else if (m instanceof ExitBuilding){
+            this.buildingManager.sendMessage(m);
+        }
+        else if (m instanceof EnterBuilding){
+            this.buildingManager.sendMessage(m);
+        }
+        else{
+            System.out.println("abmController is forgetting to handle message "+ m);
+        }
+
     }
 }
