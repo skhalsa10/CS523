@@ -10,23 +10,17 @@ import abm.utils.SIRQState;
  */
 public class EnterBuilding extends Message {
     private int buildingId;
-    private int personCommunityId;
     private BuildingType buildingType;
     private int personId;
     private SIRQState personState;
     private double symptomScale;
 
-    public EnterBuilding(int buildingId, int communityId, BuildingType buildingType, int personId, SIRQState personState, double symptomScale) {
+    public EnterBuilding(int buildingId, BuildingType buildingType, int personId, SIRQState personState, double symptomScale) {
         this.buildingId = buildingId;
-        this.personCommunityId = communityId;
         this.buildingType = buildingType;
         this.personId = personId;
         this.personState = personState;
         this.symptomScale = symptomScale;
-    }
-
-    public int getPersonCommunityId() {
-        return personCommunityId;
     }
 
     public int getBuildingId() {
