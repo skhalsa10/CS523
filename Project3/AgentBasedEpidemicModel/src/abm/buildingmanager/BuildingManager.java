@@ -128,19 +128,14 @@ public class BuildingManager extends Thread implements Communicator {
         switch (m.getBuildingType()){
             case GROCERY_STORE:
                 return groceryStores.get(m.getBuildingId()).exitBuilding(m);
-                break;
             case HOTEL:
                 return hotels.get(m.getBuildingId()).exitBuilding(m);
-                break;
             case AIRPORT:
                 return airport.exitBuilding(m);
-                break;
             case HOSPITAL:
                 return hospitals.get(m.getBuildingId()).exitBuilding(m);
-                break;
             case RESTURANT:
                 return restaurants.get(m.getBuildingId()).exitBuilding(m);
-                break;
             case COMMUNITY:
                 System.out.println("error in processExitBuildingMessage in buildingManager");
                 break;
