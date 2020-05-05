@@ -146,8 +146,8 @@ public class Person {
             case WALKING:
                 // check whether walking towards a building or towards community?
                 if (this.buildingDest != null) {
-                    // check whether a person has reached close to dest.
-                    if (isCloseToDestination()) {
+                    // check whether a person has reached close to destination building.
+                    if (isCloseToDestination(buildingDest)) {
                         // at the destination, add a random destinationCountDown. The person will randomly be
                         // at the destination for 10-20 seconds.
                         this.currentLocationState = PersonLocationState.AT_DESTINATION;
@@ -160,13 +160,13 @@ public class Person {
                         messagesQueue.put(new EnterBuilding(
                                 this.buildingDestID, this.buildingTypeToGo, this.ID, this.currentSIRQState, this.sicknessScale));
                     } else {
-                        moveTowardsDestination();
+                        moveTowardsDestination(buildingDest);
                         messagesQueue.put(new PersonChangedLocation(this.ID, this.currentLocation));
                     }
                 }
                 else {
                     // walking towards the home community.
-                    if (isCloseToHome()) {
+                    if (isCloseToDestination(homeLocation)) {
                         // at the community. start atCommunityCountDown randomly.
                         // TODO: Check whether the person has been infected? if it has been infected we quarantine them
                         //  inside their community for a little longer.
@@ -177,7 +177,7 @@ public class Person {
                         setWalkInsideCommunity();
                     }
                     else {
-                        moveTowardsHome();
+                        moveTowardsDestination(homeLocation);
                         messagesQueue.put(new PersonChangedLocation(this.ID, this.currentLocation));
                     }
                 }
@@ -189,7 +189,7 @@ public class Person {
                 // destination is given, so start moving/walking in that direction.
                 this.currentLocationState = PersonLocationState.WALKING;
                 this.distance = buildingDest.distance(currentLocation);
-                moveTowardsDestination();
+                moveTowardsDestination(buildingDest);
                 messagesQueue.put(new PersonChangedLocation(this.ID, this.currentLocation));
                 break;
             case AT_DESTINATION:
@@ -214,21 +214,14 @@ public class Person {
     }
 
     /**
-     * This method is for walking between destination a to b. It changes its movement speed based
-     * on the total distance between the destinations.
+     * This method is for walking between destination a to b, either from community -> dest, vice versa.
+     * It changes its movement speed based on the total distance between the destinations.
+     * @param walkDest either buildingDest or homeLocation.
      */
-    private void moveTowardsDestination() {
+    private void moveTowardsDestination(Point2D walkDest) {
         currentLocation = currentLocation.add(
-                (buildingDest.getX() - currentLocation.getX()) / distance*2,
-                (buildingDest.getY() - currentLocation.getY())/ distance*2);
-
-    }
-
-
-    private void moveTowardsHome() {
-        currentLocation = currentLocation.add(
-                (homeLocation.getX() - currentLocation.getX()) / distance*2,
-                (homeLocation.getY() - currentLocation.getY())/ distance*2);
+                (walkDest.getX() - currentLocation.getX()) / distance*2,
+                (walkDest.getY() - currentLocation.getY())/ distance*2);
 
     }
     
@@ -256,14 +249,14 @@ public class Person {
         currentLocation = currentLocation.add(xInc, yInc);
     }
 
-    private boolean isCloseToDestination() {
-        return currentLocation.getX() < buildingDest.getX() + 1 && currentLocation.getX() > buildingDest.getX() - 1 &&
-                currentLocation.getY() > buildingDest.getY() - 1 && currentLocation.getY() < buildingDest.getY() + 1;
-    }
-
-    private boolean isCloseToHome() {
-        return currentLocation.getX() < homeLocation.getX() + 1 && currentLocation.getX() > homeLocation.getX() - 1 &&
-                currentLocation.getY() > homeLocation.getY() - 1 && currentLocation.getY() < homeLocation.getY() + 1;
+    /**
+     * This method checks for whether a person is close to reaching their dest?
+     * @param dest home or other building.
+     * @return T/F whether person is close to reaching destination.
+     */
+    private boolean isCloseToDestination(Point2D dest) {
+        return currentLocation.getX() < dest.getX() + 1 && currentLocation.getX() > dest.getX() - 1 &&
+                currentLocation.getY() > dest.getY() - 1 && currentLocation.getY() < dest.getY() + 1;
     }
 
     private void setWalkInsideCommunity() {
@@ -279,7 +272,10 @@ public class Person {
 
         switch (this.buildingTypeToGo) {
             case AIRPORT:
-                // TODO: implement it if we add airport functionality.
+                // there is only one airport.
+                x = rand.nextDouble() * ABMConstants.AIRPORT_WIDTH + ABMConstants.AIRPORT_UPPERLEFT_CORNER.getX();
+                y = rand.nextDouble() * ABMConstants.AIRPORT_HEIGHT + ABMConstants.AIRPORT_UPPERLEFT_CORNER.getY();
+                this.walkInside = new Point2D(x, y);
                 break;
             case GROCERY_STORE:
                 // there are only two grocery stores.
