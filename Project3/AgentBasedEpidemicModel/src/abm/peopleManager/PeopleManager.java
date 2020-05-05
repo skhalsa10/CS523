@@ -147,6 +147,12 @@ public class PeopleManager extends Thread implements Communicator {
         if (m instanceof PersonChangedState) {
             this.abmController.sendMessage(m);
         }
+        if (m instanceof EnterBuilding) {
+            this.abmController.sendMessage(m);
+        }
+        if (m instanceof ExitBuilding) {
+            this.abmController.sendMessage(m);
+        }
         // when a person exits building, buildingManager sends this so peopleManager can
         // check whether the person (who isn't sick yet) has caught the virus?
         if (m instanceof BuildingContagionLevel) {
@@ -170,7 +176,6 @@ public class PeopleManager extends Thread implements Communicator {
                     break;
                 }
             }
-
         }
     }
 }

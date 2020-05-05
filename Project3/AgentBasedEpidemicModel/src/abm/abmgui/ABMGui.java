@@ -400,11 +400,38 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
             peopleMap.get(m2.getPersonId()).setLocation(m2.getLoc());
         }
         else if (m instanceof PersonChangedState){
+            System.out.println("GUI processing PersonChangedState");
             PersonChangedState m2 = (PersonChangedState)m;
+            updateGraphData(peopleMap.get(m2.getPersonId()).getPersonSIRQState(),m2.getNewState());
             peopleMap.get(m2.getPersonId()).setPersonSIRQState(m2.getNewState());
+
         }
         else {
             System.out.println("error processing message " +m+" inside of GUI");
+        }
+    }
+
+    private void updateGraphData(SIRQState oldState, SIRQState newState) {
+        if(oldState == newState){
+            System.out.println("this should not happen Check updateGraphData");
+            System.out.println("old state is "+ oldState);
+            System.out.println("new state is "+ newState);
+            return;
+        }
+        else if(oldState==SIRQState.INFECTED && newState == SIRQState.QUARANTINED){
+            //Quarantines is still infected as far as the graph is concerned so data doesnt change
+            return;
+        }
+        else if(oldState==SIRQState.INFECTED && newState == SIRQState.RECOVERED){
+            totalI--;
+            totalR++;
+            return;
+        }
+        else if(oldState==SIRQState.SUSCEPTIBLE && newState == SIRQState.INFECTED){
+            totalS--;
+            totalI++;
+        } else{
+            System.out.println("something ait right check GUI updateGraphData method");
         }
     }
 }
