@@ -85,10 +85,11 @@ public class PeopleManager extends Thread implements Communicator {
                     person.setCurrentSIRQState(SIRQState.INFECTED);
                     person.setSicknessScale(randomBounds.nextDouble());
                 }
-                personId++;
 
                 // give this new person's info to the controller so the gui can render.
                 this.abmController.sendMessage(new NewPerson(person.getCurrentSIRQState(), personId, personLocation));
+                
+                personId++;
             }
             communities.put(communityId, peopleInCommunity);
         }
