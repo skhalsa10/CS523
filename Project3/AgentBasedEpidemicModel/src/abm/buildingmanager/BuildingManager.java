@@ -111,13 +111,64 @@ public class BuildingManager extends Thread implements Communicator {
             abmController.sendMessage(messageToSend);
         }
         else if(m instanceof EnterBuilding){
-
+            EnterBuilding m2 = (EnterBuilding)m;
+            processEnterBuildingMessage(m2);
         }
         else if(m instanceof ExitBuilding){
-
+            ExitBuilding m2 = (ExitBuilding)m;
+            BuildingContagionLevel mToSend =  processExitBuildingMessage(m2);
+            abmController.sendMessage(mToSend);
         }
         else {
             System.out.println("error BuildingManager processMessage");
+        }
+    }
+
+    private BuildingContagionLevel processExitBuildingMessage(ExitBuilding m) {
+        switch (m.getBuildingType()){
+            case GROCERY_STORE:
+                return groceryStores.get(m.getBuildingId()).exitBuilding(m);
+                break;
+            case HOTEL:
+                return hotels.get(m.getBuildingId()).exitBuilding(m);
+                break;
+            case AIRPORT:
+                return airport.exitBuilding(m);
+                break;
+            case HOSPITAL:
+                return hospitals.get(m.getBuildingId()).exitBuilding(m);
+                break;
+            case RESTURANT:
+                return restaurants.get(m.getBuildingId()).exitBuilding(m);
+                break;
+            case COMMUNITY:
+                System.out.println("error in processExitBuildingMessage in buildingManager");
+                break;
+        }
+        System.out.println("Returning NUll here should be an error");
+        return null;
+    }
+
+    private void processEnterBuildingMessage(EnterBuilding m) {
+        switch (m.getBuildingType()){
+            case GROCERY_STORE:
+                groceryStores.get(m.getBuildingId()).enterBuilding(m.getPersonId(),m.getPersonState(),m.getSymptomScale());
+                break;
+            case HOTEL:
+                hotels.get(m.getBuildingId()).enterBuilding(m.getPersonId(),m.getPersonState(),m.getSymptomScale());
+                break;
+            case AIRPORT:
+                airport.enterBuilding(m.getPersonId(),m.getPersonState(),m.getSymptomScale());
+                break;
+            case HOSPITAL:
+                hospitals.get(m.getBuildingId()).enterBuilding(m.getPersonId(),m.getPersonState(),m.getSymptomScale());
+                break;
+            case RESTURANT:
+                restaurants.get(m.getBuildingId()).enterBuilding(m.getPersonId(),m.getPersonState(),m.getSymptomScale());
+                break;
+            case COMMUNITY:
+                System.out.println("error in processEnterBuildingMessage in buildingManager");
+                break;
         }
     }
 
