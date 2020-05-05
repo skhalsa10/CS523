@@ -115,8 +115,10 @@ public class BuildingManager extends Thread implements Communicator {
             processEnterBuildingMessage(m2);
         }
         else if(m instanceof ExitBuilding){
+            System.out.println("BUILDINGMANAGER IS GETTING EXITBUILDING?");
             ExitBuilding m2 = (ExitBuilding)m;
             BuildingContagionLevel mToSend =  processExitBuildingMessage(m2);
+            System.out.println("message from Exit Building "+ mToSend);
             abmController.sendMessage(mToSend);
         }
         else {
