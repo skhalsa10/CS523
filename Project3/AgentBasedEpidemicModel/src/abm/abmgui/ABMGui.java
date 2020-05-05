@@ -360,14 +360,13 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
                     gc.setFill(RECOVERED_COLOR);
                     break;
                 case QUARANTINED:
-                    //TODO need to add color
+                    gc.setFill(QUARANTINED_COLOR);
                     break;
                 case SUSCEPTIBLE:
                     gc.setFill(SUSCEPTIBLE_COLOR);
                     break;
             }
-            //TODO change the width and height to constants
-            gc.fillOval(p.getLocation().getX(),p.getLocation().getY(),5,5);
+            gc.fillOval(p.getLocation().getX(),p.getLocation().getY(),PERSON_RENDER_WIDTH,PERSON_RENDER_HEIGHT);
         }
     }
 

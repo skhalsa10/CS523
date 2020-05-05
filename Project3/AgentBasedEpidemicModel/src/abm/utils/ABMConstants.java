@@ -9,8 +9,12 @@ public class ABMConstants {
     public final static double MAP_WIDTH = 0.625*javafx.stage.Screen.getPrimary().getBounds().getMaxX();
     public final static double MAP_HEIGHT = 0.741*javafx.stage.Screen.getPrimary().getBounds().getMaxY();
 
+
     public final static double WINDOW_WIDTH = 0.625*javafx.stage.Screen.getPrimary().getBounds().getMaxX();
     public final static double WINDOW_HEIGHT = 0.8333*javafx.stage.Screen.getPrimary().getBounds().getMaxY();
+
+    public final static double PERSON_RENDER_WIDTH = 0.004166667*MAP_WIDTH;
+    public final static double PERSON_RENDER_HEIGHT = PERSON_RENDER_WIDTH;
 
     //Colors
     public final static Color CANVAS_BACKGROUND_COLOR= Color.web("#333333");
@@ -18,6 +22,7 @@ public class ABMConstants {
     public final static Color SUSCEPTIBLE_COLOR = Color.web("#5EF884");
     public final static Color INFECTED_COLOR = Color.web("#954B4A");
     public final static Color RECOVERED_COLOR = Color.web("#406CA3");
+    public final static Color QUARANTINED_COLOR = Color.web("#FF9264");
     public final static Color AIRPORT_COLOR = Color.web("#ffdba9");
     public final static Color BUILDING_COLOR = Color.web("#ffdbb9");
     public final static Color RESTAURANT_COLOR = Color.web("#83bbe5");
