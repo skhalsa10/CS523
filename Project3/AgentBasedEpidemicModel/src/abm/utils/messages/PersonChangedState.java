@@ -7,7 +7,7 @@ import abm.utils.SIRQState;
  * @version 1.0.0
  * @author Anas Gauba
  */
-public class PersonChangedState extends TimeMarker implements Message{
+public class PersonChangedState extends Message {
 
     private SIRQState SIRQState;
     private int personId;

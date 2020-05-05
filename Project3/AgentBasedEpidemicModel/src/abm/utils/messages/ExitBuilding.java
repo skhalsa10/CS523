@@ -11,7 +11,7 @@ import abm.utils.SIRQState;
  * @version 1.0.0
  * @author Siri Khalsa
  */
-public class ExitBuilding extends TimeMarker implements Message{
+public class ExitBuilding extends Message {
 
     private int buildingId;
     private BuildingType buildingType;

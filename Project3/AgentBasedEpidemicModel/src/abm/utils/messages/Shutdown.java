@@ -5,6 +5,6 @@ package abm.utils.messages;
  * @version 1.0.0
  * @author Anas Gauba
  */
-public class Shutdown extends TimeMarker implements Message{
+public class Shutdown extends Message {
     public Shutdown() {}
 }

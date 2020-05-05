@@ -1,15 +1,12 @@
 package abm.utils.messages;
 
-import abm.utils.BuildingType;
-import abm.utils.SIRQState;
-
 /**
  * This message is triggered when a ExitBuilding message is received. this is the response with a
  * a contagion probability that can be used by peoplemanager to check if the person is now infected.
  * @version 1.0.0
  * @author Siri Khalsa
  */
-public class BuildingContagionLevel extends TimeMarker implements Message{
+public class BuildingContagionLevel extends Message {
 
     private int personId;
     private double probOfInfection;
