@@ -69,10 +69,10 @@ public class Person {
         this.quarantineCountDown = 0;
         this.sicknessScale = 0;
 
-        // atCommunityCountDown is randomly set to 1-8 seconds. update() gets called 60fps so, we will multiply our
+        // atCommunityCountDown is randomly set to 10-25 seconds. update() gets called 60fps so, we will multiply our
         // counter by 60. A person will wait randomly at the community before moving towards a destination.
         this.rand = new Random();
-        this.atCommunityCountDown = 60 * (rand.nextInt(8) + 1);
+        this.atCommunityCountDown = 60 * (rand.nextInt(16) + 10);
 
         // pick a destination inside community so a person can move in their community while they are inside.
         this.currentLocationState = PersonLocationState.AT_COMMUNITY;
@@ -149,9 +149,9 @@ public class Person {
                     // check whether a person has reached close to dest.
                     if (isCloseToDestination()) {
                         // at the destination, add a random destinationCountDown. The person will randomly be
-                        // at the destination for 1-5 seconds.
+                        // at the destination for 10-20 seconds.
                         this.currentLocationState = PersonLocationState.AT_DESTINATION;
-                        this.atDestinationCountDown = 60 * (rand.nextInt(5) + 1);
+                        this.atDestinationCountDown = 60 * (rand.nextInt(11) + 10);
 
                         // now that we have reached the destination, check to see which building we are inside? so we can
                         // keep walking inside the building while we are there.
@@ -171,7 +171,7 @@ public class Person {
                         // TODO: Check whether the person has been infected? if it has been infected we quarantine them
                         //  inside their community for a little longer.
                         this.currentLocationState = PersonLocationState.AT_COMMUNITY;
-                        this.atCommunityCountDown = 60 * (rand.nextInt(8) + 1);
+                        this.atCommunityCountDown = 60 * (rand.nextInt(16) + 10);
 
                         // now we walk inside the community while we are there.
                         setWalkInsideCommunity();
