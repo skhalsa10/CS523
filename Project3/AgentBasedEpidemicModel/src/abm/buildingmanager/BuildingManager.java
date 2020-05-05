@@ -108,7 +108,7 @@ public class BuildingManager extends Thread implements Communicator {
             PersonWaitingForDestination m2 = (PersonWaitingForDestination)m;
 
             DestinationForPerson messageToSend = getRandomDestination(m2);
-            abmController.sendMessage(m2);
+            abmController.sendMessage(messageToSend);
         }
         else if(m instanceof EnterBuilding){
 
@@ -140,7 +140,7 @@ public class BuildingManager extends Thread implements Communicator {
             yMaxBound = coordinate.getY() + ABMConstants.COMMUNITY_HEIGHT - 5;
         } else if(type == BuildingType.RESTURANT){
             id = random.nextInt(restaurants.size())+1;
-            coordinate = RESTAURANT_UPPERLEFT_CORNERS.get(id);
+            coordinate = RESTAURANT_UPPERLEFT_CORNERS.get(id-1);
             xMinBound = coordinate.getX() + 5;
             xMaxBound = coordinate.getX() + ABMConstants.COMMUNITY_WIDTH - 5;
             yMinBound = coordinate.getY() + 5;
