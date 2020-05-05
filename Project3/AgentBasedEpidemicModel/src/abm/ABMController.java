@@ -94,5 +94,9 @@ public class ABMController extends Thread implements Communicator {
         if (m instanceof NewPerson) {
             this.gui.sendMessage(m);
         }
+        if (m instanceof BuildingContagionLevel) {
+            System.out.println("BuildingContaigon coming to aBmController");
+            this.peopleManager.sendMessage(m);
+        }
     }
 }

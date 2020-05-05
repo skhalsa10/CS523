@@ -24,11 +24,13 @@ public class PeopleManager extends Thread implements Communicator {
     private ABMController abmController;
     private HashMap<Integer, ArrayList<Person>> communities;
     private boolean isRunning;
+    private Random randomBounds;
 
     public PeopleManager(ABMController abmController) {
         this.abmController = abmController;
         this.messages = new PriorityBlockingQueue<>();
         this.communities = new HashMap<>();
+        this.randomBounds = new Random();
 
         this.isRunning = true;
         initializeCommunities();
@@ -58,7 +60,6 @@ public class PeopleManager extends Thread implements Communicator {
      */
     private void initializeCommunities() {
         int personId = 1;
-        Random randomBounds = new Random();
 
         // we will have a random person in the community who's infected with Covid-19. Random person between 1-X
         //where X = # of communities * # of people in each community.
@@ -145,6 +146,31 @@ public class PeopleManager extends Thread implements Communicator {
         }
         if (m instanceof PersonChangedState) {
             this.abmController.sendMessage(m);
+        }
+        // when a person exits building, buildingManager sends this so peopleManager can
+        // check whether the person (who isn't sick yet) has caught the virus?
+        if (m instanceof BuildingContagionLevel) {
+            BuildingContagionLevel m2 = (BuildingContagionLevel) m;
+            ArrayList<Person> peopleInCommunity = communities.get(m2.getPersonCommunityId());
+            Person person;
+            for (Person p : peopleInCommunity) {
+                if (p.getID() == m2.getPersonId()) {
+                    person = p;
+                    if (person.getCurrentSIRQState() != SIRQState.INFECTED) {
+                        // check the likelihood of getting this person infected when they were at some x building?
+                        System.out.println("Contaigon level: " + m2.getProbOfInfection());
+                        if (person.amIInfected(m2.getProbOfInfection())) {
+                            System.out.println("INFECTEDDDDDD");
+                            // this person caught the virus while being in some building.
+                            person.setCurrentSIRQState(SIRQState.INFECTED);
+                            person.setSicknessScale(randomBounds.nextDouble());
+                            this.abmController.sendMessage(new PersonChangedState(person.getCurrentSIRQState(), person.getID()));
+                        }
+                    }
+                    break;
+                }
+            }
+
         }
     }
 }

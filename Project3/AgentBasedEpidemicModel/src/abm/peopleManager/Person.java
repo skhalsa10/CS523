@@ -157,23 +157,25 @@ public class Person {
                     moveInsideBuilding();
                     messagesQueue.put(new PersonChangedLocation(this.ID, currentLocation));
 
-                    // check to see if there is infected person nearby this person as they are walking inside their community?
-                    double radius = ABMConstants.INFECTION_RADIUS_BOX;
-                    Point2D vicinity = new Point2D(radius+this.currentLocation.getX(),radius+this.currentLocation.getY());
+                    if (this.currentSIRQState != SIRQState.INFECTED) {
+                        // check to see if there is infected person nearby this person as they are walking inside their community?
+                        double radius = ABMConstants.INFECTION_RADIUS_BOX;
+                        Point2D vicinity = new Point2D(radius + this.currentLocation.getX(), radius + this.currentLocation.getY());
 
-                    for (Person neighbor : neighbors) {
-                        // check if neighbor is inside the vicinity of this person?
-                        if (vicinity.getX() > neighbor.getCurrentLocation().getX()
-                                && vicinity.getY() > neighbor.getCurrentLocation().getY()) {
-                            // check to see if this neighbor is infected?
-                            if (neighbor.getCurrentSIRQState() == SIRQState.INFECTED) {
-                                // check to see the likelihood of this person getting infected from this neighbor?
-                                if (amIInfected(neighbor.getSicknessLevel())) {
-                                    // they catch the virus and have become infected.
-                                    this.currentSIRQState = SIRQState.INFECTED;
-                                    this.sicknessScale = rand.nextDouble();
-                                    messagesQueue.put(new PersonChangedState(this.currentSIRQState,this.ID));
-                                    break;
+                        for (Person neighbor : neighbors) {
+                            // check if neighbor is inside the vicinity of this person?
+                            if (vicinity.getX() > neighbor.getCurrentLocation().getX()
+                                    && vicinity.getY() > neighbor.getCurrentLocation().getY()) {
+                                // check to see if this neighbor is infected?
+                                if (neighbor.getCurrentSIRQState() == SIRQState.INFECTED) {
+                                    // check to see the likelihood of this person getting infected from this neighbor?
+                                    if (amIInfected(neighbor.getSicknessLevel())) {
+                                        // they catch the virus and have become infected.
+                                        this.currentSIRQState = SIRQState.INFECTED;
+                                        this.sicknessScale = rand.nextDouble();
+                                        messagesQueue.put(new PersonChangedState(this.currentSIRQState, this.ID));
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -249,7 +251,7 @@ public class Person {
                         this.distance = currentLocation.distance(homeLocation);
                         this.currentLocationState = PersonLocationState.WALKING;
 
-                        messagesQueue.put(new ExitBuilding(this.buildingDestID,this.buildingTypeToGo,this.ID,this.currentSIRQState));
+                        messagesQueue.put(new ExitBuilding(this.buildingDestID,this.homeCommunityID,this.buildingTypeToGo,this.ID,this.currentSIRQState));
                     }
                 }
                 break;
