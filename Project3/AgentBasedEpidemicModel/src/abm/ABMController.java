@@ -83,7 +83,6 @@ public class ABMController extends Thread implements Communicator {
             this.buildingManager.sendMessage(m);
         }
         if (m instanceof DestinationForPerson) {
-            System.out.println("abm controller sending DestinationForPerson");
             this.peopleManager.sendMessage(m);
         }
         if (m instanceof PersonChangedState) {

@@ -179,7 +179,11 @@ public class BuildingManager extends Thread implements Communicator {
         double yMaxBound;
         if(type == BuildingType.AIRPORT||type == BuildingType.HOTEL){
             id = 1;
-            coordinate = AIRPORT_UPPERLEFT_CORNER;
+            if(type == BuildingType.AIRPORT) {
+                coordinate = AIRPORT_UPPERLEFT_CORNER;
+            }else{
+                coordinate = HOTEL_UPPERLEFT;
+            }
             xMinBound = coordinate.getX() + 5;
             xMaxBound = coordinate.getX() + ABMConstants.COMMUNITY_WIDTH - 5;
             yMinBound = coordinate.getY() + 5;
