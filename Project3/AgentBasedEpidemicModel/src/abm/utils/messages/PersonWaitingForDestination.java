@@ -5,7 +5,7 @@ package abm.utils.messages;
  * @version 1.0.0
  * @author Anas Gauba
  */
-public class PersonWaitingForDestination implements Message {
+public class PersonWaitingForDestination extends TimeMarker implements Message{
 
     private int personID;
     private int communityID;

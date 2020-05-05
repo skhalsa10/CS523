@@ -9,7 +9,7 @@ import javafx.geometry.Point2D;
  * @version 1.0.0
  * @author Anas Gauba
  */
-public class DestinationForPerson implements Message {
+public class DestinationForPerson extends TimeMarker implements Message{
 
     private int personCommunityID;
     private int personID;

@@ -7,7 +7,7 @@ import javafx.geometry.Point2D;
  * @version 1.0.0
  * @author Anas Gauba
  */
-public class PersonChangedLocation implements Message {
+public class PersonChangedLocation extends TimeMarker implements Message{
 
     private int personId;
     private Point2D loc;

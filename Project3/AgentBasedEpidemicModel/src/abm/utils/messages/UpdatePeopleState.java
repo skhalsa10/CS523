@@ -6,7 +6,7 @@ package abm.utils.messages;
  * @version 1.0.0
  * @author Anas Gauba
  */
-public class UpdatePeopleState implements Message {
+public class UpdatePeopleState extends TimeMarker implements Message{
 
     public UpdatePeopleState() {
 

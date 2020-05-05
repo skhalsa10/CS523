@@ -8,7 +8,7 @@ import abm.utils.SIRQState;
  * @version 1.0.0
  * @author Siri Khalsa
  */
-public class EnterBuilding implements Message{
+public class EnterBuilding extends TimeMarker implements Message{
     private int buildingId;
     private BuildingType buildingType;
     private int personId;

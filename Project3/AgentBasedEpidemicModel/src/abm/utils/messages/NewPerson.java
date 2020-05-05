@@ -8,7 +8,7 @@ import javafx.geometry.Point2D;
  * @version 1.0.0
  * @author Anas Gauba
  */
-public class NewPerson implements Message {
+public class NewPerson extends TimeMarker implements Message {
 
     private int personId;
     private Point2D loc;
@@ -32,4 +32,5 @@ public class NewPerson implements Message {
     public SIRQState getPersonSIRQState() {
         return personSIRQState;
     }
+
 }

@@ -9,7 +9,7 @@ import abm.utils.SIRQState;
  * @version 1.0.0
  * @author Siri Khalsa
  */
-public class BuildingContagionLevel implements Message{
+public class BuildingContagionLevel extends TimeMarker implements Message{
 
     private int personId;
     private double probOfInfection;
