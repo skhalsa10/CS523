@@ -36,6 +36,9 @@ public class Person {
     // quarantine countdown will be helpful when a person is infected, its placed into quarantine, when this
     // countdown hits 0, they recover.
     private int quarantineCountDown;
+    // tillRecoveryCountDown is for when a person becomes infected, they will eventually recover whether they get quarantined
+    // or not.
+    private int tillRecoveryCountDown;
     private BuildingType buildingTypeToGo;
     private Point2D buildingDest;
     private int buildingDestID;
@@ -69,6 +72,8 @@ public class Person {
         // by default, we are not quarantined and a person is not sick.
         this.quarantineCountDown = 0;
         this.symptomScale = 0;
+        // by default, the person is not infected.
+        this.tillRecoveryCountDown = 0;
 
         // atCommunityCountDown is randomly set to 10-25 seconds. update() gets called 60fps so, we will multiply our
         // counter by 60. A person will wait randomly at the community before moving towards a destination.
@@ -97,6 +102,14 @@ public class Person {
     }
 
     public void setCurrentSIRQState(SIRQState newSIRQState) {
+        // initiate quarantine countDown as the person gets quarantined. This initialization of countDown will ONLY be decremented
+        // when the person is walking back home and is ALSO quarantined.
+        if (currentSIRQState == SIRQState.RECOVERED) {
+            System.out.println("NEVER GOING TO GET CALLED" + " " + newSIRQState);
+        }
+        if (newSIRQState == SIRQState.QUARANTINED) {
+            this.quarantineCountDown = 60 * (rand.nextInt(ABMConstants.AT_QUARANTINE_MAX) + ABMConstants.AT_QUARANTINE_MIN);
+        }
         this.currentSIRQState = newSIRQState;
     }
 
@@ -106,6 +119,10 @@ public class Person {
 
     public void setSymptomScale(double sicknessLevel) {
         this.symptomScale = sicknessLevel;
+    }
+
+    public void setTillRecoveryCountDown() {
+        this.tillRecoveryCountDown = 60 * (rand.nextInt(ABMConstants.TILL_RECOVERY_MAX) + ABMConstants.TILL_RECOVERY_MIN);
     }
 
     public BuildingType getDestBuildingToGo() {
@@ -150,6 +167,17 @@ public class Person {
      * @param neighbors of this person, used for disease spread in this person's community.
      */
     public void update(PriorityBlockingQueue<Message> messagesQueue, ArrayList<Person> neighbors) {
+        // when a person gets infected, we countDown their recovery process no matter they get quarantined or not!
+        // their locationState doesn't matter!
+        if (this.currentSIRQState == SIRQState.INFECTED) {
+            if (this.tillRecoveryCountDown > 0) {
+                this.tillRecoveryCountDown--;
+                if (this.tillRecoveryCountDown <= 0) {
+                    this.setCurrentSIRQState(SIRQState.RECOVERED);
+                    messagesQueue.put(new PersonChangedState(this.currentSIRQState,this.ID, this.homeCommunityID));
+                }
+            }
+        }
         switch (this.currentLocationState) {
             case AT_COMMUNITY:
                 // if a person is quarantined, we assume it is not playing a part in the disease spread in the community.
@@ -164,7 +192,7 @@ public class Person {
                         // now can go out again but they are no longer part of disease spread.
                         if (this.quarantineCountDown <= 0) {
                             this.quarantineCountDown = 0;
-                            this.currentSIRQState = SIRQState.RECOVERED;
+                            this.setCurrentSIRQState(SIRQState.RECOVERED);
                             messagesQueue.put(new PersonChangedState(this.currentSIRQState, this.ID, this.homeCommunityID));
 
                             // sets back the stay at community countDown until this person can go out again but this time they will NOT get infected
@@ -194,12 +222,17 @@ public class Person {
                                     if (neighbor.getCurrentSIRQState() == SIRQState.INFECTED) {
                                         // check to see the likelihood of this person getting infected from this neighbor?
                                         if (amIInfected(neighbor.getSymptomLevel())) {
-                                            // they catch the virus and have become infected.
-                                            this.currentSIRQState = SIRQState.INFECTED;
+                                            // they catch the virus and have become infected. Start the tillRecovery countDown so
+                                            // the person can eventually get recovered no matter if they are quarantined or not.
+                                            this.setCurrentSIRQState(SIRQState.INFECTED);
                                             this.symptomScale = rand.nextDouble();
+
+                                            this.tillRecoveryCountDown = 60 * (rand.nextInt(ABMConstants.TILL_RECOVERY_MAX) + ABMConstants.TILL_RECOVERY_MIN);
+
                                             messagesQueue.put(new PersonChangedState(this.currentSIRQState, this.ID, this.homeCommunityID));
                                             break;
                                         }
+                                        break;
                                     }
                                 }
                             }
@@ -290,9 +323,7 @@ public class Person {
                         this.distance = currentLocation.distance(homeLocation);
                         this.currentLocationState = PersonLocationState.WALKING;
 
-                        // initiate quarantine countDown as the person walks back home. This initialization of countDown will ONLY be decremented
-                        // when the person is walking back home and is ALSO quarantined.
-                        this.quarantineCountDown = 60* (rand.nextInt(ABMConstants.AT_QUARANTINE_MAX) + ABMConstants.AT_QUARANTINE_MIN);
+//                        this.quarantineCountDown = this.tillRecoveryCountDown;
 
                         System.out.println("This person exiting building and its community and own id are: " + this.homeCommunityID + ", " + this.ID);
                         messagesQueue.put(new ExitBuilding(this.buildingDestID,this.homeCommunityID,this.buildingTypeToGo,this.ID,this.currentSIRQState));

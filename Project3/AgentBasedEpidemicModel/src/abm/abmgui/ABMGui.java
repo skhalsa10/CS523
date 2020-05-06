@@ -4,6 +4,7 @@ import abm.ABMController;
 import abm.utils.ABMConstants;
 import abm.utils.Communicator;
 import abm.utils.SIRQState;
+import abm.utils.messages.Shutdown;
 import abm.utils.messages.*;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
@@ -20,7 +21,6 @@ import javafx.scene.text.*;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.PriorityBlockingQueue;
 
@@ -485,21 +485,23 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
             System.out.println("this should not happen Check updateGraphData");
             System.out.println("old state is "+ oldState);
             System.out.println("new state is "+ newState);
-            return;
         }
         else if(oldState==SIRQState.INFECTED && newState == SIRQState.QUARANTINED){
             //Quarantines is still infected as far as the graph is concerned so data doesnt change
-            return;
         }
         else if(oldState==SIRQState.INFECTED && newState == SIRQState.RECOVERED){
             totalI--;
             totalR++;
-            return;
         }
         else if(oldState==SIRQState.SUSCEPTIBLE && newState == SIRQState.INFECTED){
             totalS--;
             totalI++;
-        } else{
+        }
+        else if (oldState==SIRQState.QUARANTINED && newState == SIRQState.RECOVERED) {
+            totalI--;
+            totalR++;
+        }
+        else{
             System.out.println("something ait right check GUI updateGraphData method");
         }
     }

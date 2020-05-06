@@ -18,7 +18,7 @@ public class ABMConstants {
     public final static double PERSON_RENDER_HEIGHT = PERSON_RENDER_WIDTH;
 
     // radius, R of a person for disease spread. Representing as a BOX so we don't have to do trig math for circles.
-    public final static double INFECTION_RADIUS_BOX = 2*PERSON_RENDER_WIDTH;
+    public final static double INFECTION_RADIUS_BOX = 1*PERSON_RENDER_WIDTH;//tunable by multiplying.
 
     // how long a person stays in community or other destination. How long it stays in quarantine?
     // default here is person stays at community for 10-25 seconds
@@ -34,15 +34,23 @@ public class ABMConstants {
     public final static int AT_QUARANTINE_MIN = 30;//TUNABLE
     public final static int AT_QUARANTINE_MAX = 31;//TUNABLE
 
+    //default here is person recovers on its own no matter they get quarantined or not. 45-70 seconds.
+    // NOTE: people who are above SYMPTOM_SCALE_THRESHOLD WILL get quarantined, the rest can recover on their own.
+    public final static int TILL_RECOVERY_MIN = 45;
+    public final static int TILL_RECOVERY_MAX = 26;
+
     // countDown to quarantine check that peopleManager uses. Then it initiates a message to put people to quarantine.
     public final static int COUNTDOWN_TO_QUARANTINE_CHECK = 30;//TUNABLE
+
+    // amount of time to wait until epidemic spreads. By default, 60 seconds.
+    public final static int COUNTDOWN_TILL_EPIDEMIC_SPREAD = 60;//TUNABLE
 
     //this flag will turn on average contagion level in BuildingContagionLevel
     // or turn on max contagion level
     public final static boolean BUILDING_CONTAGION_IS_MAX = false;
 
-    // symptomScale threshold.
-    public final static double SYMPTOM_SCALE_THRESHOLD = 0.9;
+    // symptomScale threshold, means we test this percent of people
+    public final static double SYMPTOM_SCALE_THRESHOLD = 0.3;
 
     //Colors
     public final static Color CANVAS_BACKGROUND_COLOR= Color.web("#333333");
@@ -61,7 +69,7 @@ public class ABMConstants {
     // number of communities, and how many people in each community, list of each
     // communities UPPER_LEFT corner.
     public final static int COMMUNITIES = 18;
-    public final static int PEOPLE_IN_COMMUNITY = 20;//TUNABLE
+    public final static int PEOPLE_IN_COMMUNITY = 50;//TUNABLE
     public final static int TOTAL_NUMBER_OF_PEOPLE = COMMUNITIES*PEOPLE_IN_COMMUNITY;
 
     // padding between communities in the gui.
