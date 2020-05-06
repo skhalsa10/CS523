@@ -216,6 +216,7 @@ public class PeopleManager extends Thread implements Communicator {
                 if (symptomScaleThresholds.get(person) >= ABMConstants.SYMPTOM_SCALE_THRESHOLD) {
                     // this person goes to quarantine.
                     person.setCurrentSIRQState(SIRQState.QUARANTINED);
+                    this.abmController.sendMessage(new PersonChangedState(person.getCurrentSIRQState(),person.getID(),person.getHomeCommunityID()));
                 }
             }
         }
