@@ -15,3 +15,5 @@ ASSUMPTION
    community for some amount of time before they recover.
 7. We are quarantine people who are above a symptomScale threadshold so we can see how it affects the curve.
 8. We are assuming there are way more asymptomatic people.
+9. We are going to assume a person gets infected but we let them roam around and keep spreading for like half a minute (countDown to quarantine) until we reach 0 seconds, then
+   PeopleManager will initiate quaranting all the people who are above certain symptomScale threshold. 
