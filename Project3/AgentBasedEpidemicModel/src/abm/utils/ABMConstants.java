@@ -21,7 +21,8 @@ public class ABMConstants {
     public final static double INFECTION_RADIUS_BOX = 2*PERSON_RENDER_WIDTH;
 
     // how long a person stays in community or other destination. How long it stays in quarantine?
-    // default here is person stays at community for 10-25 seconds.
+    // default here is person stays at community for 10-25 seconds
+    // (USE this formula for calculating min and max values: min = max-min, max = max+min-1).
     public final static int AT_COMMUNITY_MIN = 10;
     public final static int AT_COMMUNITY_MAX = 16;
 
@@ -32,6 +33,9 @@ public class ABMConstants {
     // default here is person stays in quarantine for 30-60 seconds.
     public final static int AT_QUARANTINE_MIN = 30;
     public final static int AT_QUARANTINE_MAX = 31;
+
+    // countDown to quarantine check that peopleManager uses. Then it initiates a message to put people to quarantine.
+    public final static int COUNTDOWN_TO_QUARANTINE_CHECK = 30;
 
     //Colors
     public final static Color CANVAS_BACKGROUND_COLOR= Color.web("#333333");
