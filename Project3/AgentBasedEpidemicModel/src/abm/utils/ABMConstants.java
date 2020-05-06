@@ -37,6 +37,9 @@ public class ABMConstants {
     // countDown to quarantine check that peopleManager uses. Then it initiates a message to put people to quarantine.
     public final static int COUNTDOWN_TO_QUARANTINE_CHECK = 30;
 
+    // symptomScale threshold.
+    public final static double SYMPTOM_SCALE_THRESHOLD = 0.9;
+
     //Colors
     public final static Color CANVAS_BACKGROUND_COLOR= Color.web("#333333");
     public final static Color COMMUNITY_COLOR= Color.web("#999999");
