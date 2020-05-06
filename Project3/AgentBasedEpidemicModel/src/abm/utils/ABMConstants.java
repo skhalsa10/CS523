@@ -23,19 +23,23 @@ public class ABMConstants {
     // how long a person stays in community or other destination. How long it stays in quarantine?
     // default here is person stays at community for 10-25 seconds
     // (USE this formula for calculating min and max values: min = max-min, max = max+min-1).
-    public final static int AT_COMMUNITY_MIN = 10;
-    public final static int AT_COMMUNITY_MAX = 16;
+    public final static int AT_COMMUNITY_MIN = 10;//TUNABLE
+    public final static int AT_COMMUNITY_MAX = 16;//TUNABLE
 
     // default here is person stays at destination for 10-20 seconds.
-    public final static int AT_DESTINATION_MIN = 10;
-    public final static int AT_DESTINATION_MAX = 11;
+    public final static int AT_DESTINATION_MIN = 10;//TUNABLE
+    public final static int AT_DESTINATION_MAX = 11;//TUNABLE
 
     // default here is person stays in quarantine for 30-60 seconds.
-    public final static int AT_QUARANTINE_MIN = 30;
-    public final static int AT_QUARANTINE_MAX = 31;
+    public final static int AT_QUARANTINE_MIN = 30;//TUNABLE
+    public final static int AT_QUARANTINE_MAX = 31;//TUNABLE
 
     // countDown to quarantine check that peopleManager uses. Then it initiates a message to put people to quarantine.
-    public final static int COUNTDOWN_TO_QUARANTINE_CHECK = 30;
+    public final static int COUNTDOWN_TO_QUARANTINE_CHECK = 30;//TUNABLE
+
+    //this flag will turn on average contagion level in BuildingContagionLevel
+    // or turn on max contagion level
+    public final static boolean BUILDING_CONTAGION_IS_MAX = false;
 
     // symptomScale threshold.
     public final static double SYMPTOM_SCALE_THRESHOLD = 0.9;
@@ -57,7 +61,7 @@ public class ABMConstants {
     // number of communities, and how many people in each community, list of each
     // communities UPPER_LEFT corner.
     public final static int COMMUNITIES = 18;
-    public final static int PEOPLE_IN_COMMUNITY = 20;
+    public final static int PEOPLE_IN_COMMUNITY = 20;//TUNABLE
     public final static int TOTAL_NUMBER_OF_PEOPLE = COMMUNITIES*PEOPLE_IN_COMMUNITY;
 
     // padding between communities in the gui.
@@ -90,6 +94,7 @@ public class ABMConstants {
     //lets calculate the BUILDING sizes
     public final static double BUILDING_WIDTH = (CENTER_WIDTH_NO_AIRPORT/3) - 2*PADDING_WIDTH;
     public final static double BUILDING_HEIGHT = COMMUNITY_HEIGHT;
+    public final static int BUILDING_CAPACITY = 50;
 
     public final static Point2D GROCERY1_UPPERLEFT = new Point2D(3*PADDING_WIDTH+COMMUNITY_WIDTH,2*PADDING_HEIGHT+COMMUNITY_HEIGHT);
     public final static Point2D GROCERY2_UPPERLEFT = new Point2D(GROCERY1_UPPERLEFT.getX()+2*BUILDING_WIDTH+2*PADDING_WIDTH,GROCERY1_UPPERLEFT.getY()+2*PADDING_HEIGHT+2*COMMUNITY_HEIGHT);

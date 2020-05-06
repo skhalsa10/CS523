@@ -9,14 +9,19 @@ import java.util.HashMap;
 
 public class Building {
 
-    private HashMap<Integer, Double> infectedPeople;
+    private HashMap<Integer, Double> infectedPeople; //keep track of infected people ID and symptom level
     private int capacity;
     private int totalPeopleInside;
     private BuildingType buildingType;
     private int ID;
     private double infectionProbability;
 
-
+    /**
+     *
+     * @param capacity the number of people that can enter this building at a time.
+     * @param buildingType the type this building is
+     * @param ID the Id of this building. this is NOT unique but the building type plus this ID IS unique.
+     */
     public Building(int capacity, BuildingType buildingType, int ID) {
         this.infectedPeople = new HashMap<>();
         this.capacity = capacity;
@@ -49,25 +54,27 @@ public class Building {
     public BuildingContagionLevel exitBuilding(ExitBuilding m){
         totalPeopleInside--;
         if(m.getPersonState() == SIRQState.SUSCEPTIBLE){
+            //lets collect the average contagion level of all people in the building
+            //TODO should I return the Max contagion level instead
             double contagionLevel = 0;
             for (Double prob : infectedPeople.values()) {
                 contagionLevel += prob;
             }
-            System.out.println("ContagionLevel " + contagionLevel );
-            System.out.println("infectedPeopleSize "+ infectedPeople.size());
             int size = infectedPeople.size();
             if(size > 0) {
                 contagionLevel = contagionLevel / size;
             }
-            System.out.println("new COntagionLevel " + contagionLevel);
             BuildingContagionLevel messageToSend = new BuildingContagionLevel(m.getPersonId(),contagionLevel,m.getBuildingId());
             return messageToSend;
-        }else if(m.getPersonState() == SIRQState.RECOVERED){
+        }
+        else if(m.getPersonState() == SIRQState.RECOVERED){
             //here we do nothing more just return null
             return null;
 
         }else if(m.getPersonState() == SIRQState.QUARANTINED){
-            System.out.println("Quarantined people should not be entering or exiting buildings");
+            //if a quarantine person is leaving a building that means they were infected but became
+            // Quarantined inside the building remove them from the list
+            infectedPeople.remove(m.getPersonId());
             return null;
 
         }else if(m.getPersonState() == SIRQState.INFECTED){
