@@ -53,21 +53,21 @@ public class Building {
             for (Double prob : infectedPeople.values()) {
                 contagionLevel += prob;
             }
-            System.out.println("ContagionLevel " + contagionLevel );
-            System.out.println("infectedPeopleSize "+ infectedPeople.size());
             int size = infectedPeople.size();
             if(size > 0) {
                 contagionLevel = contagionLevel / size;
             }
-            System.out.println("new COntagionLevel " + contagionLevel);
             BuildingContagionLevel messageToSend = new BuildingContagionLevel(m.getPersonId(),contagionLevel,m.getBuildingId());
             return messageToSend;
-        }else if(m.getPersonState() == SIRQState.RECOVERED){
+        }
+        else if(m.getPersonState() == SIRQState.RECOVERED){
             //here we do nothing more just return null
             return null;
 
         }else if(m.getPersonState() == SIRQState.QUARANTINED){
-            System.out.println("Quarantined people should not be entering or exiting buildings");
+            //if a quarantine person is leaving a building that means they were infected but became
+            // Quarantined inside the building remove them from the list
+            infectedPeople.remove(m.getPersonId());
             return null;
 
         }else if(m.getPersonState() == SIRQState.INFECTED){
