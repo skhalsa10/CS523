@@ -32,6 +32,7 @@ public class ExitBuilding extends Message {
         this.buildingType = buildingType;
         this.personId = personId;
         this.personState = personState;
+        this.personCommunityId = personCommunityId;
     }
 
     public int getPersonCommunityId() {
