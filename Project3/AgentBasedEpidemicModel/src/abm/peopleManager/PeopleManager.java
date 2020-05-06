@@ -25,6 +25,11 @@ public class PeopleManager extends Thread implements Communicator {
     private HashMap<Integer, ArrayList<Person>> communities;
     private boolean isRunning;
     private Random randomBounds;
+    // this is initiated when we find a person becoming infected. When this hits 0, we make people quarantine who are above
+    // some symptomScale threshold.
+    private int countDownToQuarantine;
+    // map for person's symptomScale for their disease.
+    private HashMap<Person,Double> symptomScaleThresholds;
 
     public PeopleManager(ABMController abmController) {
         this.abmController = abmController;
@@ -33,6 +38,11 @@ public class PeopleManager extends Thread implements Communicator {
         this.randomBounds = new Random();
 
         this.isRunning = true;
+        // Initiate countDownToQuarantine counter to half a minute.
+        // When it hits 0 in UpdatePeopleState message (called 60fps), we reset it.
+        this.countDownToQuarantine = 60*ABMConstants.COUNTDOWN_TO_QUARANTINE_CHECK;
+
+        this.symptomScaleThresholds = new HashMap<>();
         initializeCommunities();
         start();
     }
@@ -107,6 +117,19 @@ public class PeopleManager extends Thread implements Communicator {
         return neighbors;
     }
 
+    /**
+     * Helper lookup method for quickly looking up the person in the map.
+     * @param destPersonId to look for.
+     * @param peopleInCommunity list of people in some i community.
+     * @return a person with the intended id.
+     */
+    private Person lookupPerson(int destPersonId, ArrayList<Person> peopleInCommunity) {
+        // get the first person then offset to lookup the intended person.
+        int firstPersonInCommunityId = peopleInCommunity.get(0).getID();
+        int offset = destPersonId - firstPersonInCommunityId;
+        return peopleInCommunity.get(offset);
+    }
+
     private synchronized void processMessage(Message m) {
         if (m instanceof Shutdown) {
             this.isRunning = false;
@@ -114,6 +137,16 @@ public class PeopleManager extends Thread implements Communicator {
         }
         // update people's location state.
         if (m instanceof UpdatePeopleState) {
+            // when countDownToQuarantine hits 0, put a PutPeopleToQuarantine message in peopleManager's message queue.
+            if (this.countDownToQuarantine > 0) {
+                this.countDownToQuarantine--;
+                if (this.countDownToQuarantine <= 0) {
+                    // reset the countDown back.
+                    this.countDownToQuarantine = 60*ABMConstants.COUNTDOWN_TO_QUARANTINE_CHECK;
+
+                    this.sendMessage(new PutPeopleInQuarantine());
+                }
+            }
             // go thru every community and every person in it to update their location state.
             for (Integer communityID : communities.keySet()) {
                 ArrayList<Person> people = communities.get(communityID);
@@ -128,23 +161,27 @@ public class PeopleManager extends Thread implements Communicator {
         }
         if (m instanceof DestinationForPerson) {
             DestinationForPerson dest = (DestinationForPerson) m;
-            ArrayList<Person> people = communities.get(dest.getPersonCommunityID());
-            Person person;
-            for (Person p : people) {
-                if (p.getID() == dest.getPersonID()) {
-                    person = p;
-                    person.setDestBuildingID(dest.getBuildingID());
-                    person.setBuildingTypeToGo(dest.getBuildingTypeToGo());
-                    person.setBuildingDest(dest.getBuildingDestToGo());
-                    person.setLocationState(PersonLocationState.DESTINATION_GIVEN);
-                    break;
-                }
-            }
+
+            Person person = lookupPerson(dest.getPersonID(),communities.get(dest.getPersonCommunityID()));
+            person.setDestBuildingID(dest.getBuildingID());
+            person.setBuildingTypeToGo(dest.getBuildingTypeToGo());
+            person.setBuildingDest(dest.getBuildingDestToGo());
+            person.setLocationState(PersonLocationState.DESTINATION_GIVEN);
         }
         if (m instanceof PersonChangedLocation) {
             this.abmController.sendMessage(m);
         }
         if (m instanceof PersonChangedState) {
+            // when person sends this message, check if person infected, then put to symptomScalethresholds map.
+            PersonChangedState changedState = (PersonChangedState) m;
+            if (changedState.getNewState() == SIRQState.INFECTED) {
+                Person person = lookupPerson(changedState.getPersonId(),communities.get(changedState.getPersonCommunityId()));
+                //System.out.println(person.getID() == changedState.getPersonId());
+
+                // put this infected person in the threshold map so when its time to put people in quarantine, this person's
+                // symptom/sickness threshold will be checked.
+                this.symptomScaleThresholds.put(person,person.getSymptomLevel());
+            }
             this.abmController.sendMessage(m);
         }
         if (m instanceof EnterBuilding) {
@@ -157,26 +194,28 @@ public class PeopleManager extends Thread implements Communicator {
         // check whether the person (who isn't sick yet) has caught the virus?
         if (m instanceof BuildingContagionLevel) {
             BuildingContagionLevel m2 = (BuildingContagionLevel) m;
-            ArrayList<Person> peopleInCommunity = communities.get(m2.getPersonCommunityId());
-            Person person;
-            for (Person p : peopleInCommunity) {
-                if (p.getID() == m2.getPersonId()) {
-                    person = p;
-                    if (person.getCurrentSIRQState() != SIRQState.INFECTED) {
-                        // check the likelihood of getting this person infected when they were at some x building?
-                        System.out.println("Contaigon level: " + m2.getProbOfInfection());
-                        if (person.amIInfected(m2.getProbOfInfection())) {
-                            System.out.println("INFECTEDDDDDD");
-                            // this person caught the virus while being in some building.
-                            person.setCurrentSIRQState(SIRQState.INFECTED);
-                            person.setSymptomScale(randomBounds.nextDouble());
-                            this.abmController.sendMessage(new PersonChangedState(person.getCurrentSIRQState(), person.getID()));
 
-                            // now quarantine this person.
+            System.out.println("From BuildingContagion Message-> CommuntiyId: " + m2.getPersonCommunityId() + " personId: " + m2.getPersonId());
+            Person person = lookupPerson(m2.getPersonId(),communities.get(m2.getPersonCommunityId()));
+            if (person.getCurrentSIRQState() == SIRQState.SUSCEPTIBLE) {
+                // check the likelihood of getting this person infected when they were at some x building?
+                System.out.println("Contaigon level: " + m2.getProbOfInfection());
+                if (person.amIInfected(m2.getProbOfInfection())) {
+                    System.out.println("INFECTEDDDDDD");
+                    // this person caught the virus while being in some building.
+                    person.setCurrentSIRQState(SIRQState.INFECTED);
+                    person.setSymptomScale(randomBounds.nextDouble());
 
-                        }
-                    }
-                    break;
+                    this.abmController.sendMessage(new PersonChangedState(person.getCurrentSIRQState(), person.getID(), person.getHomeCommunityID()));
+                }
+            }
+        }
+        // putting people in quarantine who are above symptomScale threshold.
+        if (m instanceof PutPeopleInQuarantine) {
+            for (Person person : symptomScaleThresholds.keySet()) {
+                if (symptomScaleThresholds.get(person) >= ABMConstants.SYMPTOM_SCALE_THRESHOLD) {
+                    // this person goes to quarantine.
+                    person.setCurrentSIRQState(SIRQState.QUARANTINED);
                 }
             }
         }

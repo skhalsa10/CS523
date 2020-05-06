@@ -152,79 +152,113 @@ public class Person {
     public void update(PriorityBlockingQueue<Message> messagesQueue, ArrayList<Person> neighbors) {
         switch (this.currentLocationState) {
             case AT_COMMUNITY:
-                // begin decrementing the counter.
-                if (this.atCommunityCountDown > 0) {
-                    this.atCommunityCountDown--;
-                    moveInsideBuilding();
-                    messagesQueue.put(new PersonChangedLocation(this.ID, currentLocation));
+                // if a person is quarantined, we assume it is not playing a part in the disease spread in the community.
+                // and a person stays at their community until the quarantine is over.
+                if (this.currentSIRQState == SIRQState.QUARANTINED) {
+                    if (this.quarantineCountDown > 0) {
+                        this.quarantineCountDown--;
+                        moveInsideBuilding();
+                        messagesQueue.put(new PersonChangedLocation(this.ID, currentLocation));
 
-                    if (this.currentSIRQState != SIRQState.INFECTED) {
-                        // check to see if there is infected person nearby this person as they are walking inside their community?
-                        double radius = ABMConstants.INFECTION_RADIUS_BOX;
-                        Point2D vicinity = new Point2D(radius + this.currentLocation.getX(), radius + this.currentLocation.getY());
+                        // if quarantine is over, they recover (and will NEVER be infected again) and
+                        // now can go out again but they are no longer part of disease spread.
+                        if (this.quarantineCountDown <= 0) {
+                            this.quarantineCountDown = 0;
+                            this.currentSIRQState = SIRQState.RECOVERED;
+                            messagesQueue.put(new PersonChangedState(this.currentSIRQState, this.ID, this.homeCommunityID));
 
-                        for (Person neighbor : neighbors) {
-                            // check if neighbor is inside the vicinity of this person?
-                            if (vicinity.getX() > neighbor.getCurrentLocation().getX()
-                                    && vicinity.getY() > neighbor.getCurrentLocation().getY()) {
-                                // check to see if this neighbor is infected?
-                                if (neighbor.getCurrentSIRQState() == SIRQState.INFECTED) {
-                                    // check to see the likelihood of this person getting infected from this neighbor?
-                                    if (amIInfected(neighbor.getSymptomLevel())) {
-                                        // they catch the virus and have become infected.
-                                        this.currentSIRQState = SIRQState.INFECTED;
-                                        this.symptomScale = rand.nextDouble();
-                                        messagesQueue.put(new PersonChangedState(this.currentSIRQState, this.ID));
-                                        break;
+                            // sets back the stay at community countDown until this person can go out again but this time they will NOT get infected
+                            // from the disease because they are immune.
+                            this.atCommunityCountDown = 60 * (rand.nextInt(ABMConstants.AT_COMMUNITY_MAX) + ABMConstants.AT_COMMUNITY_MIN);
+                        }
+                    }
+                }
+                else {
+                    // begin decrementing the counter.
+                    if (this.atCommunityCountDown > 0) {
+                        this.atCommunityCountDown--;
+                        moveInsideBuilding();
+                        messagesQueue.put(new PersonChangedLocation(this.ID, currentLocation));
+
+                        // if the person is Susceptible, can they get infected from being too close to their neighbors?
+                        if (this.currentSIRQState == SIRQState.SUSCEPTIBLE) {
+                            // check to see if there is infected person nearby this person as they are walking inside their community?
+                            double radius = ABMConstants.INFECTION_RADIUS_BOX;
+                            Point2D vicinity = new Point2D(radius + this.currentLocation.getX(), radius + this.currentLocation.getY());
+
+                            for (Person neighbor : neighbors) {
+                                // check if neighbor is inside the vicinity of this person?
+                                if (vicinity.getX() > neighbor.getCurrentLocation().getX()
+                                        && vicinity.getY() > neighbor.getCurrentLocation().getY()) {
+                                    // check to see if this neighbor is infected?
+                                    if (neighbor.getCurrentSIRQState() == SIRQState.INFECTED) {
+                                        // check to see the likelihood of this person getting infected from this neighbor?
+                                        if (amIInfected(neighbor.getSymptomLevel())) {
+                                            // they catch the virus and have become infected.
+                                            this.currentSIRQState = SIRQState.INFECTED;
+                                            this.symptomScale = rand.nextDouble();
+                                            messagesQueue.put(new PersonChangedState(this.currentSIRQState, this.ID, this.homeCommunityID));
+                                            break;
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-                    if (this.atCommunityCountDown <= 0) {
-                        this.atCommunityCountDown = 0;
-                        // make the person go wait for a destination.
-                        this.currentLocationState = PersonLocationState.WAITING_FOR_DESTINATION;
-                        messagesQueue.put(new PersonWaitingForDestination(this.homeCommunityID,this.ID));
+                        if (this.atCommunityCountDown <= 0) {
+                            this.atCommunityCountDown = 0;
+                            // make the person go wait for a destination.
+                            this.currentLocationState = PersonLocationState.WAITING_FOR_DESTINATION;
+                            messagesQueue.put(new PersonWaitingForDestination(this.homeCommunityID, this.ID));
+                        }
                     }
                 }
                 break;
             case WALKING:
-                // check whether walking towards a building or towards community?
-                if (this.buildingDest != null) {
-                    // check whether a person has reached close to destination building.
-                    if (isCloseToDestination(buildingDest)) {
-                        // at the destination, add a random destinationCountDown. The person will randomly be
-                        // at the destination for 10-20 seconds.
-                        this.currentLocationState = PersonLocationState.AT_DESTINATION;
-                        this.atDestinationCountDown = 60 * (rand.nextInt(ABMConstants.AT_DESTINATION_MAX) + ABMConstants.AT_DESTINATION_MIN);
-
-                        // now that we have reached the destination, check to see which building we are inside? so we can
-                        // keep walking inside the building while we are there.
-                        checkBuildingToWalkInsideTo();
-
-                        messagesQueue.put(new EnterBuilding(
-                                this.buildingDestID, this.buildingTypeToGo, this.ID, this.currentSIRQState, this.symptomScale));
-                    } else {
-                        moveTowardsDestination(buildingDest);
-                        messagesQueue.put(new PersonChangedLocation(this.ID, this.currentLocation));
-                    }
-                }
-                else {
-                    // walking towards the home community.
+                // if a person gets quarantined, they will just go back to their home.
+                if (this.currentSIRQState == SIRQState.QUARANTINED) {
+                    // when they reach home, then quarantineCountDown begins decrementing.
                     if (isCloseToDestination(homeLocation)) {
-                        // at the community. start atCommunityCountDown randomly.
-                        // TODO: Check whether the person has been infected? if it has been infected we quarantine them
-                        //  inside their community for a little longer.
                         this.currentLocationState = PersonLocationState.AT_COMMUNITY;
-                        this.atCommunityCountDown = 60 * (rand.nextInt(ABMConstants.AT_COMMUNITY_MAX) + ABMConstants.AT_COMMUNITY_MIN);
-
-                        // now we walk inside the community while we are there.
                         setWalkInsideCommunity();
                     }
                     else {
                         moveTowardsDestination(homeLocation);
-                        messagesQueue.put(new PersonChangedLocation(this.ID, this.currentLocation));
+                        messagesQueue.put(new PersonChangedLocation(this.ID,this.currentLocation));
+                    }
+                }
+                else {
+                    // check whether walking towards a building or towards community?
+                    if (this.buildingDest != null) {
+                        // check whether a person has reached close to destination building.
+                        if (isCloseToDestination(buildingDest)) {
+                            // at the destination, add a random destinationCountDown. The person will randomly be
+                            // at the destination for 10-20 seconds.
+                            this.currentLocationState = PersonLocationState.AT_DESTINATION;
+                            this.atDestinationCountDown = 60 * (rand.nextInt(ABMConstants.AT_DESTINATION_MAX) + ABMConstants.AT_DESTINATION_MIN);
+
+                            // now that we have reached the destination, check to see which building we are inside? so we can
+                            // keep walking inside the building while we are there.
+                            checkBuildingToWalkInsideTo();
+
+                            messagesQueue.put(new EnterBuilding(
+                                    this.buildingDestID, this.buildingTypeToGo, this.ID, this.currentSIRQState, this.symptomScale));
+                        } else {
+                            moveTowardsDestination(buildingDest);
+                            messagesQueue.put(new PersonChangedLocation(this.ID, this.currentLocation));
+                        }
+                    } else {
+                        // walking towards the home community.
+                        if (isCloseToDestination(homeLocation)) {
+                            // at the community. start atCommunityCountDown randomly.
+                            this.currentLocationState = PersonLocationState.AT_COMMUNITY;
+                            this.atCommunityCountDown = 60 * (rand.nextInt(ABMConstants.AT_COMMUNITY_MAX) + ABMConstants.AT_COMMUNITY_MIN);
+
+                            // now we walk inside the community while we are there.
+                            setWalkInsideCommunity();
+                        } else {
+                            moveTowardsDestination(homeLocation);
+                            messagesQueue.put(new PersonChangedLocation(this.ID, this.currentLocation));
+                        }
                     }
                 }
                 break;
@@ -232,11 +266,13 @@ public class Person {
                 // nothing updates, as the person is waiting for a destination to go to.
                 break;
             case DESTINATION_GIVEN:
-                // destination is given, so start moving/walking in that direction.
-                this.currentLocationState = PersonLocationState.WALKING;
-                this.distance = buildingDest.distance(currentLocation);
-                moveTowardsDestination(buildingDest);
-                messagesQueue.put(new PersonChangedLocation(this.ID, this.currentLocation));
+                // destination is given and the person is not quarantined, then start moving/walking in that direction.
+                if (this.currentSIRQState != SIRQState.QUARANTINED) {
+                    this.currentLocationState = PersonLocationState.WALKING;
+                    this.distance = buildingDest.distance(currentLocation);
+                    moveTowardsDestination(buildingDest);
+                    messagesQueue.put(new PersonChangedLocation(this.ID, this.currentLocation));
+                }
                 break;
             case AT_DESTINATION:
                 // begin decrementing the atDestinationCountDown counter.
@@ -244,7 +280,9 @@ public class Person {
                     this.atDestinationCountDown--;
                     moveInsideBuilding();
                     messagesQueue.put(new PersonChangedLocation(this.ID, currentLocation));
-                    if (this.atDestinationCountDown <= 0) {
+
+                    // check whether the person has been quarantined or their stay at destination is over?
+                    if (this.atDestinationCountDown <= 0 || this.currentSIRQState == SIRQState.QUARANTINED) {
                         this.atDestinationCountDown = 0;
                         // we need to exit the building now and start walking back to our home community, change the distance
                         // value now since we are going back home.
@@ -252,6 +290,11 @@ public class Person {
                         this.distance = currentLocation.distance(homeLocation);
                         this.currentLocationState = PersonLocationState.WALKING;
 
+                        // initiate quarantine countDown as the person walks back home. This initialization of countDown will ONLY be decremented
+                        // when the person is walking back home and is ALSO quarantined.
+                        this.quarantineCountDown = 60* (rand.nextInt(ABMConstants.AT_QUARANTINE_MAX) + ABMConstants.AT_QUARANTINE_MIN);
+
+                        System.out.println("This person exiting building and its community and own id are: " + this.homeCommunityID + ", " + this.ID);
                         messagesQueue.put(new ExitBuilding(this.buildingDestID,this.homeCommunityID,this.buildingTypeToGo,this.ID,this.currentSIRQState));
                     }
                 }
