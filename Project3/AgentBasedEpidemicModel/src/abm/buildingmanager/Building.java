@@ -9,14 +9,19 @@ import java.util.HashMap;
 
 public class Building {
 
-    private HashMap<Integer, Double> infectedPeople;
+    private HashMap<Integer, Double> infectedPeople; //keep track of infected people ID and symptom level
     private int capacity;
     private int totalPeopleInside;
     private BuildingType buildingType;
     private int ID;
     private double infectionProbability;
 
-
+    /**
+     *
+     * @param capacity the number of people that can enter this building at a time.
+     * @param buildingType the type this building is
+     * @param ID the Id of this building. this is NOT unique but the building type plus this ID IS unique.
+     */
     public Building(int capacity, BuildingType buildingType, int ID) {
         this.infectedPeople = new HashMap<>();
         this.capacity = capacity;
@@ -49,6 +54,8 @@ public class Building {
     public BuildingContagionLevel exitBuilding(ExitBuilding m){
         totalPeopleInside--;
         if(m.getPersonState() == SIRQState.SUSCEPTIBLE){
+            //lets collect the average contagion level of all people in the building
+            //TODO should I return the Max contagion level instead
             double contagionLevel = 0;
             for (Double prob : infectedPeople.values()) {
                 contagionLevel += prob;
