@@ -11,10 +11,12 @@ public class PersonChangedState extends Message {
 
     private SIRQState SIRQState;
     private int personId;
+    private int personCommunityId;
 
-    public PersonChangedState(SIRQState newSIRQState, int personId) {
+    public PersonChangedState(SIRQState newSIRQState, int personId, int personCommunityId) {
         this.SIRQState = newSIRQState;
         this.personId = personId;
+        this.personCommunityId = personCommunityId;
     }
 
     public SIRQState getNewState() {
@@ -23,5 +25,9 @@ public class PersonChangedState extends Message {
 
     public int getPersonId() {
         return personId;
+    }
+
+    public int getPersonCommunityId() {
+        return personCommunityId;
     }
 }
