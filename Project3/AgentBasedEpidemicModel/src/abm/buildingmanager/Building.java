@@ -64,7 +64,7 @@ public class Building {
             if(size > 0) {
                 contagionLevel = contagionLevel / size;
             }
-            BuildingContagionLevel messageToSend = new BuildingContagionLevel(m.getPersonId(),contagionLevel,m.getBuildingId());
+            BuildingContagionLevel messageToSend = new BuildingContagionLevel(m.getPersonId(),contagionLevel,m.getPersonCommunityId());
             return messageToSend;
         }
         else if(m.getPersonState() == SIRQState.RECOVERED){
