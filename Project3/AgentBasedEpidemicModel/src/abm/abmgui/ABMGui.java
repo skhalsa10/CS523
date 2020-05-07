@@ -270,7 +270,7 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
         // are 16.666667 ms between frame draws
         if (now - lastUpdate >= 16_667_000) {
             //first update any data points used for graph 60 will update every sec
-            if(graphUpdateCounter == 60){
+            if(graphUpdateCounter == 30){
                 graphUpdateCounter = 0;
                 //this will had a data slice to the graph to be rendered. graph slices are
                 // rendered as rectangles in the graph

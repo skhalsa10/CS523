@@ -50,7 +50,7 @@ public class ABMConstants {
     public final static boolean BUILDING_CONTAGION_IS_MAX = false;
 
     // symptomScale threshold, means we test this percent of people
-    public final static double SYMPTOM_SCALE_THRESHOLD = 0.3;
+    public final static double SYMPTOM_SCALE_THRESHOLD = 0.8;
 
     //Colors
     public final static Color CANVAS_BACKGROUND_COLOR= Color.web("#333333");
@@ -70,7 +70,6 @@ public class ABMConstants {
     // communities UPPER_LEFT corner.
     public final static int COMMUNITIES = 18;
     public final static int PEOPLE_IN_COMMUNITY = 50;//TUNABLE
-    public final static int TOTAL_NUMBER_OF_PEOPLE = COMMUNITIES*PEOPLE_IN_COMMUNITY;
 
     // padding between communities in the gui.
     private final static double PADDING_WIDTH = 10;
@@ -161,7 +160,6 @@ public class ABMConstants {
         double upperLeftX = PADDING_WIDTH;
         double upperLeftY = PADDING_HEIGHT;
 
-        System.out.println("beggining to build list");
         // go topLeft -> topRight first.
         for (int i = 1; i< X_COMMUNITIES;i++) {
             upperLeftCorners.add(new Point2D(upperLeftX, upperLeftY));
@@ -188,7 +186,6 @@ public class ABMConstants {
             upperLeftY -= COMMUNITY_HEIGHT+PADDING_HEIGHT;
         }
 
-        System.out.println("complete and length is: "+upperLeftCorners.size());
         return upperLeftCorners;
     }
 }
