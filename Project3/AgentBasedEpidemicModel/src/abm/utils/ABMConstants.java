@@ -18,7 +18,7 @@ public class ABMConstants {
     public final static double PERSON_RENDER_HEIGHT = PERSON_RENDER_WIDTH;
 
     // radius, R of a person for disease spread. Representing as a BOX so we don't have to do trig math for circles.
-    public final static double INFECTION_RADIUS_BOX = 1*PERSON_RENDER_WIDTH;//tunable by multiplying.
+    public final static double INFECTION_RADIUS_BOX = 2*PERSON_RENDER_WIDTH;//tunable by multiplying.
 
     // how long a person stays in community or other destination. How long it stays in quarantine?
     // default here is person stays at community for 10-25 seconds
@@ -43,14 +43,14 @@ public class ABMConstants {
     public final static int COUNTDOWN_TO_QUARANTINE_CHECK = 30;//TUNABLE
 
     // amount of time to wait until epidemic spreads. By default, 60 seconds.
-    public final static int COUNTDOWN_TILL_EPIDEMIC_SPREAD = 60;//TUNABLE
+    public final static int COUNTDOWN_TILL_EPIDEMIC_SPREAD = 30;//TUNABLE
 
     //this flag will turn on average contagion level in BuildingContagionLevel
     // or turn on max contagion level
     public final static boolean BUILDING_CONTAGION_IS_MAX = false;
 
     // symptomScale threshold, means we test this percent of people
-    public final static double SYMPTOM_SCALE_THRESHOLD = 0.8;
+    public final static double SYMPTOM_SCALE_THRESHOLD = 0.2;
 
     //Colors
     public final static Color CANVAS_BACKGROUND_COLOR= Color.web("#333333");
@@ -58,18 +58,18 @@ public class ABMConstants {
     public final static Color SUSCEPTIBLE_COLOR = Color.web("#5EF884");
     public final static Color INFECTED_COLOR = Color.web("#954B4A");
     public final static Color RECOVERED_COLOR = Color.web("#406CA3");
-    public final static Color QUARANTINED_COLOR = Color.web("#FF9264");
+    public final static Color QUARANTINED_COLOR = Color.WHITE;
     public final static Color AIRPORT_COLOR = Color.web("#ffdba9");
     public final static Color BUILDING_COLOR = Color.web("#ffdbb9");
     public final static Color RESTAURANT_COLOR = Color.web("#83bbe5");
 
     //GUI GRAPH CONSTANTS
-    public final static int TIME_SLICE_WIDTH = 2;
+    public final static int TIME_SLICE_WIDTH = 1;
 
     // number of communities, and how many people in each community, list of each
     // communities UPPER_LEFT corner.
     public final static int COMMUNITIES = 18;
-    public final static int PEOPLE_IN_COMMUNITY = 50;//TUNABLE
+    public final static int PEOPLE_IN_COMMUNITY = 60;//TUNABLE
 
     // padding between communities in the gui.
     private final static double PADDING_WIDTH = 10;

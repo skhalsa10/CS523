@@ -6,6 +6,7 @@ import abm.utils.PersonLocationState;
 import abm.utils.SIRQState;
 import abm.utils.messages.*;
 import javafx.geometry.Point2D;
+import org.apache.commons.math3.distribution.BetaDistribution;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -49,6 +50,11 @@ public class Person {
     // how contagious the person is, how sick the person is, how strong its symptoms are.
     private double symptomScale;
 
+    //We can use the .sample() method of the BetaDistribution to get
+    // a random number that follows the distribution.
+    // https://en.wikipedia.org/wiki/Beta_distribution we will use alpha = 2 and beta = 3.5
+    private BetaDistribution betaDistribution;
+
     // random number generator for waiting random amount of time, whether at community or at destination and generating
     // random destination for a person to walk inside a building.
     private Random rand;
@@ -80,6 +86,9 @@ public class Person {
         this.rand = new Random();
         this.atCommunityCountDown = 60 * (rand.nextInt(ABMConstants.AT_COMMUNITY_MAX) + ABMConstants.AT_COMMUNITY_MIN);
 
+        //alpha =2 beta=3.5 will sample more from the lower range of 0 to 1
+        //https://en.wikipedia.org/wiki/Beta_distribution
+        betaDistribution = new BetaDistribution(2,3.5);
         // pick a destination inside community so a person can move in their community while they are inside.
         this.currentLocationState = PersonLocationState.AT_COMMUNITY;
         setWalkInsideCommunity();
@@ -118,7 +127,7 @@ public class Person {
     }
 
     public void setSymptomScale(double sicknessLevel) {
-        this.symptomScale = sicknessLevel;
+        this.symptomScale = betaDistribution.sample();
     }
 
     public void setTillRecoveryCountDown() {
@@ -211,13 +220,16 @@ public class Person {
                         // if the person is Susceptible, can they get infected from being too close to their neighbors?
                         if (this.currentSIRQState == SIRQState.SUSCEPTIBLE) {
                             // check to see if there is infected person nearby this person as they are walking inside their community?
-                            double radius = ABMConstants.INFECTION_RADIUS_BOX;
-                            Point2D vicinity = new Point2D(radius + this.currentLocation.getX(), radius + this.currentLocation.getY());
+                            double radiusHalf = ABMConstants.INFECTION_RADIUS_BOX/2;
+                            double xMinBound = this.currentLocation.getX()-radiusHalf;
+                            double yMinBound = this.currentLocation.getY()-radiusHalf;
+                            double xMaxBound = this.currentLocation.getX()+radiusHalf;
+                            double yMaxBound = this.currentLocation.getY()+radiusHalf;
 
                             for (Person neighbor : neighbors) {
                                 // check if neighbor is inside the vicinity of this person?
-                                if (vicinity.getX() > neighbor.getCurrentLocation().getX()
-                                        && vicinity.getY() > neighbor.getCurrentLocation().getY()) {
+                                if (xMinBound <= neighbor.getCurrentLocation().getX() && neighbor.getCurrentLocation().getX() <= xMaxBound
+                                        && yMinBound <= neighbor.getCurrentLocation().getY() && neighbor.getCurrentLocation().getY() <= yMaxBound) {
                                     // check to see if this neighbor is infected?
                                     if (neighbor.getCurrentSIRQState() == SIRQState.INFECTED) {
                                         // check to see the likelihood of this person getting infected from this neighbor?
@@ -225,7 +237,7 @@ public class Person {
                                             // they catch the virus and have become infected. Start the tillRecovery countDown so
                                             // the person can eventually get recovered no matter if they are quarantined or not.
                                             this.setCurrentSIRQState(SIRQState.INFECTED);
-                                            this.symptomScale = rand.nextDouble();
+                                            this.symptomScale = betaDistribution.sample();
 
                                             this.tillRecoveryCountDown = 60 * (rand.nextInt(ABMConstants.TILL_RECOVERY_MAX) + ABMConstants.TILL_RECOVERY_MIN);
 

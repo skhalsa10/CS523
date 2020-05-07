@@ -4,6 +4,7 @@ import abm.utils.ABMConstants;
 import abm.utils.messages.Shutdown;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import org.apache.commons.math3.distribution.BetaDistribution;
 
 /**
  * This class is entry point for javafx, initializes the controller class as well.
