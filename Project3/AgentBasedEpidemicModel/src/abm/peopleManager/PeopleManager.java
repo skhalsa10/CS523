@@ -28,6 +28,8 @@ public class PeopleManager extends Thread implements Communicator {
     // this is initiated when we find a person becoming infected. When this hits 0, we make people quarantine who are above
     // some symptomScale threshold.
     private int countDownToQuarantine;
+    // this initially runs for x seconds, when it hits 0, then we make a person infected and start disease spread.
+    private int countDownTillEpidemicSpread;
     // map for person's symptomScale for their disease.
     private HashMap<Person,Double> symptomScaleThresholds;
 
@@ -43,6 +45,10 @@ public class PeopleManager extends Thread implements Communicator {
         this.countDownToQuarantine = 60*ABMConstants.COUNTDOWN_TO_QUARANTINE_CHECK;
 
         this.symptomScaleThresholds = new HashMap<>();
+
+        // wait this much time before spreading disease.
+        this.countDownTillEpidemicSpread = 60 * ABMConstants.COUNTDOWN_TILL_EPIDEMIC_SPREAD;
+
         initializeCommunities();
         start();
     }
@@ -71,11 +77,6 @@ public class PeopleManager extends Thread implements Communicator {
     private void initializeCommunities() {
         int personId = 1;
 
-        // we will have a random person in the community who's infected with Covid-19. Random person between 1-X
-        //where X = # of communities * # of people in each community.
-        int randomPersonId = randomBounds.nextInt(ABMConstants.COMMUNITIES*ABMConstants.PEOPLE_IN_COMMUNITY) + 1;
-
-
         for (int communityId = 1; communityId <= ABMConstants.COMMUNITIES; communityId++) {
             ArrayList<Person> peopleInCommunity = new ArrayList<>();
             // bounds for each person based on the communityId number.
@@ -92,11 +93,6 @@ public class PeopleManager extends Thread implements Communicator {
 
                 Person person = new Person(personId, communityId, personLocation);
                 peopleInCommunity.add(person);
-
-                if (personId == randomPersonId) {
-                    person.setCurrentSIRQState(SIRQState.INFECTED);
-                    person.setSymptomScale(randomBounds.nextDouble());
-                }
 
                 // give this new person's info to the controller so the gui can render.
                 this.abmController.sendMessage(new NewPerson(person.getCurrentSIRQState(), personId, personLocation));
@@ -130,6 +126,17 @@ public class PeopleManager extends Thread implements Communicator {
         return peopleInCommunity.get(offset);
     }
 
+    private void setRandomPersonToInfect() {
+        // we will have a random person in the community who's infected with Covid-19. Random person between 1-X
+        //where X = # of communities * # of people in each community.
+        //int randomPersonId = randomBounds.nextInt(ABMConstants.COMMUNITIES*ABMConstants.PEOPLE_IN_COMMUNITY) + 1;
+        int randomCommunityId = randomBounds.nextInt(ABMConstants.COMMUNITIES) + 1;
+        Person randomPerson = communities.get(randomCommunityId).get(randomBounds.nextInt(ABMConstants.PEOPLE_IN_COMMUNITY));
+
+        randomPerson.setCurrentSIRQState(SIRQState.INFECTED);
+        randomPerson.setSymptomScale(randomBounds.nextDouble());
+    }
+
     private synchronized void processMessage(Message m) {
         if (m instanceof Shutdown) {
             this.isRunning = false;
@@ -137,6 +144,14 @@ public class PeopleManager extends Thread implements Communicator {
         }
         // update people's location state.
         if (m instanceof UpdatePeopleState) {
+            // initially we wait until countDownTillEpidemicSpread hits 0 before we make a random person infected and start disease spread.
+            if (this.countDownTillEpidemicSpread > 0) {
+                this.countDownTillEpidemicSpread--;
+
+                if (this.countDownTillEpidemicSpread <= 0) {
+                    setRandomPersonToInfect();
+                }
+            }
             // when countDownToQuarantine hits 0, put a PutPeopleToQuarantine message in peopleManager's message queue.
             if (this.countDownToQuarantine > 0) {
                 this.countDownToQuarantine--;
@@ -206,16 +221,22 @@ public class PeopleManager extends Thread implements Communicator {
                     person.setCurrentSIRQState(SIRQState.INFECTED);
                     person.setSymptomScale(randomBounds.nextDouble());
 
+                    // start recovery process of this person on its own no matter they get quarantined or not!
+                    person.setTillRecoveryCountDown();
+
                     this.abmController.sendMessage(new PersonChangedState(person.getCurrentSIRQState(), person.getID(), person.getHomeCommunityID()));
                 }
             }
         }
-        // putting people in quarantine who are above symptomScale threshold.
+        // putting people in quarantine who are above symptomScale threshold, means we have tested these people.
         if (m instanceof PutPeopleInQuarantine) {
             for (Person person : symptomScaleThresholds.keySet()) {
                 if (symptomScaleThresholds.get(person) >= ABMConstants.SYMPTOM_SCALE_THRESHOLD) {
-                    // this person goes to quarantine.
-                    person.setCurrentSIRQState(SIRQState.QUARANTINED);
+                    // this person goes to quarantine only if its infected.
+                    if (person.getCurrentSIRQState() == SIRQState.INFECTED) {
+                        person.setCurrentSIRQState(SIRQState.QUARANTINED);
+                        this.abmController.sendMessage(new PersonChangedState(person.getCurrentSIRQState(), person.getID(), person.getHomeCommunityID()));
+                    }
                 }
             }
         }
