@@ -55,7 +55,6 @@ public class Building {
         totalPeopleInside--;
         if(m.getPersonState() == SIRQState.SUSCEPTIBLE){
             //lets collect the average contagion level of all people in the building
-            //TODO should I return the Max contagion level instead
             double contagionLevel = 0;
             for (Double prob : infectedPeople.values()) {
                 contagionLevel += prob;

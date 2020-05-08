@@ -135,6 +135,7 @@ public class PeopleManager extends Thread implements Communicator {
 
         randomPerson.setCurrentSIRQState(SIRQState.INFECTED);
         randomPerson.setSymptomScale(randomBounds.nextDouble());
+        abmController.sendMessage(new PersonChangedState(SIRQState.INFECTED,randomPerson.getID(),randomCommunityId));
     }
 
     private synchronized void processMessage(Message m) {
@@ -210,13 +211,13 @@ public class PeopleManager extends Thread implements Communicator {
         if (m instanceof BuildingContagionLevel) {
             BuildingContagionLevel m2 = (BuildingContagionLevel) m;
 
-            System.out.println("From BuildingContagion Message-> CommuntiyId: " + m2.getPersonCommunityId() + " personId: " + m2.getPersonId());
+            //System.out.println("From BuildingContagion Message-> CommuntiyId: " + m2.getPersonCommunityId() + " personId: " + m2.getPersonId());
             Person person = lookupPerson(m2.getPersonId(),communities.get(m2.getPersonCommunityId()));
             if (person.getCurrentSIRQState() == SIRQState.SUSCEPTIBLE) {
                 // check the likelihood of getting this person infected when they were at some x building?
-                System.out.println("Contaigon level: " + m2.getProbOfInfection());
+                //System.out.println("Contaigon level: " + m2.getProbOfInfection());
                 if (person.amIInfected(m2.getProbOfInfection())) {
-                    System.out.println("INFECTEDDDDDD");
+                    //System.out.println("INFECTEDDDDDD");
                     // this person caught the virus while being in some building.
                     person.setCurrentSIRQState(SIRQState.INFECTED);
                     person.setSymptomScale(randomBounds.nextDouble());

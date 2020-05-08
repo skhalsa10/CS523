@@ -337,7 +337,7 @@ public class Person {
 
 //                        this.quarantineCountDown = this.tillRecoveryCountDown;
 
-                        System.out.println("This person exiting building and its community and own id are: " + this.homeCommunityID + ", " + this.ID);
+                        //System.out.println("This person exiting building and its community and own id are: " + this.homeCommunityID + ", " + this.ID);
                         messagesQueue.put(new ExitBuilding(this.buildingDestID,this.homeCommunityID,this.buildingTypeToGo,this.ID,this.currentSIRQState));
                     }
                 }
