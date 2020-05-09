@@ -68,6 +68,7 @@ public class Building {
         }
         else if(m.getPersonState() == SIRQState.RECOVERED){
             //here we do nothing more just return null
+            infectedPeople.remove(m.getPersonId());
             return null;
 
         }else if(m.getPersonState() == SIRQState.QUARANTINED){

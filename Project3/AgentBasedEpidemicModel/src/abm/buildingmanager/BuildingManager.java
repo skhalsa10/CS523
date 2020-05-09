@@ -213,16 +213,24 @@ public class BuildingManager extends Thread implements Communicator {
                 coordinate = HOTEL_UPPERLEFT;
             }
             xMinBound = coordinate.getX() + 5;
-            xMaxBound = coordinate.getX() + ABMConstants.COMMUNITY_WIDTH - 5;
             yMinBound = coordinate.getY() + 5;
-            yMaxBound = coordinate.getY() + ABMConstants.COMMUNITY_HEIGHT - 5;
+            if(type == BuildingType.AIRPORT){
+                xMaxBound = coordinate.getX() + AIRPORT_WIDTH- 5;
+                yMaxBound = coordinate.getY() + AIRPORT_HEIGHT - 5;
+            }else{
+                xMaxBound = coordinate.getX() + COMMUNITY_WIDTH - 5;
+                yMaxBound = coordinate.getY() + COMMUNITY_HEIGHT - 5;
+            }
+
+
+
         } else if(type == BuildingType.RESTURANT){
             id = random.nextInt(restaurants.size())+1;
             coordinate = RESTAURANT_UPPERLEFT_CORNERS.get(id-1);
             xMinBound = coordinate.getX() + 5;
-            xMaxBound = coordinate.getX() + ABMConstants.COMMUNITY_WIDTH - 5;
+            xMaxBound = coordinate.getX() + COMMUNITY_WIDTH - 5;
             yMinBound = coordinate.getY() + 5;
-            yMaxBound = coordinate.getY() + ABMConstants.COMMUNITY_HEIGHT - 5;
+            yMaxBound = coordinate.getY() + COMMUNITY_HEIGHT - 5;
         }else{
             id = random.nextInt(2)+1;
             if(id ==1){

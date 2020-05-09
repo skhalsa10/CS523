@@ -191,6 +191,12 @@ public class PeopleManager extends Thread implements Communicator {
             // when person sends this message, check if person infected, then put to symptomScalethresholds map.
             PersonChangedState changedState = (PersonChangedState) m;
             if (changedState.getNewState() == SIRQState.INFECTED) {
+                //TODO i think that the thing that keeps track of the infected doesnt update quick enough.
+                // so i think what happens is a quarantine message gets queued behind an update message
+                // but multiple people infected but since this data structure gets
+                // updated using PersonChangedState message they get missed in the quarantine message
+                // i was expecting every current infected to be quarantine when a threshold is set to
+                // 0... but only have the people get quarantined maybe this can be incorporated in the update function?
                 Person person = lookupPerson(changedState.getPersonId(),communities.get(changedState.getPersonCommunityId()));
                 //System.out.println(person.getID() == changedState.getPersonId());
 
@@ -231,7 +237,13 @@ public class PeopleManager extends Thread implements Communicator {
         }
         // putting people in quarantine who are above symptomScale threshold, means we have tested these people.
         if (m instanceof PutPeopleInQuarantine) {
+            //TODO: may be able to spead up this loop if you remove the people
+            // quarantined after they change state. -Siri
+
             for (Person person : symptomScaleThresholds.keySet()) {
+                System.out.println("person symptomscale: "+ symptomScaleThresholds.get(person));
+                System.out.println("the symptomscale threshold is: " + ABMConstants.SYMPTOM_SCALE_THRESHOLD);
+                System.out.println("symptomScaleThresholds.get(person) >= ABMConstants.SYMPTOM_SCALE_THRESHOLD is :" + (symptomScaleThresholds.get(person) >= ABMConstants.SYMPTOM_SCALE_THRESHOLD));
                 if (symptomScaleThresholds.get(person) >= ABMConstants.SYMPTOM_SCALE_THRESHOLD) {
                     // this person goes to quarantine only if its infected.
                     if (person.getCurrentSIRQState() == SIRQState.INFECTED) {

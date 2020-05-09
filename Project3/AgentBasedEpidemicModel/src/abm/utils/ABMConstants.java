@@ -40,7 +40,7 @@ public class ABMConstants {
     public final static int TILL_RECOVERY_MAX = 26;
 
     // countDown to quarantine check that peopleManager uses. Then it initiates a message to put people to quarantine.
-    public final static int COUNTDOWN_TO_QUARANTINE_CHECK = 30;//TUNABLE
+    public final static int COUNTDOWN_TO_QUARANTINE_CHECK = 5;//TUNABLE
 
     // amount of time to wait until epidemic spreads. By default, 60 seconds.
     public final static int COUNTDOWN_TILL_EPIDEMIC_SPREAD = 30;//TUNABLE
@@ -50,7 +50,7 @@ public class ABMConstants {
     public final static boolean BUILDING_CONTAGION_IS_MAX = false;
 
     // symptomScale threshold, means we test this percent of people
-    public final static double SYMPTOM_SCALE_THRESHOLD = 0.2;
+    public final static double SYMPTOM_SCALE_THRESHOLD = 0.0;
 
     //Colors
     public final static Color CANVAS_BACKGROUND_COLOR= Color.web("#333333");
