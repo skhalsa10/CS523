@@ -11,6 +11,7 @@ import javafx.geometry.Point2D;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.concurrent.PriorityBlockingQueue;
 
@@ -135,6 +136,10 @@ public class PeopleManager extends Thread implements Communicator {
 
         randomPerson.setCurrentSIRQState(SIRQState.INFECTED);
         randomPerson.setSymptomScale(randomBounds.nextDouble());
+
+        // put this guy in symptomScaleThresholds map.
+        this.symptomScaleThresholds.put(randomPerson,randomPerson.getSymptomLevel());
+
         abmController.sendMessage(new PersonChangedState(SIRQState.INFECTED,randomPerson.getID(),randomCommunityId));
     }
 
@@ -153,6 +158,14 @@ public class PeopleManager extends Thread implements Communicator {
                     setRandomPersonToInfect();
                 }
             }
+            // go thru every community and every person in it to update their location state.
+            for (Integer communityID : communities.keySet()) {
+                ArrayList<Person> people = communities.get(communityID);
+                for (Person person : people) {
+                    ArrayList<Person> neighbors = addNeighbors(person, people);
+                    person.update(this.messages, neighbors);
+                }
+            }
             // when countDownToQuarantine hits 0, put a PutPeopleToQuarantine message in peopleManager's message queue.
             if (this.countDownToQuarantine > 0) {
                 this.countDownToQuarantine--;
@@ -160,15 +173,8 @@ public class PeopleManager extends Thread implements Communicator {
                     // reset the countDown back.
                     this.countDownToQuarantine = 60*ABMConstants.COUNTDOWN_TO_QUARANTINE_CHECK;
 
+                    System.out.println("In updateState, QUArantine threshold map: " + symptomScaleThresholds.keySet().size());
                     this.sendMessage(new PutPeopleInQuarantine());
-                }
-            }
-            // go thru every community and every person in it to update their location state.
-            for (Integer communityID : communities.keySet()) {
-                ArrayList<Person> people = communities.get(communityID);
-                for (Person person : people) {
-                    ArrayList<Person> neighbors = addNeighbors(person, people);
-                    person.update(this.messages, neighbors);
                 }
             }
         }
@@ -191,18 +197,13 @@ public class PeopleManager extends Thread implements Communicator {
             // when person sends this message, check if person infected, then put to symptomScalethresholds map.
             PersonChangedState changedState = (PersonChangedState) m;
             if (changedState.getNewState() == SIRQState.INFECTED) {
-                //TODO i think that the thing that keeps track of the infected doesnt update quick enough.
-                // so i think what happens is a quarantine message gets queued behind an update message
-                // but multiple people infected but since this data structure gets
-                // updated using PersonChangedState message they get missed in the quarantine message
-                // i was expecting every current infected to be quarantine when a threshold is set to
-                // 0... but only have the people get quarantined maybe this can be incorporated in the update function?
                 Person person = lookupPerson(changedState.getPersonId(),communities.get(changedState.getPersonCommunityId()));
                 //System.out.println(person.getID() == changedState.getPersonId());
 
                 // put this infected person in the threshold map so when its time to put people in quarantine, this person's
                 // symptom/sickness threshold will be checked.
                 this.symptomScaleThresholds.put(person,person.getSymptomLevel());
+                System.out.println("In personChangeState PERSON BECOME INFECTEDDDDDDD,  quarantine map size: " + symptomScaleThresholds.keySet().size());
             }
             this.abmController.sendMessage(m);
         }
@@ -237,19 +238,17 @@ public class PeopleManager extends Thread implements Communicator {
         }
         // putting people in quarantine who are above symptomScale threshold, means we have tested these people.
         if (m instanceof PutPeopleInQuarantine) {
-            //TODO: may be able to spead up this loop if you remove the people
-            // quarantined after they change state. -Siri
+            System.out.println("In putPeopleQuarantine msg");
 
-            for (Person person : symptomScaleThresholds.keySet()) {
-                System.out.println("person symptomscale: "+ symptomScaleThresholds.get(person));
-                System.out.println("the symptomscale threshold is: " + ABMConstants.SYMPTOM_SCALE_THRESHOLD);
-                System.out.println("symptomScaleThresholds.get(person) >= ABMConstants.SYMPTOM_SCALE_THRESHOLD is :" + (symptomScaleThresholds.get(person) >= ABMConstants.SYMPTOM_SCALE_THRESHOLD));
+            // symptomScaleThresholds has all infected people. All of them go to quarantine.
+            Iterator<Person> iterator = symptomScaleThresholds.keySet().iterator();
+            while (iterator.hasNext()) {
+                Person person = iterator.next();
                 if (symptomScaleThresholds.get(person) >= ABMConstants.SYMPTOM_SCALE_THRESHOLD) {
-                    // this person goes to quarantine only if its infected.
-                    if (person.getCurrentSIRQState() == SIRQState.INFECTED) {
-                        person.setCurrentSIRQState(SIRQState.QUARANTINED);
-                        this.abmController.sendMessage(new PersonChangedState(person.getCurrentSIRQState(), person.getID(), person.getHomeCommunityID()));
-                    }
+                    person.setCurrentSIRQState(SIRQState.QUARANTINED);
+                    this.abmController.sendMessage(new PersonChangedState(person.getCurrentSIRQState(), person.getID(), person.getHomeCommunityID()));
+                    // remove this person from the map, iterator will remove it.
+                    iterator.remove();
                 }
             }
         }
