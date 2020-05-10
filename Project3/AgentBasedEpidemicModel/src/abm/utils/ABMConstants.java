@@ -50,7 +50,7 @@ public class ABMConstants {
     public final static boolean BUILDING_CONTAGION_IS_MAX = false;
 
     // symptomScale threshold, means we test this percent of people
-    public final static double SYMPTOM_SCALE_THRESHOLD = 0.8;
+    public final static double SYMPTOM_SCALE_THRESHOLD = 0.1;
 
     //Colors
     public final static Color CANVAS_BACKGROUND_COLOR= Color.web("#333333");
