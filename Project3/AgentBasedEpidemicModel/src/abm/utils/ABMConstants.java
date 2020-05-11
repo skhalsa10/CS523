@@ -188,4 +188,11 @@ public class ABMConstants {
 
         return upperLeftCorners;
     }
+
+    //test
+    public static int test;
+
+    public static void init(int hi){
+        test = hi;
+    }
 }

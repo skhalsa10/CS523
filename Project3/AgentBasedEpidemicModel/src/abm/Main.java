@@ -4,7 +4,7 @@ import abm.utils.ABMConstants;
 import abm.utils.messages.Shutdown;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import org.apache.commons.math3.distribution.BetaDistribution;
+
 
 /**
  * This class is entry point for javafx, initializes the controller class as well.
@@ -12,13 +12,18 @@ import org.apache.commons.math3.distribution.BetaDistribution;
  * @author Anas Gauba
  */
 public class Main extends Application {
-
     private ABMController abm;
+
 
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        Parameters parameters = getParameters();
+        System.out.println(parameters.getUnnamed().get(0));
         this.abm = new ABMController(primaryStage);
+        System.out.println(ABMConstants.test);
+        ABMConstants.init(Integer.parseInt(parameters.getUnnamed().get(0)));
+        System.out.println(ABMConstants.test);
     }
 
     @Override
