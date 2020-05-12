@@ -35,9 +35,9 @@ public class Main extends Application {
             printInstructions();
             System.exit(1);
         }
-        System.out.println(ABMConstants.SYMPTOM_SCALE_THRESHOLD);
-        System.out.println(ABMConstants.ALPHA);
-        System.out.println(ABMConstants.BETA);
+        System.out.println("Symptom Scale Threshold = "+ABMConstants.SYMPTOM_SCALE_THRESHOLD);
+        System.out.println("Alpha " + ABMConstants.ALPHA);
+        System.out.println("Beta " + ABMConstants.BETA);
         this.abm = new ABMController(primaryStage);
 
 
