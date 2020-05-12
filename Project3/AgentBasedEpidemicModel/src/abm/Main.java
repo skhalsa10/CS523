@@ -46,14 +46,14 @@ public class Main extends Application {
     private void printInstructions() {
         System.out.println("Agent Based Epidemic Model Help - " +
                 "ABEM can be launched in three ways ways:\n\n" +
-                "1. java -jar ABEM \n" +
-                "2. java -jar mobileAgents [Symptom_Scale_Threshold]\n" +
-                "3. java -jar mobileAgents [Symptom_Scale_Threshold] [ALPHA] [BETA]\n\n" +
+                "1. java -jar ABEM.jar \n" +
+                "2. java -jar ABEM.jar [Symptom_Scale_Threshold]\n" +
+                "3. java -jar ABEM.jar [Symptom_Scale_Threshold] [ALPHA] [BETA]\n\n" +
                 "Symptom_Scale_Threshold MUST be a number between 0.0 and 1.0\n\n" +
                 "1 will run the application with the defaults SymptomScaleThreshold=0.4 ALPHA=2 BETA=3.5\n" +
                 "2 will run the application with given command line SymptomScaleThreshold and ALPHA=2 BETA=3.5\n" +
                 "3 will run the application with the given command line arguments\n\n"+
-                "Example: \n\tjava -jar ABEM \n\tjava -jar ABEM 0.3 \n\tjava -jar ABEM 0.3 1.0 5.2");
+                "Example: \n\tjava -jar ABEM.jar \n\tjava -jar ABEM.jar 0.3 \n\tjava -jar ABEM.jar 0.3 1.0 5.2");
     }
 
     @Override
