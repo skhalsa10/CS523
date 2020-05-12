@@ -50,7 +50,11 @@ public class ABMConstants {
     public final static boolean BUILDING_CONTAGION_IS_MAX = false;
 
     // symptomScale threshold, means we test this percent of people
-    public final static double SYMPTOM_SCALE_THRESHOLD = 0.1;
+    public static double SYMPTOM_SCALE_THRESHOLD = 0.1;
+
+    //the variables for the beta distributions
+    public static double ALPHA = 2.0;
+    public static double BETA = 3.5;
 
     //Colors
     public final static Color CANVAS_BACKGROUND_COLOR= Color.web("#333333");
@@ -189,10 +193,11 @@ public class ABMConstants {
         return upperLeftCorners;
     }
 
-    //test
-    public static int test;
 
-    public static void init(int hi){
-        test = hi;
+    public static void setCommandLineArgs(double threshold, double alpha, double beta){
+        SYMPTOM_SCALE_THRESHOLD = threshold;
+        ALPHA = alpha;
+        BETA = beta;
+
     }
 }
