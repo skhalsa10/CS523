@@ -173,7 +173,6 @@ public class PeopleManager extends Thread implements Communicator {
                     // reset the countDown back.
                     this.countDownToQuarantine = 60*ABMConstants.COUNTDOWN_TO_QUARANTINE_CHECK;
 
-                    System.out.println("In updateState, QUArantine threshold map: " + symptomScaleThresholds.keySet().size());
                     this.sendMessage(new PutPeopleInQuarantine());
                 }
             }
@@ -198,12 +197,10 @@ public class PeopleManager extends Thread implements Communicator {
             PersonChangedState changedState = (PersonChangedState) m;
             if (changedState.getNewState() == SIRQState.INFECTED) {
                 Person person = lookupPerson(changedState.getPersonId(),communities.get(changedState.getPersonCommunityId()));
-                //System.out.println(person.getID() == changedState.getPersonId());
 
                 // put this infected person in the threshold map so when its time to put people in quarantine, this person's
                 // symptom/sickness threshold will be checked.
                 this.symptomScaleThresholds.put(person,person.getSymptomLevel());
-                System.out.println("In personChangeState PERSON BECOME INFECTEDDDDDDD,  quarantine map size: " + symptomScaleThresholds.keySet().size());
             }
             this.abmController.sendMessage(m);
         }
@@ -218,13 +215,12 @@ public class PeopleManager extends Thread implements Communicator {
         if (m instanceof BuildingContagionLevel) {
             BuildingContagionLevel m2 = (BuildingContagionLevel) m;
 
-            //System.out.println("From BuildingContagion Message-> CommuntiyId: " + m2.getPersonCommunityId() + " personId: " + m2.getPersonId());
             Person person = lookupPerson(m2.getPersonId(),communities.get(m2.getPersonCommunityId()));
             if (person.getCurrentSIRQState() == SIRQState.SUSCEPTIBLE) {
                 // check the likelihood of getting this person infected when they were at some x building?
-                //System.out.println("Contaigon level: " + m2.getProbOfInfection());
+
                 if (person.amIInfected(m2.getProbOfInfection())) {
-                    //System.out.println("INFECTEDDDDDD");
+
                     // this person caught the virus while being in some building.
                     person.setCurrentSIRQState(SIRQState.INFECTED);
                     person.setSymptomScale(randomBounds.nextDouble());
@@ -238,7 +234,6 @@ public class PeopleManager extends Thread implements Communicator {
         }
         // putting people in quarantine who are above symptomScale threshold, means we have tested these people.
         if (m instanceof PutPeopleInQuarantine) {
-            System.out.println("In putPeopleQuarantine msg");
 
             // symptomScaleThresholds has all infected people. All of them go to quarantine.
             Iterator<Person> iterator = symptomScaleThresholds.keySet().iterator();
