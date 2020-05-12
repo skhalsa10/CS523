@@ -88,7 +88,7 @@ public class Person {
 
         //alpha =2 beta=3.5 will sample more from the lower range of 0 to 1
         //https://en.wikipedia.org/wiki/Beta_distribution
-        betaDistribution = new BetaDistribution(2,3.5);
+        betaDistribution = new BetaDistribution(ABMConstants.ALPHA,ABMConstants.BETA);
         // pick a destination inside community so a person can move in their community while they are inside.
         this.currentLocationState = PersonLocationState.AT_COMMUNITY;
         setWalkInsideCommunity();
