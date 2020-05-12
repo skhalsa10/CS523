@@ -14,8 +14,13 @@ import java.util.concurrent.PriorityBlockingQueue;
 
 /**
  * This Class encapsulates a Person inside of the Agent Based Epidemic Model.
+ * The person class performs tasks such as updating their physical location, their current SIRQ state, their location state
+ * to detect whether a person is at community, at destination, etc. The person updates it state 60fps. This person class
+ * also has logic for moving a person whether inside their community, walking towards their destination, or walking inside
+ * a destination.
  *
- * The goal of this class is to encapsulate the behavior of a person.
+ * @version 1.0.0
+ * @author Anas Gauba
  */
 public class Person {
     private int ID;
