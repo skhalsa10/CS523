@@ -6,18 +6,18 @@ Features to implement in future
     b. will cause peopleManager
 
 ASSUMPTION
-1. we assume there is a correlation between how sick someone is and how contagious they are
-2. we assume that a building changes its contagionlevel based on how many people are inside that are infected
-3. we assume in our sim that that a person can only get quarantined when they are located in their community
-4. a person can not get infected while traveling to  building by another person. person can get infected after leaving a building.
+1. we assume there is a correlation between how sick someone is and how contagious they are DONE!
+2. we assume that a building changes its contagionlevel based on how many people are inside that are infected NOT NEEDED!
+3. we assume in our sim that that a person can only get quarantined when they are located in their community NOT TRUE!
+4. a person can not get infected while traveling to  building by another person. person can get infected after leaving a building. DONE!
 5. When showcasing the graph I do not show quarantine. as far as the graph is concerned these are infected people.
 6. A person while in quarantine doesn't spread the disease, we assume they are protected from the world and when quarantined, they stay in their
-   community for some amount of time before they recover.
+   community for some amount of time before they recover. DONE!
 7. We are quarantine people who are above a symptomScale threadshold so we can see how it affects the curve.
-8. We are assuming there are way more asymptomatic people.
+8. We are assuming there are way more asymptomatic people. DONE!
 9. We are going to assume a person gets infected but we let them roam around and keep spreading for like half a minute (countDown to quarantine) until we reach 0 seconds, then
-   PeopleManager will initiate quaranting all the people who are above certain symptomScale threshold. 
-10. When people get infected, whether they are quarantined or not, they will eventually recover.
+   PeopleManager will initiate quaranting all the people who are above certain symptomScale threshold. NO NEED TO MENTION!
+10. When people get infected, whether they are quarantined or not, they will eventually recover. 
 11. When to quarantine people really matters, if you wait too long, quarantining basically has no affect even when you quarantine everyone because as people get
     infected and are inside building, they likely contaminate things inside building while they are infected before getting quarantined.
     If you quarantine quickly, they dont likely spread as fast because they get quarantined before touching fruits in grocery store,etc for example.
