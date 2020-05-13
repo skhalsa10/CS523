@@ -1,5 +1,9 @@
 package abm.abmgui;
 
+/**
+ * This class is a simple encapsulation of time related data on the graph.
+ * it encapsulates the amount of people in their states at a give time slice
+ */
 public class GraphTimeData {
 
     private int I;
@@ -12,11 +16,23 @@ public class GraphTimeData {
         this.R = R;
     }
 
+    /**
+     *
+     * @return infected count
+     */
     public int getI() { return I; }
 
+    /**
+     *
+     * @return susceptible count
+     */
     public int getS() {
         return S;
     }
 
+    /**
+     *
+     * @return recovered count
+     */
     public int getR() { return R; }
 }
