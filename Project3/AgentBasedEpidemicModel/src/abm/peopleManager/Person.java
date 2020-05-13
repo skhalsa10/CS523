@@ -99,70 +99,96 @@ public class Person {
         setWalkInsideCommunity();
     }
 
+    /**
+     * @return id of this person.
+     */
     public int getID() {
         return ID;
     }
 
+    /**
+     * @return home community id of this person.
+     */
     public int getHomeCommunityID() {
         return homeCommunityID;
     }
 
+    /**
+     * @return current physical location of this person.
+     */
     public Point2D getCurrentLocation() {
         return currentLocation;
     }
 
+    /**
+     * @return current disease state this person is in.
+     */
     public SIRQState getCurrentSIRQState() {
         return currentSIRQState;
     }
 
+    /**
+     * Sets the current disease state of this person with new disease state.
+     * @param newSIRQState that this person goes to.
+     */
     public void setCurrentSIRQState(SIRQState newSIRQState) {
         // initiate quarantine countDown as the person gets quarantined. This initialization of countDown will ONLY be decremented
         // when the person is walking back home and is ALSO quarantined.
-        if (currentSIRQState == SIRQState.RECOVERED) {
-            System.out.println("NEVER GOING TO GET CALLED" + " " + newSIRQState);
-        }
         if (newSIRQState == SIRQState.QUARANTINED) {
             this.quarantineCountDown = 60 * (rand.nextInt(ABMConstants.AT_QUARANTINE_MAX) + ABMConstants.AT_QUARANTINE_MIN);
         }
         this.currentSIRQState = newSIRQState;
     }
 
+    /**
+     * @return symptom/contagion level of this person.
+     */
     public double getSymptomLevel() {
         return symptomScale;
     }
 
-    public void setSymptomScale(double sicknessLevel) {
+    /**
+     * Sets the symptom/contagion scale of this person following beta distribution (default is alpha=2,beta=3.5).
+     */
+    public void setSymptomScale() {
         this.symptomScale = betaDistribution.sample();
     }
 
+    /**
+     * Sets the recovery countdown for this person when they become infected.
+     */
     public void setTillRecoveryCountDown() {
         this.tillRecoveryCountDown = 60 * (rand.nextInt(ABMConstants.TILL_RECOVERY_MAX) + ABMConstants.TILL_RECOVERY_MIN);
     }
 
-    public BuildingType getDestBuildingToGo() {
-        return buildingTypeToGo;
-    }
-
+    /**
+     * Sets the new building destination for this person to go to.
+     * @param newDestToGo for this person.
+     */
     public void setBuildingTypeToGo(BuildingType newDestToGo) {
         this.buildingTypeToGo = newDestToGo;
     }
 
+    /**
+     * Sets the physical location of building destination that this person needs to go to.
+     * @param buildingDestination physical location of building.
+     */
     public void setBuildingDest(Point2D buildingDestination) {
         this.buildingDest = buildingDestination;
     }
 
-    public int getDestBuildingID() {
-        return buildingDestID;
-    }
-
+    /**
+     * Sets the building destination Id for this person.
+     * @param newDestBuildingID for this person.
+     */
     public void setDestBuildingID(int newDestBuildingID) {
         this.buildingDestID = newDestBuildingID;
     }
 
-    public PersonLocationState getCurrentLocationState() {
-        return currentLocationState;
-    }
-
+    /**
+     * Sets the new location state mode (enum) that this person goes to after performing a specific task such as walking.
+     * @param newLocationState this person goes to.
+     */
     public void setLocationState(PersonLocationState newLocationState) {
         this.currentLocationState = newLocationState;
     }

@@ -135,7 +135,7 @@ public class PeopleManager extends Thread implements Communicator {
         Person randomPerson = communities.get(randomCommunityId).get(randomBounds.nextInt(ABMConstants.PEOPLE_IN_COMMUNITY));
 
         randomPerson.setCurrentSIRQState(SIRQState.INFECTED);
-        randomPerson.setSymptomScale(randomBounds.nextDouble());
+        randomPerson.setSymptomScale();
 
         // put this guy in symptomScaleThresholds map.
         this.symptomScaleThresholds.put(randomPerson,randomPerson.getSymptomLevel());
@@ -227,7 +227,7 @@ public class PeopleManager extends Thread implements Communicator {
                     //System.out.println("INFECTEDDDDDD");
                     // this person caught the virus while being in some building.
                     person.setCurrentSIRQState(SIRQState.INFECTED);
-                    person.setSymptomScale(randomBounds.nextDouble());
+                    person.setSymptomScale();
 
                     // start recovery process of this person on its own no matter they get quarantined or not!
                     person.setTillRecoveryCountDown();
