@@ -5,6 +5,12 @@ import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 
+/**
+ * This constant class for putting tunable parameters, colors, dimensions for buildings, gui map width,height,etc.
+ * It also supports modifying some command line args based on user input.
+ * @version 1.0.0
+ * @author Anas Gauba & Siri Khalsa
+ */
 public class ABMConstants {
     public final static double MAP_WIDTH = 0.625*javafx.stage.Screen.getPrimary().getBounds().getMaxX();
     public final static double MAP_HEIGHT = 0.741*javafx.stage.Screen.getPrimary().getBounds().getMaxY();
