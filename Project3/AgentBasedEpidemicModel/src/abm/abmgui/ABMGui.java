@@ -483,8 +483,6 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
     private void updateGraphData(SIRQState oldState, SIRQState newState) {
         if(oldState == newState){
             System.out.println("this should not happen Check updateGraphData");
-            System.out.println("old state is "+ oldState);
-            System.out.println("new state is "+ newState);
         }
         else if(oldState==SIRQState.INFECTED && newState == SIRQState.QUARANTINED){
             //Quarantines is still infected as far as the graph is concerned so data doesnt change
