@@ -38,11 +38,19 @@ public class ABMController extends Thread implements Communicator {
         start();
     }
 
+    /**
+     * Puts a message into the priority blocking queue sent by other objects.
+     * @param m message to put in queue.
+     */
     @Override
     public void sendMessage(Message m) {
         this.messages.put(m);
     }
 
+    /**
+     * This controller thread takes a messages from its priority blocking queue and processes them when it gets
+     * a chance. If waiting is necessary for the message to become available, it waits, then processes the message.
+     */
     @Override
     public void run() {
         while (isRunning) {
@@ -55,6 +63,9 @@ public class ABMController extends Thread implements Communicator {
         }
     }
 
+    /**
+     * Timer for updating people's state. This timer triggers 60 times per second.
+     */
     private void stateUpdateTimer() {
         TimerTask task = new TimerTask() {
             @Override
@@ -67,6 +78,10 @@ public class ABMController extends Thread implements Communicator {
         this.timer.schedule(task, 0, 17);
     }
 
+    /**
+     * Processes different messages that are passed from the managers or gui.
+     * @param m message to process.
+     */
     private synchronized void processMessage(Message m) {
         if (m instanceof Shutdown) {
             this.peopleManager.sendMessage(m);
@@ -106,6 +121,5 @@ public class ABMController extends Thread implements Communicator {
         else{
             System.out.println("abmController is forgetting to handle message "+ m);
         }
-
     }
 }

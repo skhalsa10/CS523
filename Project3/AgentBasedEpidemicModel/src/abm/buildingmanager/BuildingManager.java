@@ -89,11 +89,19 @@ public class BuildingManager extends Thread implements Communicator {
         }
     }
 
+    /**
+     * Puts a message into the priority blocking queue sent by other objects.
+     * @param m message to put in queue.
+     */
     @Override
     public void sendMessage(Message m) {
         this.messages.put(m);
     }
 
+    /**
+     * This buildingManager thread takes a messages from its priority blocking queue and processes them when it gets
+     * a chance. If waiting is necessary for the message to become available, it waits, then processes the message.
+     */
     @Override
     public void run() {
         while (isRunning) {
@@ -106,6 +114,10 @@ public class BuildingManager extends Thread implements Communicator {
         }
     }
 
+    /**
+     * Processes different messages that are passed from the ABMController or Building.
+     * @param m message to process.
+     */
     private synchronized void processMessage(Message m) {
         //shutdown this thread
         if (m instanceof Shutdown) {

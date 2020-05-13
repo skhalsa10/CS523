@@ -16,6 +16,8 @@ import java.util.Random;
 import java.util.concurrent.PriorityBlockingQueue;
 
 /**
+ * People Manager class for managing all the people in different communities. Initializes communities, processes message
+ * sent from person or abmController and responds appropriately.
  * @version 1.0.0
  * @author Anas Gauba
  */
@@ -54,11 +56,19 @@ public class PeopleManager extends Thread implements Communicator {
         start();
     }
 
+    /**
+     * Puts a message into the priority blocking queue sent by other objects.
+     * @param m message to put in queue.
+     */
     @Override
     public void sendMessage(Message m) {
         this.messages.put(m);
     }
 
+    /**
+     * This peopleManager thread takes a messages from its priority blocking queue and processes them when it gets
+     * a chance. If waiting is necessary for the message to become available, it waits, then processes the message.
+     */
     @Override
     public void run() {
         while (isRunning) {
@@ -73,7 +83,7 @@ public class PeopleManager extends Thread implements Communicator {
 
     /**
      * There are x communities in our prototype in which there will be y
-     * people.
+     * people. PeopleManager initializes the communities and people in them at the start of the simulation.
      */
     private void initializeCommunities() {
         int personId = 1;
@@ -104,6 +114,14 @@ public class PeopleManager extends Thread implements Communicator {
         }
     }
 
+    /**
+     * Utility method for looking up all the neighbors inside a community for a given currentPerson.
+     * It adds the neighbors based on the other people who live in the same community as this currentPerson.
+     *
+     * @param currentPerson to add neighbors for.
+     * @param peopleInThisCommunity which current person lives in.
+     * @return neighbors of currentPerson in question.
+     */
     private ArrayList<Person> addNeighbors(Person currentPerson, ArrayList<Person> peopleInThisCommunity) {
         ArrayList<Person> neighbors = new ArrayList<>();
         for (Person p : peopleInThisCommunity) {
@@ -127,6 +145,10 @@ public class PeopleManager extends Thread implements Communicator {
         return peopleInCommunity.get(offset);
     }
 
+    /**
+     * Helper method for infecting a random person from any community. This method gets called when we begin the epidemic
+     * spread in the simulation (when countDownTillEpidemicSpread counter hits 0).
+     */
     private void setRandomPersonToInfect() {
         // we will have a random person in the community who's infected with Covid-19. Random person between 1-X
         //where X = # of communities * # of people in each community.
@@ -143,12 +165,16 @@ public class PeopleManager extends Thread implements Communicator {
         abmController.sendMessage(new PersonChangedState(SIRQState.INFECTED,randomPerson.getID(),randomCommunityId));
     }
 
+    /**
+     * Processes different messages that are passed from the ABMController or Person.
+     * @param m message to process.
+     */
     private synchronized void processMessage(Message m) {
         if (m instanceof Shutdown) {
             this.isRunning = false;
             System.out.println("People Manager Shutting down.");
         }
-        // update people's location state.
+        // update people's location state. gui updates thru abmController.
         if (m instanceof UpdatePeopleState) {
             // initially we wait until countDownTillEpidemicSpread hits 0 before we make a random person infected and start disease spread.
             if (this.countDownTillEpidemicSpread > 0) {
@@ -177,9 +203,11 @@ public class PeopleManager extends Thread implements Communicator {
                 }
             }
         }
+        // person requested a destination from buildingManager thru abmController.
         if (m instanceof PersonWaitingForDestination) {
             this.abmController.sendMessage(m);
         }
+        // buildingMAnager gives a destination for a person thru abmController.
         if (m instanceof DestinationForPerson) {
             DestinationForPerson dest = (DestinationForPerson) m;
 
@@ -189,9 +217,12 @@ public class PeopleManager extends Thread implements Communicator {
             person.setBuildingDest(dest.getBuildingDestToGo());
             person.setLocationState(PersonLocationState.DESTINATION_GIVEN);
         }
+        // person changed location, gui gets its location thru abmController.
         if (m instanceof PersonChangedLocation) {
             this.abmController.sendMessage(m);
         }
+        // person puts this message into peopleManager queue, sending its updated state. The controller sends this message
+        // to gui so it can change this person's state appropriately.
         if (m instanceof PersonChangedState) {
             // when person sends this message, check if person infected, then put to symptomScalethresholds map.
             PersonChangedState changedState = (PersonChangedState) m;
@@ -204,6 +235,7 @@ public class PeopleManager extends Thread implements Communicator {
             }
             this.abmController.sendMessage(m);
         }
+        // controller sends this message to buildingManager when a person enters or exits building.
         if (m instanceof EnterBuilding) {
             this.abmController.sendMessage(m);
         }
