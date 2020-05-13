@@ -29,6 +29,9 @@ import static abm.utils.ABMConstants.*;
 
 /**
  * The GUI class to show the simulation of ABM epidemic spread.
+ * This is a JavaFX GUI. you will notice most of the layout of the GUI
+ * is performed in the constructor. State is updated using a Message
+ * Passing Protocol with the ABMController
  * @version 1.0.0
  * @author Siri Khalsa
  */
@@ -78,6 +81,12 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
     private int totalR;
     private int totalS;
 
+    /**
+     * Contruct GUI layout nodes and state to animate on canvases.
+     *
+     * @param primaryStage this is the stage to display the scenes on
+     * @param abmController the only object the GUI communicates with through a Message Passing Protocol
+     */
     public ABMGui(Stage primaryStage, ABMController abmController) {
 
         messages = new PriorityBlockingQueue<>();
@@ -241,11 +250,18 @@ public class ABMGui extends AnimationTimer implements Runnable, Communicator {
 
     }
 
+    /**
+     * allows this object to perform Message Passing Comunication
+     * @param m this message is received and placed in a queue for processing later.
+     */
     @Override
     public void sendMessage(Message m) {
         this.messages.put(m);
     }
 
+    /**
+     * this is implemented from the thread dedicated to processing messages
+     */
     @Override
     public void run() {
         while (isRunning) {

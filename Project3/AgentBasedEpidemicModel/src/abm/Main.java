@@ -17,7 +17,12 @@ public class Main extends Application {
     private ABMController abm;
 
 
-
+    /**
+     * this is the starting point for the JavaFX application the runtime gives us a stage to use.
+     * We pass it to the ABMController to start and initialize the ABM
+     * @param primaryStage
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parameters parameters = getParameters();
@@ -43,6 +48,10 @@ public class Main extends Application {
 
     }
 
+    /**
+     * if command line arguments are wrong print
+     * the instructions on how to correctly launch the application
+     */
     private void printInstructions() {
         System.out.println("Agent Based Epidemic Model Help - " +
                 "ABEM can be launched in three ways ways:\n\n" +
@@ -56,6 +65,10 @@ public class Main extends Application {
                 "Example: \n\tjava -jar ABEM.jar \n\tjava -jar ABEM.jar 0.3 \n\tjava -jar ABEM.jar 0.3 1.0 5.2");
     }
 
+    /**
+     * this will run when the gui window is closed.
+     * @throws Exception
+     */
     @Override
     public void stop() throws Exception {
         System.out.println("Main shutting down");

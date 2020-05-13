@@ -7,6 +7,15 @@ import abm.utils.messages.ExitBuilding;
 
 import java.util.HashMap;
 
+/**
+ * The Building Class abstracts Building object and behavior. This is used for the
+ * Buildings in the center of the map. these buildings have simple behavior they allow people
+ * to enter and exit the building. They also keep track of the SymptomScale of the infected and
+ * send the average symptom scale to the people manager when an exit building is requested.
+ *
+ * @version 1.0.0
+ * @author Siri Khalsa
+ */
 public class Building {
 
     private HashMap<Integer, Double> infectedPeople; //keep track of infected people ID and symptom level

@@ -14,6 +14,12 @@ import java.util.concurrent.PriorityBlockingQueue;
 import static abm.utils.ABMConstants.*;
 
 /**
+ * This class manages the creation of buildings, responding to messages from the Message Passing Protocal.
+ * It manages the entering and exiting of buildings and routing the behavior accordingly to the correct buildings
+ *
+ * This Class ONLY sends messages to the ABMController and as for as it is concerned is unaware of People Behavior.
+ *
+ *
  * @version 1.0.0
  * @author Siri Khalsa
  *
@@ -61,27 +67,38 @@ public class BuildingManager extends Thread implements Communicator {
         start();
     }
 
+    /**
+     * helper class to initialize hospital buildings
+     */
     private void initHospitals() {
         hospitals.put(1,new Building(BUILDING_CAPACITY, BuildingType.HOSPITAL,1));
         hospitals.put(2,new Building(BUILDING_CAPACITY, BuildingType.HOSPITAL,2));
     }
-
+    /**
+     * helper class to initialize Grocery Store buildings
+     */
     private void initGroceryStores() {
         groceryStores.put(1,new Building(BUILDING_CAPACITY, BuildingType.GROCERY_STORE,1));
         groceryStores.put(2,new Building(BUILDING_CAPACITY, BuildingType.GROCERY_STORE,2));
     }
-
+    /**
+     * helper class to initialize Restaurants buildings
+     */
     private void initRestaurants() {
         int size = RESTAURANT_UPPERLEFT_CORNERS.size();
         for(int i = 1; i<=size;i++){
             restaurants.put(i,new Building(BUILDING_CAPACITY, BuildingType.RESTURANT,i));
         }
     }
-
+    /**
+     * helper class to initialize Hotels buildings
+     */
     private void initHotels() {
         hotels.put(1,new Building(BUILDING_CAPACITY, BuildingType.HOTEL,1));
     }
-
+    /**
+     * helper class to initialize Communities buildings
+     */
     private void initCommunities() {
         int size = COMMUNITIES_UPPERLEFT_CORNERS.size();
         for(int i = 1; i<=size;i++){

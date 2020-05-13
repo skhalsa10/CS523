@@ -5,6 +5,15 @@ import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 
+/**
+ * This is a static constant class that contains final and static constants.
+ *
+ * It is an easy way to tune the ABM to run specific ways.
+ *
+ * @version  1.0.0
+ * @author Siri Khalsa
+ * @author Anas Gauba
+ */
 public class ABMConstants {
     public final static double MAP_WIDTH = 0.625*javafx.stage.Screen.getPrimary().getBounds().getMaxX();
     public final static double MAP_HEIGHT = 0.741*javafx.stage.Screen.getPrimary().getBounds().getMaxY();
@@ -120,6 +129,10 @@ public class ABMConstants {
     public final static ArrayList<Point2D> COMMUNITIES_UPPERLEFT_CORNERS = getCommunitiesUpperleftCorners();
     public final static ArrayList<Point2D> RESTAURANT_UPPERLEFT_CORNERS = getRestaurantUpperleftCorners();
 
+    /**
+     * helper class that builds a list of restaurant upper left corners.
+     * @return
+     */
     private static ArrayList<Point2D> getRestaurantUpperleftCorners() {
         ArrayList<Point2D> upperLeftCorners = new ArrayList<>();
 
@@ -146,6 +159,12 @@ public class ABMConstants {
         return upperLeftCorners;
     }
 
+    /**
+     * helper for the helper function above to build a list of upper left courners used for the restaurants
+     * @param x
+     * @param y
+     * @param upperLeftCorners
+     */
     private static void addUpperLeftRestaurantPoints(double x, double y, ArrayList<Point2D> upperLeftCorners) {
         upperLeftCorners.add(new Point2D(x, y));
         upperLeftCorners.add(new Point2D(x+2*RESTAURANT_WIDTH, y));
@@ -194,6 +213,12 @@ public class ABMConstants {
     }
 
 
+    /**
+     * this will initialize the command line arguments for use in the ABM
+     * @param threshold symptom threshold number between 0 and 1
+     * @param alpha used for beta distribution in person class
+     * @param beta used for beta distribution in Person Class
+     */
     public static void setCommandLineArgs(double threshold, double alpha, double beta){
         SYMPTOM_SCALE_THRESHOLD = threshold;
         ALPHA = alpha;
